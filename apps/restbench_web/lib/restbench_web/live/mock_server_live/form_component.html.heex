@@ -1,24 +1,28 @@
-<div>
-  <h2><%= @title %></h2>
+<section class="is-meduim">
+    <h2><%= @title %></h2>
 
-  <.form
-    let={f}
-    for={@changeset}
-    id="mock_server-form"
-    phx-target={@myself}
-    phx-change="validate"
-    phx-submit="save">
-  
-    <%= label f, :title %>
-    <%= text_input f, :title %>
-    <%= error_tag f, :title %>
-  
-    <%= label f, :enabled %>
-    <%= checkbox f, :enabled %>
-    <%= error_tag f, :enabled %>
-  
-    <div>
-      <%= submit "Save", phx_disable_with: "Saving..." %>
-    </div>
-  </.form>
-</div>
+    <.form
+      let={f}
+      for={@changeset}
+      id="mock_server-form"
+      phx-target={@myself}
+      phx-change="validate"
+      phx-submit="save">
+    
+      <div class="field">
+        <%= label f, :title, class: "label" %>
+        <%= text_input f, :title, class: "input" %>
+        <%= error_tag f, :title %>
+      </div>
+    
+      <div class="field">
+        <%= checkbox f, :enabled %>      
+        <%= label f, :enabled, class: "checkbox" %>
+        <%= error_tag f, :enabled %>
+      </div>
+    
+      <div>
+        <%= submit "Save", phx_disable_with: "Saving...", class: "button is-link"  %>
+      </div>
+    </.form>
+</section>
