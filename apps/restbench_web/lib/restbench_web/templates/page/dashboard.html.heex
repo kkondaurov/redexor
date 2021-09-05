@@ -1,0 +1,14 @@
+<section class="columns">
+  <article class="column">
+    <ul>
+      <li>
+        <%= live_patch to: Routes.mock_server_index_path(@conn, :index), class: "button is-primary has-icons" do %>
+        <span class="icon is-small is-left">
+          <i class="fas fa-server"></i>
+        </span>
+        <span>Manage Mock Servers</span>
+        <% end %>
+      </li>
+    </ul>
+  </article>
+</section>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>[rest]bench</title>
+    <%= csrf_meta_tag() %>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap" rel="stylesheet">
+    <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/assets/app.css")}/>
+    <script src="https://kit.fontawesome.com/befba2b3ad.js" crossorigin="anonymous"></script>
+    <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js")}></script>
+  </head>
+  <body>
+    <header class="container">
+      <nav class="navbar has-shadow mb-6" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+          <a class="logo navbar-item" href="/">
+            <img phx-track-static src={Routes.static_path(@conn, "/images/restbench-logo.svg")} style="max-height:44px" width="176" height="44"/>
+          </a>
+        </div>
+        <%= if @current_admin do %>
+          <%= render "_admin_menu.html", assigns %>
+        <% else %>
+          <%= render "_user_menu.html", assigns %>
+        <% end %>        
+      </nav>
+    </header>
+    <main role="main" class="container">
+      <%= @inner_content %>
+    </main>
+  </body>
+</html>
