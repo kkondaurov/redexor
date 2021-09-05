@@ -1,7 +1,13 @@
-<ul>
 <%= if @current_admin do %>
-  <li><%= @current_admin.email %></li>
-  <li><%= link "Settings", to: Routes.admin_settings_path(@conn, :edit) %></li>
-  <li><%= link "Log out", to: Routes.admin_session_path(@conn, :delete), method: :delete %></li>
+<div class="container ">
+  <nav class="navbar has-background-warning" role="navigation">
+      <div class="navbar-start">
+        <div class="navbar-item"><strong><%= @current_admin.email %></strong></div>
+      </div>
+      <div class="navbar-end is-align-items-baseline">
+        <div class="navbar-item"><%= link "Settings", to: Routes.admin_settings_path(@conn, :edit) %></div>
+        <div class="navbar-item"><%= link "Log out", to: Routes.admin_session_path(@conn, :delete), method: :delete, class: "ml-10 button inline-block" %></div>
+      </div>
+  </nav>
+</div>
 <% end %>
-</ul>

@@ -1,8 +1,4 @@
-<section class="phx-hero">
-  <h1>RestBench</h1>
-</section>
-
-<section class="row">
+<section class="columns">
   <article class="column">
     <h2>Resources</h2>
     <ul>
