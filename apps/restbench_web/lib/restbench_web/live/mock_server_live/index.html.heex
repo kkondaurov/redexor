@@ -31,8 +31,20 @@
   <tbody id="mock_servers">
     <%= for mock_server <- @mock_servers do %>
       <tr id={"mock_server-#{mock_server.id}"}>
-        <td><%= mock_server.title %></td>
-        <td><%= mock_server.enabled %></td>
+        <td>
+          <%= live_patch mock_server.title, to: Routes.mock_server_show_path(@socket, :show, mock_server) %>
+        </td>
+        <td>
+          <%= if mock_server.enabled do %>
+            <span class="icon is-small has-text-success">
+              <i class="fas fa-toggle-on"></i>
+            </span>          
+          <% else %>
+            <span class="icon is-small has-text-danger">
+              <i class="fas fa-toggle-off"></i>
+            </span>          
+          <% end %>
+        </td>
 
         <td>
           <%= live_patch to: Routes.mock_server_index_path(@socket, :edit, mock_server), class: "button is-small is-warning has-icons-left" do %>
