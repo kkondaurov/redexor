@@ -1,0 +1,24 @@
+<section class="is-large mb-6">
+  <.form let={f} for={:user} action={Routes.user_reset_password_path(@conn, :create)}>
+    <h1>Forgot your password?</h1>
+
+    <div class="field">
+      <%= label f, :email, class: "label" %>
+      <div class="control has-icons-left">
+        <%= email_input f, :email, required: true, class: "input" %>
+        <span class="icon is-small is-left">
+          <i class="fas fa-envelope"></i>
+        </span>
+      </div>
+    </div>
+
+    <div>
+      <%= submit "Send instructions to reset password", class: "button is-link" %>
+    </div>
+  </.form>
+</section>
+
+<section class="is-large">
+  <%= link "Register", to: Routes.user_registration_path(@conn, :new), class: "button is-light" %>
+  <%= link "Log in", to: Routes.user_session_path(@conn, :new), class: "button is-light" %>
+</section>
