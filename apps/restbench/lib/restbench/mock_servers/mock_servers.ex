@@ -101,4 +101,13 @@ defmodule Restbench.MockServers do
   def change_mock_server(%MockServer{} = mock_server, attrs \\ %{}) do
     MockServer.changeset(mock_server, attrs)
   end
+
+  @doc """
+  Toggles `enabled` flag.
+  """
+  def toggle_mock_server(%MockServer{enabled: enabled?} = mock_server) do
+    mock_server
+    |> MockServer.changeset(%{enabled: not enabled?})
+    |> Repo.update()
+  end
 end

@@ -40,6 +40,13 @@ defmodule RestbenchWeb.MockServerLive.Index do
     {:noreply, assign(socket, :mock_servers, list_mock_servers())}
   end
 
+  def handle_event("toggle", %{"id" => id}, socket) do
+    mock_server = MockServers.get_mock_server!(id)
+    {:ok, _} = MockServers.toggle_mock_server(mock_server)
+
+    {:noreply, assign(socket, :mock_servers, list_mock_servers())}
+  end
+
   defp list_mock_servers do
     MockServers.list_mock_servers()
   end

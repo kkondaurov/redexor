@@ -36,14 +36,16 @@
           <%= live_patch mock_server.title, to: Routes.mock_server_show_path(@socket, :show, mock_server) %>
         </td>
         <td>
-          <%= if mock_server.enabled do %>
-            <span class="icon is-small has-text-success">
-              <i class="fas fa-toggle-on"></i>
-            </span>          
-          <% else %>
-            <span class="icon is-small has-text-danger">
-              <i class="fas fa-toggle-off"></i>
-            </span>          
+          <%= link to: "#", phx_click: "toggle", phx_value_id: mock_server.id do %>
+            <%= if mock_server.enabled do %>
+              <span class="icon is-small has-text-success">
+                <i class="fas fa-toggle-on"></i>
+              </span>
+            <% else %>
+              <span class="icon is-small has-text-danger">
+                <i class="fas fa-toggle-off"></i>
+              </span>
+            <% end %>
           <% end %>
         </td>
 
