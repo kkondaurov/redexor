@@ -1,0 +1,53 @@
+<article>
+<h1>Listing Mock Servers</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <%= live_modal RestbenchWeb.MockServerLive.FormComponent,
+    id: @mock_server.id || :new,
+    title: @page_title,
+    action: @live_action,
+    mock_server: @mock_server,
+    return_to: Routes.mock_server_index_path(@socket, :index) %>
+<% end %>
+
+<%= unless @live_action in [:new, :edit] do %>
+  <%= live_patch to: Routes.mock_server_index_path(@socket, :new), class: "button is-small is-primary has-icons-left has-text-light" do %>
+    <span class="icon is-small">
+      <i class="fas fa-plus"></i>
+    </span>
+  <% end %>
+<% end %>
+
+<table class="table is-striped is-fullwidth">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Enabled</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="mock_servers">
+    <%= for mock_server <- @mock_servers do %>
+      <tr id={"mock_server-#{mock_server.id}"}>
+        <td><%= mock_server.title %></td>
+        <td><%= mock_server.enabled %></td>
+
+        <td>
+          <%= live_patch to: Routes.mock_server_index_path(@socket, :edit, mock_server), class: "button is-small is-warning has-icons-left" do %>
+            <span class="icon is-small">
+              <i class="fas fa-edit"></i>
+            </span>
+          <% end %>
+          <%= link to: "#", phx_click: "delete", phx_value_id: mock_server.id, data: [confirm: "Are you sure?"], class: "button is-small is-danger has-icons-left" do %>
+            <span class="icon is-small">
+              <i class="fas fa-trash"></i>
+            </span>          
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+</article>

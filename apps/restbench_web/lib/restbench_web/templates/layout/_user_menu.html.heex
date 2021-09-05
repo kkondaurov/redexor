@@ -2,12 +2,12 @@
 <%= if @current_user do %>
   <div class="navbar-end">
     <div class="buttons">
-      <div class="navbar-item button is-light has-icons-left">
+      <%= link to: Routes.user_settings_path(@conn, :edit), class: "navbar-item button is-light has-text-dark has-icons-left" do %>
         <span class="icon is-small is-left">
           <i class="fas fa-cog"></i>
-        </span> 
-        <%= link @current_user.email, to: Routes.user_settings_path(@conn, :edit), class: "has-text-dark" %>
-      </div>
+        </span>
+        <span><%= @current_user.email %></span>
+      <% end %>
       <div class="navbar-item">
         <%= link "Log out", to: Routes.user_session_path(@conn, :delete), method: :delete, class: "button is-light" %>
       </div>

@@ -1,0 +1,27 @@
+<h1>Show Mock Server</h1>
+
+<%= if @live_action in [:edit] do %>
+  <%= live_modal RestbenchWeb.MockServerLive.FormComponent,
+    id: @mock_server.id,
+    title: @page_title,
+    action: @live_action,
+    mock_server: @mock_server,
+    return_to: Routes.mock_server_show_path(@socket, :show, @mock_server) %>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Title:</strong>
+    <%= @mock_server.title %>
+  </li>
+
+  <li>
+    <strong>Enabled:</strong>
+    <%= @mock_server.enabled %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.mock_server_show_path(@socket, :edit, @mock_server), class: "button" %></span> |
+<span><%= live_redirect "Back", to: Routes.mock_server_index_path(@socket, :index) %></span>
