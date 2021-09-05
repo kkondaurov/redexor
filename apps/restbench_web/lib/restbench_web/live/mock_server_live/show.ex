@@ -16,6 +16,6 @@ defmodule RestbenchWeb.MockServerLive.Show do
      |> assign(:mock_server, MockServers.get_mock_server!(id))}
   end
 
-  defp page_title(:show), do: "Show Mock server"
-  defp page_title(:edit), do: "Edit Mock server"
+  defp page_title(:show), do: "Show Mock Server"
+  defp page_title(:edit), do: "Edit Mock Server"
 end

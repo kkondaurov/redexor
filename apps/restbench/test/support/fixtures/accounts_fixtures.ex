@@ -23,6 +23,19 @@ defmodule Restbench.AccountsFixtures do
     user
   end
 
+  def confirmed_user_fixture(attrs \\ %{}) do
+    user_fixture(attrs)
+    |> Restbench.Accounts.User.confirm_changeset()
+    |> Restbench.Repo.update!()
+  end
+
+  def confirmed_user_by_email(email) do
+    email
+    |> Restbench.Accounts.get_user_by_email()
+    |> Restbench.Accounts.User.confirm_changeset()
+    |> Restbench.Repo.update!()
+  end
+
   def extract_user_token(fun) do
     {:ok, captured_email} = fun.(&"[TOKEN]#{&1}[TOKEN]")
     [_, token | _] = String.split(captured_email.text_body, "[TOKEN]")

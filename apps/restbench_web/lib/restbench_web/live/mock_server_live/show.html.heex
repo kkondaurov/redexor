@@ -23,5 +23,5 @@
 
 </ul>
 
-<span><%= live_patch "Edit", to: Routes.mock_server_show_path(@socket, :edit, @mock_server), class: "button" %></span> |
-<span><%= live_redirect "Back", to: Routes.mock_server_index_path(@socket, :index) %></span>
+<span><%= live_patch "Edit", to: Routes.mock_server_show_path(@socket, :edit, @mock_server), class: "button is-primary" %></span>
+<span><%= live_redirect "Back", to: Routes.mock_server_index_path(@socket, :index), class: "button is-light" %></span>

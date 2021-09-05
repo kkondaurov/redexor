@@ -4,7 +4,8 @@ defmodule RestbenchWeb.UserSessionControllerTest do
   import Restbench.AccountsFixtures
 
   setup do
-    %{user: user_fixture()}
+    # For the sake of these tests, assume the account is confirmed
+    %{user: confirmed_user_fixture()}
   end
 
   describe "GET /users/log_in" do
@@ -36,7 +37,6 @@ defmodule RestbenchWeb.UserSessionControllerTest do
       conn = get(conn, "/")
       response = html_response(conn, 200)
       assert response =~ user.email
-      assert response =~ "Settings</a>"
       assert response =~ "Log out</a>"
     end
 
@@ -57,7 +57,7 @@ defmodule RestbenchWeb.UserSessionControllerTest do
     test "logs the user in with return to", %{conn: conn, user: user} do
       conn =
         conn
-        |> init_test_session(user_return_to: "/foo/bar")
+        |> init_test_session(user_return_to: "/users/settings")
         |> post(Routes.user_session_path(conn, :create), %{
           "user" => %{
             "email" => user.email,
@@ -65,7 +65,7 @@ defmodule RestbenchWeb.UserSessionControllerTest do
           }
         })
 
-      assert redirected_to(conn) == "/foo/bar"
+      assert redirected_to(conn) == "/users/settings"
     end
 
     test "emits error message with invalid credentials", %{conn: conn, user: user} do

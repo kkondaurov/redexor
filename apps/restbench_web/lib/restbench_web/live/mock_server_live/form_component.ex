@@ -32,7 +32,7 @@ defmodule RestbenchWeb.MockServerLive.FormComponent do
       {:ok, _mock_server} ->
         {:noreply,
          socket
-         |> put_flash(:info, "Mock server updated successfully")
+         |> put_flash(:info, "Mock Server updated successfully")
          |> push_redirect(to: socket.assigns.return_to)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -45,7 +45,7 @@ defmodule RestbenchWeb.MockServerLive.FormComponent do
       {:ok, _mock_server} ->
         {:noreply,
          socket
-         |> put_flash(:info, "Mock server created successfully")
+         |> put_flash(:info, "Mock Server created successfully")
          |> push_redirect(to: socket.assigns.return_to)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
