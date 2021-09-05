@@ -17,7 +17,9 @@
     <header class="container">
       <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
-          <a class="logo navbar-item" href="/">restbench</a>
+          <a class="logo navbar-item" href="/">
+            <img phx-track-static src={Routes.static_path(@conn, "/images/restbench-logo.svg")} style="max-height:44px" width="176" height="44"/>
+          </a>
           <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
