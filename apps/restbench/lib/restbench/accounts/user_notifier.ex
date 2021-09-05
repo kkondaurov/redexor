@@ -1,10 +1,11 @@
 defmodule Restbench.Accounts.UserNotifier do
+  @moduledoc false
+
   require Logger
 
   import Swoosh.Email
 
   alias Restbench.Mailer
-
 
   # Delivers the email using the application mailer.
   defp deliver(recipient, subject, body) do
@@ -15,10 +16,10 @@ defmodule Restbench.Accounts.UserNotifier do
       |> subject(subject)
       |> text_body(body)
 
-    Logger.info("Delivering email: #{inspect email}")
+    Logger.info("Delivering email: #{inspect(email)}")
 
     with {:ok, metadata} <- Mailer.deliver(email) do
-      Logger.info("UserNotifier email metadata: #{inspect metadata}")
+      Logger.info("UserNotifier email metadata: #{inspect(metadata)}")
       {:ok, email}
     end
   end

@@ -1,4 +1,6 @@
 defmodule Restbench.Admins.AdminToken do
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Query
 
@@ -173,6 +175,7 @@ defmodule Restbench.Admins.AdminToken do
   end
 
   def admin_and_contexts_query(admin, [_ | _] = contexts) do
-    from t in Restbench.Admins.AdminToken, where: t.admin_id == ^admin.id and t.context in ^contexts
+    from t in Restbench.Admins.AdminToken,
+      where: t.admin_id == ^admin.id and t.context in ^contexts
   end
 end

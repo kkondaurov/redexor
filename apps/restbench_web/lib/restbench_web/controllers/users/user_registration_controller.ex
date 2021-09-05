@@ -19,7 +19,10 @@ defmodule RestbenchWeb.UserRegistrationController do
           )
 
         conn
-        |> put_flash(:info, "One last step: we sent you an email with a link to confirm your account.")
+        |> put_flash(
+          :info,
+          "One last step: we sent you an email with a link to confirm your account."
+        )
         |> redirect(to: "/")
 
       {:error, %Ecto.Changeset{} = changeset} ->

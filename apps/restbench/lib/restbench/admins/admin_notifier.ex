@@ -1,4 +1,5 @@
 defmodule Restbench.Admins.AdminNotifier do
+  @moduledoc false
   import Swoosh.Email
 
   alias Restbench.Mailer

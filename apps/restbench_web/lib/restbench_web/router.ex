@@ -52,7 +52,9 @@ defmodule RestbenchWeb.Router do
       get "/settings/confirm_email/:token", AdminSettingsController, :confirm_email
     end
 
-    live_dashboard "/live_dashboard", metrics: RestbenchWeb.Telemetry, ecto_repos: [Restbench.Repo]
+    live_dashboard "/live_dashboard",
+      metrics: RestbenchWeb.Telemetry,
+      ecto_repos: [Restbench.Repo]
   end
 
   scope "/", RestbenchWeb do

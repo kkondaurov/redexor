@@ -1,4 +1,8 @@
 defmodule RestbenchWeb.UserAuth do
+  @moduledoc """
+    Provides user authentication and session management.
+  """
+
   import Plug.Conn
   import Phoenix.Controller
 

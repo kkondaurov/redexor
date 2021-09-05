@@ -6,7 +6,7 @@ defmodule Restbench.Accounts do
   import Ecto.Query, warn: false
   alias Restbench.Repo
 
-  alias Restbench.Accounts.{User, UserToken, UserNotifier}
+  alias Restbench.Accounts.{User, UserNotifier, UserToken}
 
   ## Database getters
 

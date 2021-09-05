@@ -1,4 +1,5 @@
 defmodule Restbench.Admins.Admin do
+  @moduledoc false
   use Ecto.Schema
   import Ecto.Changeset
 

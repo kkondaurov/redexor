@@ -2,7 +2,6 @@ defmodule RestbenchWeb.UserConfirmationController do
   use RestbenchWeb, :controller
 
   alias Restbench.Accounts
-  alias RestbenchWeb.UserAuth
 
   def new(conn, _params) do
     render(conn, "new.html")

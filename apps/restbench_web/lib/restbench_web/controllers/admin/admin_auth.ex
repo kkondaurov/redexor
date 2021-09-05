@@ -1,4 +1,8 @@
 defmodule RestbenchWeb.AdminAuth do
+  @moduledoc """
+    Provides admin authentication and session management.
+  """
+
   import Plug.Conn
   import Phoenix.Controller
 
