@@ -13,9 +13,6 @@
     <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js")}></script>
   </head>
   <body>
-    <%= unless @current_user do %>
-    <%= render "_admin_menu.html", assigns %>
-    <% end %>
     <header class="container">
       <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
@@ -23,8 +20,10 @@
             <img phx-track-static src={Routes.static_path(@conn, "/images/restbench-logo.svg")} style="max-height:44px" width="176" height="44"/>
           </a>
         </div>
-        <%= unless @current_admin do %>
-        <%= render "_user_menu.html", assigns %>
+        <%= if @current_admin do %>
+          <%= render "_admin_menu.html", assigns %>
+        <% else %>
+          <%= render "_user_menu.html", assigns %>
         <% end %>        
       </nav>
     </header>

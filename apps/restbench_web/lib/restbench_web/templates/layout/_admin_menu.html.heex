@@ -1,21 +1,17 @@
 <%= if @current_admin do %>
-<div class="container">
-  <nav class="navbar has-background-warning" role="navigation">
-      <div class="navbar-start">
+  <div class="navbar-menu">
+    <div class="navbar-end">
+      <div class="buttons">
+        <div class="navbar-item button is-light has-icons-left has-background-danger">
+          <span class="icon is-small is-left has-text-light">
+            <i class="fas fa-cog"></i>
+          </span> 
+          <%= link @current_admin.email, to: Routes.admin_settings_path(@conn, :edit), class: "has-text-light" %>
+        </div>
         <div class="navbar-item">
-          <strong><%= @current_admin.email %></strong>
+          <%= link "Log out", to: Routes.admin_session_path(@conn, :delete), method: :delete, class: "button is-light" %>
         </div>
       </div>
-      <div class="navbar-end is-align-items-baseline">
-        <div class="buttons">
-          <div class="navbar-item">
-            <%= link "Settings", to: Routes.admin_settings_path(@conn, :edit), class: "button is-light" %>
-          </div>
-          <div class="navbar-item">
-            <%= link "Log out", to: Routes.admin_session_path(@conn, :delete), method: :delete, class: "button is-danger" %>
-          </div>
-        </div>
-      </div>
-  </nav>
-</div>
+    </div>
+  </div>
 <% end %>
