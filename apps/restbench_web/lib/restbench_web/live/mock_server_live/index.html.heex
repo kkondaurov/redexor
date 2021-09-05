@@ -15,6 +15,7 @@
     <span class="icon is-small">
       <i class="fas fa-plus"></i>
     </span>
+    <span>Create</span>
   <% end %>
 <% end %>
 
@@ -38,11 +39,13 @@
             <span class="icon is-small">
               <i class="fas fa-edit"></i>
             </span>
+            <span>Edit</span>
           <% end %>
           <%= link to: "#", phx_click: "delete", phx_value_id: mock_server.id, data: [confirm: "Are you sure?"], class: "button is-small is-danger has-icons-left" do %>
             <span class="icon is-small">
               <i class="fas fa-trash"></i>
-            </span>          
+            </span> 
+            <span>Delete</span>
           <% end %>
         </td>
       </tr>

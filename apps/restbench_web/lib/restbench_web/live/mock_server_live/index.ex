@@ -16,19 +16,19 @@ defmodule RestbenchWeb.MockServerLive.Index do
 
   defp apply_action(socket, :edit, %{"id" => id}) do
     socket
-    |> assign(:page_title, "Edit Mock server")
+    |> assign(:page_title, "Edit Mock Server")
     |> assign(:mock_server, MockServers.get_mock_server!(id))
   end
 
   defp apply_action(socket, :new, _params) do
     socket
-    |> assign(:page_title, "New Mock server")
+    |> assign(:page_title, "New Mock Server")
     |> assign(:mock_server, %MockServer{})
   end
 
   defp apply_action(socket, :index, _params) do
     socket
-    |> assign(:page_title, "Listing Mock servers")
+    |> assign(:page_title, "Listing Mock Servers")
     |> assign(:mock_server, nil)
   end
 

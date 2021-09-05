@@ -3,6 +3,8 @@ defmodule RestbenchWeb.MockServerLiveTest do
 
   import Phoenix.LiveViewTest
   import Restbench.MockServersFixtures
+  import Restbench.AccountsFixtures
+  alias RestbenchWeb.UserAuth
 
   @create_attrs %{enabled: true, title: "some title"}
   @update_attrs %{enabled: false, title: "some updated title"}
@@ -13,21 +15,34 @@ defmodule RestbenchWeb.MockServerLiveTest do
     %{mock_server: mock_server}
   end
 
+  defp authenticate_user(%{conn: conn}) do
+    user = user_fixture()
+
+    conn =
+      conn
+      |> Map.replace!(:secret_key_base, RestbenchWeb.Endpoint.config(:secret_key_base))
+      |> init_test_session(%{})
+      |> UserAuth.log_in_user(user, %{"remember_me" => "true"})
+      |> recycle()
+
+    %{user: user, conn: conn}
+  end
+
   describe "Index" do
-    setup [:create_mock_server]
+    setup [:authenticate_user, :create_mock_server]
 
     test "lists all mock_servers", %{conn: conn, mock_server: mock_server} do
       {:ok, _index_live, html} = live(conn, Routes.mock_server_index_path(conn, :index))
 
-      assert html =~ "Listing Mock servers"
+      assert html =~ "Listing Mock Servers"
       assert html =~ mock_server.title
     end
 
     test "saves new mock_server", %{conn: conn} do
       {:ok, index_live, _html} = live(conn, Routes.mock_server_index_path(conn, :index))
 
-      assert index_live |> element("a", "New Mock server") |> render_click() =~
-               "New Mock server"
+      assert index_live |> element("a", "Create") |> render_click() =~
+               "New Mock Server"
 
       assert_patch(index_live, Routes.mock_server_index_path(conn, :new))
 
@@ -41,7 +56,7 @@ defmodule RestbenchWeb.MockServerLiveTest do
         |> render_submit()
         |> follow_redirect(conn, Routes.mock_server_index_path(conn, :index))
 
-      assert html =~ "Mock server created successfully"
+      assert html =~ "Mock Server created successfully"
       assert html =~ "some title"
     end
 
@@ -49,7 +64,7 @@ defmodule RestbenchWeb.MockServerLiveTest do
       {:ok, index_live, _html} = live(conn, Routes.mock_server_index_path(conn, :index))
 
       assert index_live |> element("#mock_server-#{mock_server.id} a", "Edit") |> render_click() =~
-               "Edit Mock server"
+               "Edit"
 
       assert_patch(index_live, Routes.mock_server_index_path(conn, :edit, mock_server))
 
@@ -63,7 +78,7 @@ defmodule RestbenchWeb.MockServerLiveTest do
         |> render_submit()
         |> follow_redirect(conn, Routes.mock_server_index_path(conn, :index))
 
-      assert html =~ "Mock server updated successfully"
+      assert html =~ "Mock Server updated successfully"
       assert html =~ "some updated title"
     end
 
@@ -76,12 +91,12 @@ defmodule RestbenchWeb.MockServerLiveTest do
   end
 
   describe "Show" do
-    setup [:create_mock_server]
+    setup [:authenticate_user, :create_mock_server]
 
     test "displays mock_server", %{conn: conn, mock_server: mock_server} do
       {:ok, _show_live, html} = live(conn, Routes.mock_server_show_path(conn, :show, mock_server))
 
-      assert html =~ "Show Mock server"
+      assert html =~ "Show Mock Server"
       assert html =~ mock_server.title
     end
 
@@ -89,7 +104,7 @@ defmodule RestbenchWeb.MockServerLiveTest do
       {:ok, show_live, _html} = live(conn, Routes.mock_server_show_path(conn, :show, mock_server))
 
       assert show_live |> element("a", "Edit") |> render_click() =~
-               "Edit Mock server"
+               "Edit Mock Server"
 
       assert_patch(show_live, Routes.mock_server_show_path(conn, :edit, mock_server))
 
@@ -103,7 +118,7 @@ defmodule RestbenchWeb.MockServerLiveTest do
         |> render_submit()
         |> follow_redirect(conn, Routes.mock_server_show_path(conn, :show, mock_server))
 
-      assert html =~ "Mock server updated successfully"
+      assert html =~ "Mock Server updated successfully"
       assert html =~ "some updated title"
     end
   end
