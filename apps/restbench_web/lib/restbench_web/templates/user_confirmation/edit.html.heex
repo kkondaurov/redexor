@@ -1,0 +1,14 @@
+<section class="is-large mb-6">
+  <h1>Confirm account</h1>
+
+  <.form let={_f} for={:user} action={Routes.user_confirmation_path(@conn, :update, @token)}>
+    <div>
+      <%= submit "Confirm my account", class: "button is-link" %>
+    </div>
+  </.form>
+</section>
+
+<section class="is-large">
+  <%= link "Register", to: Routes.user_registration_path(@conn, :new), class: "button is-light" %>
+  <%= link "Log in", to: Routes.user_session_path(@conn, :new), class: "button is-light" %>
+</section>

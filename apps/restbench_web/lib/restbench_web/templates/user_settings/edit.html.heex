@@ -3,9 +3,9 @@
 <div class="columns">
 
   <div class="column">
-    <h2>Change email</h2>
+    <h3>Change email</h3>
 
-    <.form let={f} for={@email_changeset} action={Routes.admin_settings_path(@conn, :update)} id="update_email">
+    <.form let={f} for={@email_changeset} action={Routes.user_settings_path(@conn, :update)} id="update_email">
       <%= if @email_changeset.action do %>
         <div class="alert alert-danger">
           <p>Oops, something went wrong! Please check the errors below.</p>
@@ -20,8 +20,8 @@
           <%= email_input f, :email, required: true, class: "input" %>
           <span class="icon is-small is-left">
             <i class="fas fa-envelope"></i>
-          </span>
-        </div>
+          </span> 
+        </div>       
         <%= error_tag f, :email %>
       </div>
 
@@ -31,8 +31,8 @@
           <%= password_input f, :current_password, required: true, name: "current_password", id: "current_password_for_email", class: "input" %>
           <span class="icon is-small is-left">
             <i class="fas fa-lock"></i>
-          </span>
-        </div>
+          </span>           
+        </div>        
         <%= error_tag f, :current_password %>
       </div>
 
@@ -43,9 +43,9 @@
   </div>
 
   <div class="column">
-    <h2>Change password</h2>
+    <h3>Change password</h3>
 
-    <.form let={f} for={@password_changeset} action={Routes.admin_settings_path(@conn, :update)} id="update_password">
+    <.form let={f} for={@password_changeset} action={Routes.user_settings_path(@conn, :update)} id="update_password">
       <%= if @password_changeset.action do %>
         <div class="alert alert-danger">
           <p>Oops, something went wrong! Please check the errors below.</p>
@@ -60,7 +60,7 @@
           <%= password_input f, :password, required: true, class: "input" %>
           <span class="icon is-small is-left">
             <i class="fas fa-lock"></i>
-          </span>
+          </span>          
         </div>
         <%= error_tag f, :password %>
       </div>
@@ -71,7 +71,7 @@
           <%= password_input f, :password_confirmation, required: true, class: "input" %>
           <span class="icon is-small is-left">
             <i class="fas fa-lock"></i>
-          </span>
+          </span>          
         </div>
         <%= error_tag f, :password_confirmation %>
       </div>
@@ -82,7 +82,7 @@
           <%= password_input f, :current_password, required: true, name: "current_password", id: "current_password_for_password", class: "input" %>
           <span class="icon is-small is-left">
             <i class="fas fa-lock"></i>
-          </span>
+          </span>          
         </div>
         <%= error_tag f, :current_password %>
       </div>

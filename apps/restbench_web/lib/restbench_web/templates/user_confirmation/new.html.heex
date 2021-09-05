@@ -1,0 +1,28 @@
+<section class="is-large mb-6">
+
+  <h1>Resend confirmation instructions</h1>
+
+  <.form let={f} for={:user} action={Routes.user_confirmation_path(@conn, :create)}>
+
+    <div class="field">
+      <%= label f, :email, class: "label" %>
+      <div class="control has-icons-left">
+        <%= email_input f, :email, required: true, class: "input" %>
+        <span class="icon is-small is-left">
+          <i class="fas fa-envelope"></i>
+        </span>
+      </div>
+    </div>
+
+    <div>
+      <%= submit "Resend confirmation instructions", class: "button is-link" %>
+    </div>
+
+  </.form>
+
+</section>
+
+<section class="is-large">
+  <%= link "Register", to: Routes.user_registration_path(@conn, :new), class: "button is-light" %>
+  <%= link "Log in", to: Routes.user_session_path(@conn, :new), class: "button is-light" %>
+</section>

@@ -1,0 +1,30 @@
+<div class="navbar-menu">
+<%= if @current_user do %>
+  <div class="navbar-end">
+    <div class="buttons">
+      <div class="navbar-item button is-light has-icons-left">
+        <span class="icon is-small is-left">
+          <i class="fas fa-cog"></i>
+        </span> 
+        <%= link @current_user.email, to: Routes.user_settings_path(@conn, :edit), class: "has-text-dark" %>
+      </div>
+      <div class="navbar-item">
+        <%= link "Log out", to: Routes.user_session_path(@conn, :delete), method: :delete, class: "button is-light" %>
+      </div>
+    </div>
+  </div>
+<% else %>
+  <div class="navbar-start">
+  </div>
+  <div class="navbar-end">
+    <div class="buttons">
+      <div class="navbar-item">
+        <%= link "Register", to: Routes.user_registration_path(@conn, :new), class: "button is-primary" %>
+      </div>
+      <div class="navbar-item">
+        <%= link "Log in", to: Routes.user_session_path(@conn, :new), class: "button is-light" %>
+      </div>
+    </div>
+  </div>
+<% end %>
+</div>
