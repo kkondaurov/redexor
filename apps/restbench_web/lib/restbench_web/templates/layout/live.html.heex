@@ -1,3 +1,10 @@
-<p><%= live_flash(@flash, :info) %></p>
-<p><%= live_flash(@flash, :error) %></p>
+<% info_flash = live_flash(@flash, :info) %>
+<%= if info_flash do %>
+    <div class="notification is-info is-light"><%= info_flash %></div>
+<% end %>
+
+<% error_flash = live_flash(@flash, :error) %>
+<%= if error_flash do %>
+    <div class="notification is-danger is-light"><%= error_flash %></div>
+<% end %>
 <%= @inner_content %>

@@ -19,6 +19,7 @@
   <% end %>
 <% end %>
 
+<%= if @mock_servers != [] do %>
 <table class="table is-striped is-fullwidth">
   <thead>
     <tr>
@@ -64,5 +65,6 @@
     <% end %>
   </tbody>
 </table>
+<% end %>
 
 </article>
