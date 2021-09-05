@@ -7,10 +7,47 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
-
-    name: Build and test
+  dependencies:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        elixir: ['1.12.1']
+        otp: ['24']
+    steps:
+      - name: Cancel previous runs
+        uses: styfle/cancel-workflow-action@0.9.0
+        with:
+          access_token: ${{ github.token }}
+      - name: Checkout Github repo
+        uses: actions/checkout@v2
+      - name: Sets up an Erlang/OTP environment
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: ${{ matrix.elixir }}
+          otp-version: ${{ matrix.otp }}
+      - name: Retrieve cached dependencies
+        uses: actions/cache@v2
+        id: mix-cache
+        with:
+          path: |
+            deps
+            _build
+          key: ${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles('mix.lock') }}
+      - name: Install dependencies
+        if: steps.mix-cache.outputs.cache-hit != 'true'
+        run: |
+          mix local.rebar --force
+          mix local.hex --force
+          mix deps.get
+          mix deps.compile        
+
+  mix-test:
+    needs: dependencies
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        elixir: ['1.12.1']
+        otp: ['24']
     services:
       db:
         image: postgres:latest
@@ -19,19 +56,23 @@ jobs:
           POSTGRES_PASSWORD: postgres
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Elixir
-      uses: erlef/setup-elixir@885971a72ed1f9240973bd92ab57af8c1aa68f24
-      with:
-        elixir-version: '1.12.1' # Define the elixir version [required]
-        otp-version: '24' # Define the OTP version [required]
-    - name: Restore dependencies cache
-      uses: actions/cache@v2
-      with:
-        path: deps
-        key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
-        restore-keys: ${{ runner.os }}-mix-
-    - name: Install dependencies
-      run: mix deps.get
-    - name: Run tests
-      run: mix test
+      - name: Cancel previous runs
+        uses: styfle/cancel-workflow-action@0.9.0
+        with:
+          access_token: ${{ github.token }}
+      - name: Checkout Github repo
+        uses: actions/checkout@v2
+      - name: Sets up an Erlang/OTP environment
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: ${{ matrix.elixir }}
+          otp-version: ${{ matrix.otp }}
+      - name: Retrieve cached dependencies
+        uses: actions/cache@v2
+        id: mix-cache
+        with:
+          path: |
+            deps
+            _build
+          key: ${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-${{ hashFiles('mix.lock') }}
+      - run: mix test --trace --slowest 10
