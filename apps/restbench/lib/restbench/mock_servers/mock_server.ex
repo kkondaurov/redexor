@@ -11,7 +11,9 @@ defmodule Restbench.MockServers.MockServer do
   schema "mock_servers" do
     field :enabled, :boolean, default: false
     field :title, :string
-    field :user_id, :binary_id
+    belongs_to :user, Restbench.Accounts.User
+
+    has_many :mock_routes, Restbench.MockRoutes.MockRoute
 
     timestamps()
   end
@@ -19,7 +21,7 @@ defmodule Restbench.MockServers.MockServer do
   @doc false
   def changeset(mock_server, attrs) do
     mock_server
-    |> cast(attrs, [:title, :enabled])
-    |> validate_required([:title, :enabled])
+    |> cast(attrs, [:title, :enabled, :user_id])
+    |> validate_required([:title, :enabled, :user_id])
   end
 end

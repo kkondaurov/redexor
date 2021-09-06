@@ -35,7 +35,11 @@ defmodule Restbench.MockServers do
       ** (Ecto.NoResultsError)
 
   """
-  def get_mock_server!(id), do: Repo.get!(MockServer, id)
+  def get_mock_server!(id) do
+    MockServer
+    |> Repo.get!(id)
+    |> Repo.preload([:mock_routes])
+  end
 
   @doc """
   Creates a mock_server.

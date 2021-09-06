@@ -3,10 +3,18 @@ defmodule RestbenchWeb.MockServerLive.Index do
 
   alias Restbench.MockServers
   alias Restbench.MockServers.MockServer
+  alias Restbench.Accounts.User
 
   @impl true
-  def mount(_params, _session, socket) do
-    {:ok, assign(socket, :mock_servers, list_mock_servers())}
+  def mount(_params, %{"user_token" => user_token} = _session, socket) do
+    %User{id: user_id} = Restbench.Accounts.get_user_by_session_token(user_token)
+
+    socket =
+      socket
+      |> assign(:mock_servers, list_mock_servers())
+      |> assign(:user_id, user_id)
+
+    {:ok, socket}
   end
 
   @impl true
