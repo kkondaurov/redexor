@@ -1,4 +1,20 @@
-<h1>Show Mock Server</h1>
+<span><%= live_redirect "Back", to: Routes.mock_server_index_path(@socket, :index), class: "button is-light" %></span>
+
+<h1>
+  <%= link to: "#", phx_click: "toggle", phx_value_id: @mock_server.id, class: "ml-3 mr-1" do %>
+    <%= if @mock_server.enabled do %>
+      <span class="icon is-size-3 has-text-success">
+        <i class="fas fa-toggle-on"></i>
+      </span>
+    <% else %>
+      <span class="icon is-size-3 has-text-danger">
+        <i class="fas fa-toggle-off"></i>
+      </span>
+    <% end %>
+  <% end %>  
+  <%= @mock_server.title %>
+</h1>
+
 
 <%= if @live_action in [:edit] do %>
   <%= live_modal RestbenchWeb.MockServerLive.FormComponent,
@@ -8,20 +24,3 @@
     mock_server: @mock_server,
     return_to: Routes.mock_server_show_path(@socket, :show, @mock_server) %>
 <% end %>
-
-<ul>
-
-  <li>
-    <strong>Title:</strong>
-    <%= @mock_server.title %>
-  </li>
-
-  <li>
-    <strong>Enabled:</strong>
-    <%= @mock_server.enabled %>
-  </li>
-
-</ul>
-
-<span><%= live_patch "Edit", to: Routes.mock_server_show_path(@socket, :edit, @mock_server), class: "button is-primary" %></span>
-<span><%= live_redirect "Back", to: Routes.mock_server_index_path(@socket, :index), class: "button is-light" %></span>

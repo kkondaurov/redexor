@@ -20,35 +20,26 @@
 <% end %>
 
 <%= if @mock_servers != [] do %>
-<table class="table is-striped is-fullwidth">
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Enabled</th>
-
-      <th></th>
-    </tr>
-  </thead>
+<table class="table is-striped is-fullwidth mt-4">
   <tbody id="mock_servers">
     <%= for mock_server <- @mock_servers do %>
       <tr id={"mock_server-#{mock_server.id}"}>
         <td>
-          <%= live_patch mock_server.title, to: Routes.mock_server_show_path(@socket, :show, mock_server) %>
-        </td>
-        <td>
           <%= link to: "#", phx_click: "toggle", phx_value_id: mock_server.id do %>
             <%= if mock_server.enabled do %>
-              <span class="icon is-small has-text-success">
+              <span class="icon is-size-4 has-text-success">
                 <i class="fas fa-toggle-on"></i>
               </span>
             <% else %>
-              <span class="icon is-small has-text-danger">
+              <span class="icon is-size-4 has-text-danger">
                 <i class="fas fa-toggle-off"></i>
               </span>
             <% end %>
           <% end %>
         </td>
-
+        <td>
+          <%= live_patch mock_server.title, to: Routes.mock_server_show_path(@socket, :show, mock_server) %>
+        </td>
         <td>
           <%= live_patch to: Routes.mock_server_index_path(@socket, :edit, mock_server), class: "button is-small is-warning has-icons-left" do %>
             <span class="icon is-small">

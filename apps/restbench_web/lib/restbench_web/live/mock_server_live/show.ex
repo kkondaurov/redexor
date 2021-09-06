@@ -16,6 +16,14 @@ defmodule RestbenchWeb.MockServerLive.Show do
      |> assign(:mock_server, MockServers.get_mock_server!(id))}
   end
 
+  @impl true
+  def handle_event("toggle", %{"id" => id}, socket) do
+    mock_server = MockServers.get_mock_server!(id)
+    {:ok, mock_server} = MockServers.toggle_mock_server(mock_server)
+
+    {:noreply, assign(socket, :mock_server, mock_server)}
+  end
+
   defp page_title(:show), do: "Show Mock Server"
   defp page_title(:edit), do: "Edit Mock Server"
 end
