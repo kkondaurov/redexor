@@ -7,12 +7,12 @@ defmodule RestbenchWeb.MockServerLive.Index do
 
   @impl true
   def mount(_params, %{"user_token" => user_token} = _session, socket) do
-    %User{id: user_id} = Restbench.Accounts.get_user_by_session_token(user_token)
+    %User{} = user = Restbench.Accounts.get_user_by_session_token(user_token)
 
     socket =
       socket
-      |> assign(:mock_servers, list_mock_servers())
-      |> assign(:user_id, user_id)
+      |> assign(:mock_servers, list_mock_servers(user))
+      |> assign(:user, user)
 
     {:ok, socket}
   end
@@ -23,9 +23,16 @@ defmodule RestbenchWeb.MockServerLive.Index do
   end
 
   defp apply_action(socket, :edit, %{"id" => id}) do
-    socket
-    |> assign(:page_title, "Edit Mock Server")
-    |> assign(:mock_server, MockServers.get_mock_server!(id))
+    user = socket.assigns[:user]
+    case MockServers.get_mock_server(user, id) do
+      %MockServer{} = mock_server ->
+        socket
+        |> assign(:page_title, "Edit Mock Server")
+        |> assign(:mock_server, mock_server)
+      nil ->
+        socket = put_flash(socket, :error, "Mock Server not found")
+        {:noreply, push_redirect(socket, to: "/mock_servers", replace: true)}
+    end
   end
 
   defp apply_action(socket, :new, _params) do
@@ -42,20 +49,34 @@ defmodule RestbenchWeb.MockServerLive.Index do
 
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
-    mock_server = MockServers.get_mock_server!(id)
-    {:ok, _} = MockServers.delete_mock_server(mock_server)
+    user = socket.assigns[:user]
 
-    {:noreply, assign(socket, :mock_servers, list_mock_servers())}
+    case MockServers.get_mock_server(user, id) do
+      %MockServer{} = mock_server ->
+        {:ok, _} = MockServers.delete_mock_server(user, mock_server)
+        {:noreply, assign(socket, :mock_servers, list_mock_servers(user))}
+
+      nil ->
+        socket = put_flash(socket, :error, "Mock Server not found")
+        {:noreply, push_redirect(socket, to: "/mock_servers", replace: true)}
+    end
   end
 
   def handle_event("toggle", %{"id" => id}, socket) do
-    mock_server = MockServers.get_mock_server!(id)
-    {:ok, _} = MockServers.toggle_mock_server(mock_server)
+    user = socket.assigns[:user]
 
-    {:noreply, assign(socket, :mock_servers, list_mock_servers())}
+    case MockServers.get_mock_server(user, id) do
+      %MockServer{} = mock_server ->
+        {:ok, _} = MockServers.toggle_mock_server(user, mock_server)
+        {:noreply, assign(socket, :mock_servers, list_mock_servers(user))}
+
+      nil ->
+        socket = put_flash(socket, :error, "Mock Server not found")
+        {:noreply, push_redirect(socket, to: "/mock_servers", replace: true)}
+    end
   end
 
-  defp list_mock_servers do
-    MockServers.list_mock_servers()
+  defp list_mock_servers(user) do
+    MockServers.list_mock_servers(user)
   end
 end

@@ -44,9 +44,10 @@ defmodule RestbenchWeb.MockServerLive.FormComponent do
   end
 
   defp save_mock_server(socket, :new, mock_server_params) do
+    user = socket.assigns[:user]
     mock_server_params = Map.put(mock_server_params, "user_id", socket.assigns[:user_id])
 
-    case MockServers.create_mock_server(mock_server_params) do
+    case MockServers.create_mock_server(user, mock_server_params) do
       {:ok, _mock_server} ->
         {:noreply,
          socket
