@@ -7,7 +7,7 @@
     title: @page_title,
     action: @live_action,
     mock_server: @mock_server,
-    user_id: @user,
+    user: @user,
     return_to: Routes.mock_server_index_path(@socket, :index) %>
 <% end %>
 
@@ -25,7 +25,7 @@
   <tbody id="mock_servers">
     <%= for mock_server <- @mock_servers do %>
       <tr id={"mock_server-#{mock_server.id}"}>
-        <td>
+        <td style="width:50px;">
           <%= link to: "#", phx_click: "toggle", phx_value_id: mock_server.id do %>
             <%= if mock_server.enabled do %>
               <span class="icon is-size-4 has-text-success">
@@ -41,7 +41,7 @@
         <td>
           <%= live_patch mock_server.title, to: Routes.mock_server_show_path(@socket, :show, mock_server) %>
         </td>
-        <td>
+        <td style="width:200px;">
           <%= live_patch to: Routes.mock_server_index_path(@socket, :edit, mock_server), class: "button is-small is-warning has-icons-left" do %>
             <span class="icon is-small">
               <i class="fas fa-edit"></i>
