@@ -29,5 +29,5 @@ defmodule Restbench.MockRoutes.MockRoute do
     |> validate_inclusion(:method, @allowed_methods)
   end
 
-  def allowed_mehods, do: @allowed_methods
+  def allowed_methods, do: @allowed_methods
 end

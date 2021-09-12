@@ -97,4 +97,14 @@ defmodule Restbench.MockRoutes do
   end
 
   defp scope(queryable, %Admin{}), do: queryable
+
+  @spec find_enabled_route(String.t(), String.t(), String.t()) :: MockRoute.t() | nil
+  def find_enabled_route(mock_server_id, method, path) do
+    MockRoute
+    |> where([r], r.mock_server_id == ^mock_server_id)
+    |> join(:inner, [r], s in MockServer, on: s.id == r.mock_server_id)
+    |> where([r, _s], r.method == ^method and r.path == ^path)
+    |> where([r, s], r.enabled and s.enabled)
+    |> Repo.one()
+  end
 end

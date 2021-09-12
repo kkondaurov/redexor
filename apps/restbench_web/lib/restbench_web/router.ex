@@ -116,4 +116,8 @@ defmodule RestbenchWeb.Router do
       post "/confirm/:token", UserConfirmationController, :update
     end
   end
+
+  scope "/", RestbenchWeb do
+    forward "/api", Plugs.MockApiRouter
+  end
 end
