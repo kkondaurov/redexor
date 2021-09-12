@@ -1,4 +1,6 @@
 defmodule RestbenchWeb.LiveHelpers do
+  @moduledoc false
+
   import Phoenix.LiveView.Helpers
 
   @doc """

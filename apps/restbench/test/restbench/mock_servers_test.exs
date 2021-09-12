@@ -29,7 +29,9 @@ defmodule Restbench.MockServersTest do
     test "create_mock_server/2 with valid data creates a mock_server", %{user: user} do
       valid_attrs = %{enabled: true, title: "some title"}
 
-      assert {:ok, %MockServer{} = mock_server} = MockServers.create_mock_server(user, valid_attrs)
+      assert {:ok, %MockServer{} = mock_server} =
+               MockServers.create_mock_server(user, valid_attrs)
+
       assert mock_server.enabled == true
       assert mock_server.title == "some title"
     end
@@ -42,14 +44,19 @@ defmodule Restbench.MockServersTest do
       mock_server = mock_server_fixture(user)
       update_attrs = %{enabled: false, title: "some updated title"}
 
-      assert {:ok, %MockServer{} = mock_server} = MockServers.update_mock_server(user, mock_server, update_attrs)
+      assert {:ok, %MockServer{} = mock_server} =
+               MockServers.update_mock_server(user, mock_server, update_attrs)
+
       assert mock_server.enabled == false
       assert mock_server.title == "some updated title"
     end
 
     test "update_mock_server/3 with invalid data returns error changeset", %{user: user} do
       mock_server = mock_server_fixture(user)
-      assert {:error, %Ecto.Changeset{}} = MockServers.update_mock_server(user, mock_server, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               MockServers.update_mock_server(user, mock_server, @invalid_attrs)
+
       assert mock_server == MockServers.get_mock_server(user, mock_server.id)
     end
 

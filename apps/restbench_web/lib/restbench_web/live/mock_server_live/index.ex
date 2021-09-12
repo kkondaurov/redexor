@@ -1,9 +1,11 @@
 defmodule RestbenchWeb.MockServerLive.Index do
+  @moduledoc false
+
   use RestbenchWeb, :live_view
 
+  alias Restbench.Accounts.User
   alias Restbench.MockServers
   alias Restbench.MockServers.MockServer
-  alias Restbench.Accounts.User
 
   @impl true
   def mount(_params, %{"user_token" => user_token} = _session, socket) do
@@ -24,11 +26,13 @@ defmodule RestbenchWeb.MockServerLive.Index do
 
   defp apply_action(socket, :edit, %{"id" => id}) do
     user = socket.assigns[:user]
+
     case MockServers.get_mock_server(user, id) do
       %MockServer{} = mock_server ->
         socket
         |> assign(:page_title, "Edit Mock Server")
         |> assign(:mock_server, mock_server)
+
       nil ->
         socket = put_flash(socket, :error, "Mock Server not found")
         {:noreply, push_redirect(socket, to: "/mock_servers", replace: true)}

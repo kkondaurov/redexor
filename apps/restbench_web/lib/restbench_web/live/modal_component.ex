@@ -1,4 +1,6 @@
 defmodule RestbenchWeb.ModalComponent do
+  @moduledoc false
+
   use RestbenchWeb, :live_component
 
   @impl true

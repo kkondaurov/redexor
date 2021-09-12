@@ -26,7 +26,8 @@ defmodule Restbench.MockRoutes do
     |> Repo.get(id)
   end
 
-  @spec create_mock_route(User.t() | Admin.t(), MockServer.t(), map()) :: {:ok, MockRoute.t()} | {:error, Ecto.Changeset.t()}
+  @spec create_mock_route(User.t() | Admin.t(), MockServer.t(), map()) ::
+          {:ok, MockRoute.t()} | {:error, Ecto.Changeset.t()}
   def create_mock_route(%User{id: user_id}, %MockServer{id: mock_server_id}, attrs) do
     %MockRoute{}
     |> Ecto.Changeset.change(user_id: user_id)
@@ -41,7 +42,8 @@ defmodule Restbench.MockRoutes do
     |> Repo.insert()
   end
 
-  @spec update_mock_route(User.t() | Admin.t(), MockServer.t(), map()) :: {:ok, MockRoute.t()} | {:error, Ecto.Changeset.t()} | {:error, :unauthorized}
+  @spec update_mock_route(User.t() | Admin.t(), MockServer.t(), map()) ::
+          {:ok, MockRoute.t()} | {:error, Ecto.Changeset.t()} | {:error, :unauthorized}
   def update_mock_route(%User{id: user_id}, %MockRoute{user_id: user_id} = mock_route, attrs) do
     mock_route
     |> MockRoute.changeset(attrs)
@@ -56,7 +58,8 @@ defmodule Restbench.MockRoutes do
 
   def update_mock_route(_user, _mock_route, _attrs), do: {:error, :unauthorized}
 
-  @spec delete_mock_route(User.t() | Admin.t(), MockRoute.t()) :: {:ok, MockRoute.t()} | {:error, Ecto.Changeset.t()} | {:error, :unauthorized}
+  @spec delete_mock_route(User.t() | Admin.t(), MockRoute.t()) ::
+          {:ok, MockRoute.t()} | {:error, Ecto.Changeset.t()} | {:error, :unauthorized}
   def delete_mock_route(%User{id: user_id}, %MockRoute{user_id: user_id} = mock_route) do
     Repo.delete(mock_route)
   end
@@ -75,8 +78,12 @@ defmodule Restbench.MockRoutes do
   @doc """
   Toggles `enabled` flag.
   """
-  @spec toggle_mock_route(User.t(), MockRoute.t()) :: {:ok, MockRoute.t()} | {:error, Ecto.Changeset.t()} | {:error, :unauthorized}
-  def toggle_mock_route(%User{id: user_id}, %MockRoute{user_id: user_id, enabled: enabled?} = mock_route) do
+  @spec toggle_mock_route(User.t(), MockRoute.t()) ::
+          {:ok, MockRoute.t()} | {:error, Ecto.Changeset.t()} | {:error, :unauthorized}
+  def toggle_mock_route(
+        %User{id: user_id},
+        %MockRoute{user_id: user_id, enabled: enabled?} = mock_route
+      ) do
     mock_route
     |> MockRoute.changeset(%{enabled: not enabled?})
     |> Repo.update()

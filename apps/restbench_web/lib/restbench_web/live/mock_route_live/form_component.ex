@@ -1,4 +1,6 @@
 defmodule RestbenchWeb.MockRouteLive.FormComponent do
+  @moduledoc false
+
   use RestbenchWeb, :live_component
 
   alias Restbench.MockRoutes
@@ -33,6 +35,7 @@ defmodule RestbenchWeb.MockRouteLive.FormComponent do
 
   defp save_mock_route(socket, :edit_route, mock_route_params) do
     user = socket.assigns[:user]
+
     case MockRoutes.update_mock_route(user, socket.assigns.mock_route, mock_route_params) do
       {:ok, _mock_route} ->
         {:noreply,
@@ -48,6 +51,7 @@ defmodule RestbenchWeb.MockRouteLive.FormComponent do
   defp save_mock_route(socket, :new_route, mock_route_params) do
     user = socket.assigns[:user]
     mock_server = socket.assigns[:mock_server]
+
     case MockRoutes.create_mock_route(user, mock_server, mock_route_params) do
       {:ok, _mock_route} ->
         {:noreply,

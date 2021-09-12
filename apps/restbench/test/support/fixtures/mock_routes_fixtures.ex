@@ -16,6 +16,7 @@ defmodule Restbench.MockRoutesFixtures do
         path: "/some/path",
         title: "some title"
       })
+
     {:ok, mock_route} = Restbench.MockRoutes.create_mock_route(user, mock_server, attrs)
     mock_route
   end

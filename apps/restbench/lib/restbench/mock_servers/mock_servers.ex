@@ -24,7 +24,8 @@ defmodule Restbench.MockServers do
     |> Repo.get(id)
   end
 
-  @spec create_mock_server(User.t() | Admin.t(), map()) :: {:ok, MockServer.t()} | {:error, Ecto.Changeset.t()}
+  @spec create_mock_server(User.t() | Admin.t(), map()) ::
+          {:ok, MockServer.t()} | {:error, Ecto.Changeset.t()}
   def create_mock_server(%User{id: user_id}, attrs) do
     %MockServer{}
     |> Ecto.Changeset.change(user_id: user_id)
@@ -38,7 +39,8 @@ defmodule Restbench.MockServers do
     |> Repo.insert()
   end
 
-  @spec update_mock_server(User.t() | Admin.t(), MockServer.t(), map()) :: {:ok, MockServer.t()} | {:error, Ecto.Changeset.t()} | {:error, :unauthorized}
+  @spec update_mock_server(User.t() | Admin.t(), MockServer.t(), map()) ::
+          {:ok, MockServer.t()} | {:error, Ecto.Changeset.t()} | {:error, :unauthorized}
   def update_mock_server(%User{id: user_id}, %MockServer{user_id: user_id} = mock_server, attrs) do
     mock_server
     |> MockServer.changeset(attrs)
@@ -53,7 +55,8 @@ defmodule Restbench.MockServers do
 
   def update_mock_server(_user, _mock_server, _attrs), do: {:error, :unauthorized}
 
-  @spec delete_mock_server(User.t() | Admin.t(), MockServer.t()) :: {:ok, MockServer.t()} | {:error, Ecto.Changeset.t()} | {:error, :unauthorized}
+  @spec delete_mock_server(User.t() | Admin.t(), MockServer.t()) ::
+          {:ok, MockServer.t()} | {:error, Ecto.Changeset.t()} | {:error, :unauthorized}
   def delete_mock_server(%User{id: user_id}, %MockServer{user_id: user_id} = mock_server) do
     Repo.delete(mock_server)
   end
@@ -72,8 +75,12 @@ defmodule Restbench.MockServers do
   @doc """
   Toggles `enabled` flag.
   """
-  @spec toggle_mock_server(User.t(), MockServer.t()) :: {:ok, MockServer.t()} | {:error, Ecto.Changeset.t()} | {:error, :unauthorized}
-  def toggle_mock_server(%User{id: user_id}, %MockServer{user_id: user_id, enabled: enabled?} = mock_server) do
+  @spec toggle_mock_server(User.t(), MockServer.t()) ::
+          {:ok, MockServer.t()} | {:error, Ecto.Changeset.t()} | {:error, :unauthorized}
+  def toggle_mock_server(
+        %User{id: user_id},
+        %MockServer{user_id: user_id, enabled: enabled?} = mock_server
+      ) do
     mock_server
     |> MockServer.changeset(%{enabled: not enabled?})
     |> Repo.update()
@@ -87,5 +94,4 @@ defmodule Restbench.MockServers do
   end
 
   defp scope(queryable, %Admin{}), do: queryable
-
 end

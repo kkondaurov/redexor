@@ -1,4 +1,6 @@
 defmodule RestbenchWeb.MockServerLive.Show do
+  @moduledoc false
+
   use RestbenchWeb, :live_view
 
   alias Restbench.Accounts.User
@@ -10,6 +12,7 @@ defmodule RestbenchWeb.MockServerLive.Show do
   @impl true
   def mount(_params, %{"user_token" => user_token} = _session, socket) do
     %User{} = user = Restbench.Accounts.get_user_by_session_token(user_token)
+
     socket =
       socket
       |> assign(:user, user)
@@ -41,11 +44,13 @@ defmodule RestbenchWeb.MockServerLive.Show do
 
   defp apply_action(socket, :edit_route, %{"mock_route_id" => id} = _params) do
     user = socket.assigns[:user]
+
     case MockRoutes.get_mock_route(user, id) do
       %MockRoute{} = mock_route ->
         socket
         |> assign(:id, socket.assigns.mock_server.id)
         |> assign(:mock_route, mock_route)
+
       nil ->
         socket = put_flash(socket, :error, "Mock Route not found")
         {:noreply, push_redirect(socket, to: "/mock_servers", replace: true)}
@@ -62,6 +67,7 @@ defmodule RestbenchWeb.MockServerLive.Show do
   @impl true
   def handle_event("toggle", %{"id" => id}, socket) do
     user = socket.assigns[:user]
+
     case MockServers.get_mock_server(user, id) do
       %MockServer{} = mock_server ->
         {:ok, mock_server} = MockServers.toggle_mock_server(user, mock_server)
@@ -76,6 +82,7 @@ defmodule RestbenchWeb.MockServerLive.Show do
   def handle_event("delete_route", %{"id" => id}, socket) do
     user = socket.assigns[:user]
     mock_server = socket.assigns[:mock_server]
+
     case MockRoutes.get_mock_route(user, id) do
       %MockRoute{} = mock_route ->
         {:ok, _mock_route} = MockRoutes.delete_mock_route(user, mock_route)
@@ -91,6 +98,7 @@ defmodule RestbenchWeb.MockServerLive.Show do
   def handle_event("toggle_route", %{"id" => id}, socket) do
     user = socket.assigns[:user]
     mock_server = socket.assigns[:mock_server]
+
     case MockRoutes.get_mock_route(user, id) do
       %MockRoute{} = mock_route ->
         {:ok, _mock_route} = MockRoutes.toggle_mock_route(user, mock_route)
