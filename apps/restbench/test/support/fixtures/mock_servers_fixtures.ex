@@ -7,15 +7,12 @@ defmodule Restbench.MockServersFixtures do
   @doc """
   Generate a mock_server.
   """
-  def mock_server_fixture(attrs \\ %{}) do
-    {:ok, mock_server} =
-      attrs
-      |> Enum.into(%{
-        enabled: true,
-        title: "some title"
-      })
-      |> Restbench.MockServers.create_mock_server()
-
+  def mock_server_fixture(user, attrs \\ %{}) do
+    attrs = Enum.into(attrs, %{
+      enabled: true,
+      title: "some title"
+    })
+    {:ok, mock_server} = Restbench.MockServers.create_mock_server(user, attrs)
     mock_server
   end
 end

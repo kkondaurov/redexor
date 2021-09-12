@@ -92,13 +92,16 @@ defmodule RestbenchWeb.Router do
       get "/settings/confirm_email/:token", UserSettingsController, :confirm_email
     end
 
-    scope "/mock_servers", MockServerLive do
-      live "/", Index, :index
-      live "/new", Index, :new
-      live "/:id/edit", Index, :edit
+    scope "/mock_servers" do
+      live "/", MockServerLive.Index, :index
+      live "/new", MockServerLive.Index, :new
+      live "/:id/edit", MockServerLive.Index, :edit
 
-      live "/:id", Show, :show
-      live "/:id/show/edit", Show, :edit
+      live "/:id", MockServerLive.Show, :show
+      live "/:id/show/edit", MockServerLive.Show, :edit
+
+      live "/:id/routes/new", MockServerLive.Show, :new_route
+      live "/:id/routes/:mock_route_id/edit", MockServerLive.Show, :edit_route
     end
   end
 

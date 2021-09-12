@@ -1,27 +1,86 @@
-<h1>Show Mock Server</h1>
+<span><%= live_redirect "Back", to: Routes.mock_server_index_path(@socket, :index), class: "button is-light" %></span>
 
-<%= if @live_action in [:edit] do %>
-  <%= live_modal RestbenchWeb.MockServerLive.FormComponent,
-    id: @mock_server.id,
+<h1>
+  <%= link to: "#", phx_click: "toggle", phx_value_id: @mock_server.id, class: "ml-3 mr-1" do %>
+    <%= if @mock_server.enabled do %>
+      <span class="icon is-size-3 has-text-success">
+        <i class="fas fa-toggle-on"></i>
+      </span>
+    <% else %>
+      <span class="icon is-size-3 has-text-danger">
+        <i class="fas fa-toggle-off"></i>
+      </span>
+    <% end %>
+  <% end %>  
+  <%= @mock_server.title %>
+</h1>
+
+<h3 class="mt-5">Mock Routes</h3>
+
+<article>
+<%= if @live_action in [:new_route, :edit_route] do %>
+  <%= live_modal RestbenchWeb.MockRouteLive.FormComponent,
+    id: @mock_route.id || :new,
     title: @page_title,
     action: @live_action,
+    mock_route: @mock_route,
+    user: @user,
     mock_server: @mock_server,
     return_to: Routes.mock_server_show_path(@socket, :show, @mock_server) %>
 <% end %>
+</article>
 
-<ul>
+<%= unless @live_action in [:new_route, :edit_route] do %>
+  <%= live_patch to: Routes.mock_server_show_path(@socket, :new_route, @mock_server.id), class: "button is-small is-primary has-icons-left has-text-light" do %>
+    <span class="icon is-small">
+      <i class="fas fa-plus"></i>
+    </span>
+    <span>Create</span>
+  <% end %>
+<% end %>
 
-  <li>
-    <strong>Title:</strong>
-    <%= @mock_server.title %>
-  </li>
-
-  <li>
-    <strong>Enabled:</strong>
-    <%= @mock_server.enabled %>
-  </li>
-
-</ul>
-
-<span><%= live_patch "Edit", to: Routes.mock_server_show_path(@socket, :edit, @mock_server), class: "button is-primary" %></span>
-<span><%= live_redirect "Back", to: Routes.mock_server_index_path(@socket, :index), class: "button is-light" %></span>
+<%= if @mock_routes != [] do %>
+<table class="table is-striped is-fullwidth mt-4">
+  <tbody id="mock_route">
+    <%= for mock_route <- @mock_routes do %>
+      <tr id={"mock_route-#{mock_route.id}"}>
+        <td style="width:50px;">
+          <%= link to: "#", phx_click: "toggle_route", phx_value_id: mock_route.id do %>
+            <%= if mock_route.enabled do %>
+              <span class="icon is-size-4 has-text-success">
+                <i class="fas fa-toggle-on"></i>
+              </span>
+            <% else %>
+              <span class="icon is-size-4 has-text-danger">
+                <i class="fas fa-toggle-off"></i>
+              </span>
+            <% end %>
+          <% end %>
+        </td>
+        <td style="width:50px">
+          <strong><%= mock_route.method %></strong>
+        </td>
+        <td>
+          <%= mock_route.path %>
+          <br/>
+          <small class="has-text-grey"><%= mock_route.title %></small>
+        </td>        
+        <td style="width:200px;">
+          <%= live_patch to: Routes.mock_server_show_path(@socket, :edit_route, @mock_server.id, mock_route), class: "button is-small is-warning has-icons-left" do %>
+            <span class="icon is-small">
+              <i class="fas fa-edit"></i>
+            </span>
+            <span>Edit</span>
+          <% end %>
+          <%= link to: "#", phx_click: "delete_route", phx_value_id: mock_route.id, data: [confirm: "Are you sure?"], class: "button is-small is-danger has-icons-left" do %>
+            <span class="icon is-small">
+              <i class="fas fa-trash"></i>
+            </span> 
+            <span>Delete</span>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% end %>

@@ -2,6 +2,7 @@ defmodule Restbench.Admins.Admin do
   @moduledoc false
   use Ecto.Schema
   import Ecto.Changeset
+  @timestamps_opts [type: :utc_datetime]
 
   schema "admins" do
     field :email, :string

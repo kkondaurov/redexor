@@ -1,11 +1,14 @@
 defmodule RestbenchWeb.MockServerLive.FormComponent do
   use RestbenchWeb, :live_component
-
+  require Logger
   alias Restbench.MockServers
 
   @impl true
-  def update(%{mock_server: mock_server} = assigns, socket) do
-    changeset = MockServers.change_mock_server(mock_server)
+  def update(%{mock_server: mock_server, user: user} = assigns, socket) do
+    changeset =
+      mock_server
+      |> Map.put(:user_id, user.id)
+      |> MockServers.change_mock_server()
 
     {:ok,
      socket
@@ -28,7 +31,9 @@ defmodule RestbenchWeb.MockServerLive.FormComponent do
   end
 
   defp save_mock_server(socket, :edit, mock_server_params) do
-    case MockServers.update_mock_server(socket.assigns.mock_server, mock_server_params) do
+    user = socket.assigns[:user]
+    mock_server = socket.assigns[:mock_server]
+    case MockServers.update_mock_server(user, mock_server, mock_server_params) do
       {:ok, _mock_server} ->
         {:noreply,
          socket
@@ -41,7 +46,8 @@ defmodule RestbenchWeb.MockServerLive.FormComponent do
   end
 
   defp save_mock_server(socket, :new, mock_server_params) do
-    case MockServers.create_mock_server(mock_server_params) do
+    user = socket.assigns[:user]
+    case MockServers.create_mock_server(user, mock_server_params) do
       {:ok, _mock_server} ->
         {:noreply,
          socket
