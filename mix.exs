@@ -7,7 +7,13 @@ defmodule Restbench.Umbrella.MixProject do
       version: "0.1.0",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      aliases: aliases()
+      aliases: aliases(),
+      releases: [
+        restbench: [
+          version: "0.0.1",
+          applications: [restbench_web: :permanent, restbench: :permanent]
+        ]
+      ]
     ]
   end
 

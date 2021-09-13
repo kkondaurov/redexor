@@ -10,7 +10,8 @@ defmodule RestbenchWeb.Application do
       # Start the Telemetry supervisor
       RestbenchWeb.Telemetry,
       # Start the Endpoint (http/https)
-      RestbenchWeb.Endpoint
+      RestbenchWeb.Endpoint,
+      {Phoenix.PubSub, name: Restbench.PubSub}
       # Start a worker by calling: RestbenchWeb.Worker.start_link(arg)
       # {RestbenchWeb.Worker, arg}
     ]

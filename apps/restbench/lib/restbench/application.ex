@@ -10,7 +10,7 @@ defmodule Restbench.Application do
       # Start the Ecto repository
       Restbench.Repo,
       # Start the PubSub system
-      {Phoenix.PubSub, name: Restbench.PubSub}
+      #{Phoenix.PubSub, name: Restbench.PubSub}
       # Start a worker by calling: Restbench.Worker.start_link(arg)
       # {Restbench.Worker, arg}
     ]

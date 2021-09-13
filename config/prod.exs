@@ -12,9 +12,12 @@ use Mix.Config
 config :restbench_web, RestbenchWeb.Endpoint,
   url: [host: "restbench.com", port: 80],
   cache_static_manifest: "priv/static/cache_manifest.json"
+  KEYWORD
 
 config :arrow_api, ArrowApi.Endpoint,
   url: [host: "api.restbench.com", port: 80]
+
+config :phoenix, :serve_endpoints, true
 
 # ## SSL Support
 #
@@ -55,4 +58,4 @@ config :logger, level: :info
 
 # Finally import the config/prod.secret.exs which loads secrets
 # and configuration from environment variables.
-import_config "prod.secret.exs"
+# import_config "prod.secret.exs"
