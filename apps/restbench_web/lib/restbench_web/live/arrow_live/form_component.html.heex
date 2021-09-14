@@ -33,6 +33,10 @@
       <%= error_tag f, :enabled %>
     </div>
 
+    <div class="field">
+      <%= error_tag f, :server_id %>
+    </div>
+
     <div>
       <%= submit "Save", phx_disable_with: "Saving...", class: "button is-link"  %>
     </div>

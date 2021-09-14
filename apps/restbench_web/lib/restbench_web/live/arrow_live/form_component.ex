@@ -2,7 +2,7 @@ defmodule RestbenchWeb.ArrowLive.FormComponent do
   @moduledoc false
 
   use RestbenchWeb, :live_component
-
+  require Logger
   alias Restbench.Arrows
 
   @impl true

@@ -100,6 +100,20 @@ defmodule Restbench.ArrowsTest do
       assert arrow.path == "/path/without/leading/shash"
     end
 
+    test "update_arrow/2 with duplicate path and method", %{
+      user: user,
+      server: server
+    } do
+      arrow = arrow_fixture(user, server)
+
+      assert {:error, %Ecto.Changeset{}} =
+        Arrows.create_arrow(user, server, %{title: "duplicate path and method", path: arrow.path, method: arrow.method, enabled: true})
+
+      assert {:error, %Ecto.Changeset{}} =
+        Arrows.create_arrow(user, server, %{title: "duplicate path and method", path: arrow.path, method: arrow.method, enabled: false})
+
+    end
+
     test "delete_arrow/2 deletes the arrow", %{user: user, server: server} do
       arrow = arrow_fixture(user, server)
       assert {:ok, %Arrow{}} = Arrows.delete_arrow(user, arrow)
