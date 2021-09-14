@@ -27,6 +27,13 @@ defmodule Restbench.Arrows.Arrow do
     |> cast(attrs, [:title, :path, :method, :enabled])
     |> validate_required([:title, :path, :method, :enabled])
     |> validate_inclusion(:method, @allowed_methods)
+    |> update_change(:path, fn path ->
+      if String.starts_with?(path, "/") do
+        path
+      else
+        "/" <> path
+      end
+    end)
   end
 
   def allowed_methods, do: @allowed_methods

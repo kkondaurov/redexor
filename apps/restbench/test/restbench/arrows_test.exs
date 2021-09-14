@@ -35,14 +35,14 @@ defmodule Restbench.ArrowsTest do
       user: user,
       server: server
     } do
-      valid_attrs = %{enabled: true, method: "GET", path: "some path", title: "some title"}
+      valid_attrs = %{enabled: true, method: "GET", path: "/some path", title: "some title"}
 
       assert {:ok, %Arrow{} = arrow} =
                Arrows.create_arrow(user, server, valid_attrs)
 
       assert arrow.enabled == true
       assert arrow.method == "GET"
-      assert arrow.path == "some path"
+      assert arrow.path == "/some path"
       assert arrow.title == "some title"
     end
 
@@ -63,7 +63,7 @@ defmodule Restbench.ArrowsTest do
       update_attrs = %{
         enabled: false,
         method: "POST",
-        path: "some updated path",
+        path: "/some updated path",
         title: "some updated title"
       }
 
@@ -72,7 +72,7 @@ defmodule Restbench.ArrowsTest do
 
       assert arrow.enabled == false
       assert arrow.method == "POST"
-      assert arrow.path == "some updated path"
+      assert arrow.path == "/some updated path"
       assert arrow.title == "some updated title"
     end
 
@@ -86,6 +86,18 @@ defmodule Restbench.ArrowsTest do
                Arrows.update_arrow(user, arrow, @invalid_attrs)
 
       assert arrow == Arrows.get_arrow(user, arrow.id)
+    end
+
+    test "update_arrow/2 adds a leading slash", %{
+      user: user,
+      server: server
+    } do
+      arrow = arrow_fixture(user, server)
+
+      assert {:ok, %Arrow{} = arrow} =
+               Arrows.update_arrow(user, arrow, %{path: "path/without/leading/shash"})
+
+      assert arrow.path == "/path/without/leading/shash"
     end
 
     test "delete_arrow/2 deletes the arrow", %{user: user, server: server} do

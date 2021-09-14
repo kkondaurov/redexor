@@ -15,7 +15,7 @@ defmodule RestbenchWeb.Plugs.ArrowApi do
   def init(default), do: default
 
   def call(%Plug.Conn{path_info: [server_id | path_parts], method: method} = conn, _default) do
-    path = Enum.join(path_parts, "/")
+    path = "/" <> Enum.join(path_parts, "/")
     Logger.info(method: method, server_id: server_id, path: path, query_params: conn.query_params, body_params: conn.body_params)
     request_params = Map.merge(conn.query_params, conn.body_params)
 
