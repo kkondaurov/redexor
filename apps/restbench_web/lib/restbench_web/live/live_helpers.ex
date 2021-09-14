@@ -22,4 +22,6 @@ defmodule RestbenchWeb.LiveHelpers do
     modal_opts = [id: :modal, return_to: path, component: component, opts: opts]
     live_component(RestbenchWeb.ModalComponent, modal_opts)
   end
+
+  def api_host(), do: Application.get_env(:arrow_api, ArrowApi.Endpoint)[:url][:host]
 end

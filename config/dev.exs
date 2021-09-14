@@ -24,6 +24,12 @@ config :restbench_web, RestbenchWeb.Endpoint,
     esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
   ]
 
+config :arrow_api, ArrowApi.Endpoint,
+  http: [port: 4001],
+  debug_errors: true,
+  code_reloader: true,
+  check_origin: false
+
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed

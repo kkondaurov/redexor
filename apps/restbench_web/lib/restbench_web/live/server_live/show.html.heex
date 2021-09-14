@@ -61,7 +61,7 @@
           <strong><%= arrow.method %></strong>
         </td>
         <td>
-          <%= RestbenchWeb.Endpoint.url %>/api/<%= @server.id %><%= arrow.path %>
+          https://<%= @server.id %>.<%= api_host() %><%= arrow.path %>
           <br/>
           <small class="has-text-grey"><%= arrow.title %></small>
         </td>        
