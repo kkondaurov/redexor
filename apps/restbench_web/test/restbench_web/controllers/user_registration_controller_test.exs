@@ -1,7 +1,7 @@
 defmodule RestbenchWeb.UserRegistrationControllerTest do
   use RestbenchWeb.ConnCase, async: true
 
-  import Restbench.AccountsFixtures
+  import Restbench.Support.AccountsFixtures
 
   describe "GET /users/register" do
     test "renders registration page", %{conn: conn} do

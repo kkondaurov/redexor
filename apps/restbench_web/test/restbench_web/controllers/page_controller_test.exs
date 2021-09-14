@@ -3,6 +3,6 @@ defmodule RestbenchWeb.PageControllerTest do
 
   test "GET /", %{conn: conn} do
     conn = get(conn, "/")
-    assert html_response(conn, 200) =~ "[rest]bench"
+    assert html_response(conn, 200) =~ "RestBench"
   end
 end

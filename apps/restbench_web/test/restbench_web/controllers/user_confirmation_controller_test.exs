@@ -1,9 +1,10 @@
 defmodule RestbenchWeb.UserConfirmationControllerTest do
   use RestbenchWeb.ConnCase, async: true
 
+  import Restbench.Support.AccountsFixtures
+
   alias Restbench.Accounts
   alias Restbench.Repo
-  import Restbench.AccountsFixtures
 
   setup do
     %{user: user_fixture()}

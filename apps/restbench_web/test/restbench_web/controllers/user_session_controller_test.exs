@@ -1,7 +1,7 @@
 defmodule RestbenchWeb.UserSessionControllerTest do
   use RestbenchWeb.ConnCase, async: true
 
-  import Restbench.AccountsFixtures
+  import Restbench.Support.AccountsFixtures
 
   setup do
     # For the sake of these tests, assume the account is confirmed

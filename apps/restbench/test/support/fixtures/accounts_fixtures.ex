@@ -1,4 +1,4 @@
-defmodule Restbench.AccountsFixtures do
+defmodule Restbench.Support.AccountsFixtures do
   @moduledoc """
   This module defines test helpers for creating
   entities via the `Restbench.Accounts` context.

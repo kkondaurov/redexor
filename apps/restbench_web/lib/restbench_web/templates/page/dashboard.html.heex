@@ -2,11 +2,11 @@
   <article class="column">
     <ul>
       <li>
-        <%= live_patch to: Routes.mock_server_index_path(@conn, :index), class: "button is-primary has-icons" do %>
+        <%= live_patch to: Routes.server_index_path(@conn, :index), class: "button is-primary has-icons" do %>
         <span class="icon is-small is-left">
           <i class="fas fa-server"></i>
         </span>
-        <span>Manage Mock Servers</span>
+        <span>Manage Servers</span>
         <% end %>
       </li>
     </ul>

@@ -1,9 +1,10 @@
 defmodule RestbenchWeb.UserAuthTest do
   use RestbenchWeb.ConnCase, async: true
 
+  import Restbench.Support.AccountsFixtures
+
   alias Restbench.Accounts
   alias RestbenchWeb.UserAuth
-  import Restbench.AccountsFixtures
 
   @remember_me_cookie "_restbench_web_user_remember_me"
 

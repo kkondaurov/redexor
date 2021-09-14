@@ -1,8 +1,9 @@
 defmodule RestbenchWeb.UserSettingsControllerTest do
   use RestbenchWeb.ConnCase, async: true
 
+  import Restbench.Support.AccountsFixtures
+
   alias Restbench.Accounts
-  import Restbench.AccountsFixtures
 
   setup :register_and_log_in_user
 
