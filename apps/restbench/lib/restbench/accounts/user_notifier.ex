@@ -16,10 +16,10 @@ defmodule Restbench.Accounts.UserNotifier do
       |> subject(subject)
       |> text_body(body)
 
-    Logger.info("Delivering email: #{inspect(email)}")
+    Logger.info(%{message: "Delivering email", email: email})
 
     with {:ok, metadata} <- Mailer.deliver(email) do
-      Logger.info("UserNotifier email metadata: #{inspect(metadata)}")
+      Logger.info(%{message: "Dispatched email", mailer_metadata: metadata})
       {:ok, email}
     end
   end
