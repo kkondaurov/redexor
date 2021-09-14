@@ -9,6 +9,9 @@
 # move said applications out of the umbrella.
 use Mix.Config
 
+config :arrow_api,
+  generators: [context_app: false]
+
 # Configure Mix tasks and generators
 config :restbench,
   ecto_repos: [Restbench.Repo]
@@ -24,6 +27,13 @@ config :restbench_web, RestbenchWeb.Endpoint,
   render_errors: [view: RestbenchWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: Restbench.PubSub,
   live_view: [signing_salt: "r3cnCcPZ"]
+
+# Configures the endpoint
+config :arrow_api, ArrowApi.Endpoint,
+  url: [host: "localhost"],
+  secret_key_base: "cYsLmRjGM1s7hIMYFLna+udEAlDrQmApQNi5R7XeFGttqxtDCL1ARcpRC6P4VFzV",
+  render_errors: [view: ArrowApi.ErrorView, accepts: ~w(html json), layout: false],
+  pubsub_server: ArrowApi.PubSub
 
 # Configures Elixir's Logger
 config :logger, :console,

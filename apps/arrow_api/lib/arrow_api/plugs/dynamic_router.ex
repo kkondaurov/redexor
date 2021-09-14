@@ -1,4 +1,4 @@
-defmodule RestbenchWeb.Plugs.ArrowApi do
+defmodule ArrowApi.Plugs.DynamicRouter do
   @moduledoc """
   A plug for routing Arrow API requests.
   Deals with HTTP-level concerns,
@@ -14,7 +14,8 @@ defmodule RestbenchWeb.Plugs.ArrowApi do
 
   def init(default), do: default
 
-  def call(%Plug.Conn{path_info: [server_id | path_parts], method: method} = conn, _default) do
+  def call(%Plug.Conn{host: host, path_info: path_parts, method: method} = conn, _default) do
+    [server_id | _] = String.split(host, ".")
     path = "/" <> Enum.join(path_parts, "/")
 
     Logger.info(
@@ -39,6 +40,7 @@ defmodule RestbenchWeb.Plugs.ArrowApi do
   end
 
   def call(%Plug.Conn{} = conn, _default) do
+    Logger.warn(%{conn: conn})
     conn
     |> send_resp(400, "Bad request")
     |> halt()
