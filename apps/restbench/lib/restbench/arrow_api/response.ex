@@ -1,4 +1,8 @@
-defmodule Restbench.Api.Response do
+defmodule Restbench.ArrowApi.Response do
+  @moduledoc """
+  A struct defining Arrow API response.
+  """
+
   defstruct code: 200, payload: %{}, headers: []
 
   @type __MODULE__ :: %{

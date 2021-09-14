@@ -1,10 +1,16 @@
-defmodule RestbenchWeb.Plugs.ApiRouter do
+defmodule RestbenchWeb.Plugs.ArrowApi do
+  @moduledoc """
+  A plug for routing Arrow API requests.
+  Deals with HTTP-level concerns,
+  delegates business logic to ArrowApi.Router.
+  """
+
   require Logger
 
   import Plug.Conn
 
-  alias Restbench.Api.Response
-  alias Restbench.Api.Router
+  alias Restbench.ArrowApi.Response
+  alias Restbench.ArrowApi.Router
 
   def init(default), do: default
 

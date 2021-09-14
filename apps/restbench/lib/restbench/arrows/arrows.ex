@@ -7,8 +7,8 @@ defmodule Restbench.Arrows do
   alias Restbench.Accounts.User
   alias Restbench.Admins.Admin
   alias Restbench.Arrows.Arrow
-  alias Restbench.Servers.Server
   alias Restbench.Repo
+  alias Restbench.Servers.Server
 
   @spec list_arrows(User.t(), String.t()) :: [Arrow.t()]
   def list_arrows(user, server_id) do

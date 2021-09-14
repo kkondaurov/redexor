@@ -1,8 +1,11 @@
-defmodule Restbench.Api.Router do
+defmodule Restbench.ArrowApi.Router do
+  @moduledoc """
+  Context for Arrow API business logic.
+  """
 
   require Logger
 
-  alias Restbench.Api.Response
+  alias Restbench.ArrowApi.Response
   alias Restbench.Arrows
   alias Restbench.Arrows.Arrow
 

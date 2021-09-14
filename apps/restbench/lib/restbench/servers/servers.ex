@@ -6,8 +6,8 @@ defmodule Restbench.Servers do
   import Ecto.Query, warn: false
   alias Restbench.Accounts.User
   alias Restbench.Admins.Admin
-  alias Restbench.Servers.Server
   alias Restbench.Repo
+  alias Restbench.Servers.Server
 
   @spec list_servers(User.t()) :: [Server.t()]
   def list_servers(user) do
