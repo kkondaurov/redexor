@@ -29,8 +29,7 @@ defmodule Restbench.ServersTest do
     test "create_server/2 with valid data creates a server", %{user: user} do
       valid_attrs = %{enabled: true, title: "some title"}
 
-      assert {:ok, %Server{} = server} =
-               Servers.create_server(user, valid_attrs)
+      assert {:ok, %Server{} = server} = Servers.create_server(user, valid_attrs)
 
       assert server.enabled == true
       assert server.title == "some title"
@@ -44,8 +43,7 @@ defmodule Restbench.ServersTest do
       server = server_fixture(user)
       update_attrs = %{enabled: false, title: "some updated title"}
 
-      assert {:ok, %Server{} = server} =
-               Servers.update_server(user, server, update_attrs)
+      assert {:ok, %Server{} = server} = Servers.update_server(user, server, update_attrs)
 
       assert server.enabled == false
       assert server.title == "some updated title"
@@ -54,8 +52,7 @@ defmodule Restbench.ServersTest do
     test "update_server/3 with invalid data returns error changeset", %{user: user} do
       server = server_fixture(user)
 
-      assert {:error, %Ecto.Changeset{}} =
-               Servers.update_server(user, server, @invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} = Servers.update_server(user, server, @invalid_attrs)
 
       assert server == Servers.get_server(user, server.id)
     end

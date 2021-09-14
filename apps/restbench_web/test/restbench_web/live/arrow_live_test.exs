@@ -42,8 +42,7 @@ defmodule RestbenchWeb.ArrowLiveTest do
     } do
       conn = authenticate_user(conn, user)
 
-      {:ok, _index_live, html} =
-        live(conn, Routes.server_show_path(conn, :show, server))
+      {:ok, _index_live, html} = live(conn, Routes.server_show_path(conn, :show, server))
 
       assert html =~ arrow.title
       assert html =~ arrow.method
@@ -52,8 +51,7 @@ defmodule RestbenchWeb.ArrowLiveTest do
     test "saves new arrow", %{conn: conn, user: user, server: server} do
       conn = authenticate_user(conn, user)
 
-      {:ok, index_live, _html} =
-        live(conn, Routes.server_show_path(conn, :show, server))
+      {:ok, index_live, _html} = live(conn, Routes.server_show_path(conn, :show, server))
 
       assert index_live |> element("a", "Create") |> render_click() =~
                "New Route"
@@ -82,8 +80,7 @@ defmodule RestbenchWeb.ArrowLiveTest do
     } do
       conn = authenticate_user(conn, user)
 
-      {:ok, index_live, _html} =
-        live(conn, Routes.server_show_path(conn, :show, server))
+      {:ok, index_live, _html} = live(conn, Routes.server_show_path(conn, :show, server))
 
       assert index_live |> element("#arrow-#{arrow.id} a", "Edit") |> render_click() =~
                "Edit Route"
@@ -115,8 +112,7 @@ defmodule RestbenchWeb.ArrowLiveTest do
     } do
       conn = authenticate_user(conn, user)
 
-      {:ok, index_live, _html} =
-        live(conn, Routes.server_show_path(conn, :show, server))
+      {:ok, index_live, _html} = live(conn, Routes.server_show_path(conn, :show, server))
 
       assert index_live |> element("#arrow-#{arrow.id} a", "Delete") |> render_click()
       refute has_element?(index_live, "#arrow-#{arrow.id}")

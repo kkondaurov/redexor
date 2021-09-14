@@ -34,7 +34,9 @@ defmodule Restbench.Arrows.Arrow do
         "/" <> path
       end
     end)
-    |> unique_constraint([:server_id, :path, :method], message: "This server already has a route with the above path and method")
+    |> unique_constraint([:server_id, :path, :method],
+      message: "This server already has a route with the above path and method"
+    )
   end
 
   def allowed_methods, do: @allowed_methods

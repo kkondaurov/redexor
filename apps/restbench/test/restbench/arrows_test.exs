@@ -37,8 +37,7 @@ defmodule Restbench.ArrowsTest do
     } do
       valid_attrs = %{enabled: true, method: "GET", path: "/some path", title: "some title"}
 
-      assert {:ok, %Arrow{} = arrow} =
-               Arrows.create_arrow(user, server, valid_attrs)
+      assert {:ok, %Arrow{} = arrow} = Arrows.create_arrow(user, server, valid_attrs)
 
       assert arrow.enabled == true
       assert arrow.method == "GET"
@@ -50,8 +49,7 @@ defmodule Restbench.ArrowsTest do
       user: user,
       server: server
     } do
-      assert {:error, %Ecto.Changeset{}} =
-               Arrows.create_arrow(user, server, @invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} = Arrows.create_arrow(user, server, @invalid_attrs)
     end
 
     test "update_arrow/2 with valid data updates the arrow", %{
@@ -67,8 +65,7 @@ defmodule Restbench.ArrowsTest do
         title: "some updated title"
       }
 
-      assert {:ok, %Arrow{} = arrow} =
-               Arrows.update_arrow(user, arrow, update_attrs)
+      assert {:ok, %Arrow{} = arrow} = Arrows.update_arrow(user, arrow, update_attrs)
 
       assert arrow.enabled == false
       assert arrow.method == "POST"
@@ -82,8 +79,7 @@ defmodule Restbench.ArrowsTest do
     } do
       arrow = arrow_fixture(user, server)
 
-      assert {:error, %Ecto.Changeset{}} =
-               Arrows.update_arrow(user, arrow, @invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} = Arrows.update_arrow(user, arrow, @invalid_attrs)
 
       assert arrow == Arrows.get_arrow(user, arrow.id)
     end
@@ -107,11 +103,20 @@ defmodule Restbench.ArrowsTest do
       arrow = arrow_fixture(user, server)
 
       assert {:error, %Ecto.Changeset{}} =
-        Arrows.create_arrow(user, server, %{title: "duplicate path and method", path: arrow.path, method: arrow.method, enabled: true})
+               Arrows.create_arrow(user, server, %{
+                 title: "duplicate path and method",
+                 path: arrow.path,
+                 method: arrow.method,
+                 enabled: true
+               })
 
       assert {:error, %Ecto.Changeset{}} =
-        Arrows.create_arrow(user, server, %{title: "duplicate path and method", path: arrow.path, method: arrow.method, enabled: false})
-
+               Arrows.create_arrow(user, server, %{
+                 title: "duplicate path and method",
+                 path: arrow.path,
+                 method: arrow.method,
+                 enabled: false
+               })
     end
 
     test "delete_arrow/2 deletes the arrow", %{user: user, server: server} do
