@@ -2,9 +2,9 @@ defmodule RestbenchWeb.ArrowLiveTest do
   use RestbenchWeb.ConnCase
 
   import Phoenix.LiveViewTest
-  import Restbench.ArrowsFixtures
-  alias Restbench.AccountsFixtures
-  alias Restbench.ServersFixtures
+  import Restbench.Support.ArrowsFixtures
+  alias Restbench.Support.AccountsFixtures
+  alias Restbench.Support.ServersFixtures
   alias RestbenchWeb.UserAuth
 
   @create_attrs %{enabled: true, method: "GET", path: "some path", title: "some title"}

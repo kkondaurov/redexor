@@ -1,8 +1,8 @@
 defmodule Restbench.ServersTest do
   use Restbench.DataCase
 
-  alias Restbench.AccountsFixtures
   alias Restbench.Servers
+  alias Restbench.Support.AccountsFixtures
 
   setup do
     user = AccountsFixtures.user_fixture()
@@ -12,7 +12,7 @@ defmodule Restbench.ServersTest do
   describe "servers" do
     alias Restbench.Servers.Server
 
-    import Restbench.ServersFixtures
+    import Restbench.Support.ServersFixtures
 
     @invalid_attrs %{enabled: nil, title: nil}
 

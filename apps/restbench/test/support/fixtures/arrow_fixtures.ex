@@ -1,4 +1,4 @@
-defmodule Restbench.ArrowsFixtures do
+defmodule Restbench.Support.ArrowsFixtures do
   @moduledoc """
   This module defines test helpers for creating
   entities via the `Restbench.Arrows` context.

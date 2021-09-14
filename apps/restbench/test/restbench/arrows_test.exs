@@ -1,9 +1,9 @@
 defmodule Restbench.ArrowsTest do
   use Restbench.DataCase
 
-  alias Restbench.AccountsFixtures
   alias Restbench.Arrows
-  alias Restbench.ServersFixtures
+  alias Restbench.Support.AccountsFixtures
+  alias Restbench.Support.ServersFixtures
 
   setup do
     user = AccountsFixtures.user_fixture()
@@ -14,7 +14,7 @@ defmodule Restbench.ArrowsTest do
   describe "arrows" do
     alias Restbench.Arrows.Arrow
 
-    import Restbench.ArrowsFixtures
+    import Restbench.Support.ArrowsFixtures
 
     @invalid_attrs %{enabled: nil, method: nil, path: nil, title: nil}
 

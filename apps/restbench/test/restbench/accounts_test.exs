@@ -3,7 +3,7 @@ defmodule Restbench.AccountsTest do
 
   alias Restbench.Accounts
 
-  import Restbench.AccountsFixtures
+  import Restbench.Support.AccountsFixtures
   alias Restbench.Accounts.{User, UserToken}
 
   describe "get_user_by_email/1" do

@@ -2,8 +2,8 @@ defmodule RestbenchWeb.ServerLiveTest do
   use RestbenchWeb.ConnCase
 
   import Phoenix.LiveViewTest
-  import Restbench.ServersFixtures
-  alias Restbench.AccountsFixtures
+  import Restbench.Support.ServersFixtures
+  alias Restbench.Support.AccountsFixtures
   alias RestbenchWeb.UserAuth
 
   require Logger

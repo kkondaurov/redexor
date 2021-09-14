@@ -1,4 +1,4 @@
-defmodule Restbench.ServersFixtures do
+defmodule Restbench.Support.ServersFixtures do
   @moduledoc """
   This module defines test helpers for creating
   entities via the `Restbench.Servers` context.

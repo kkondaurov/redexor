@@ -42,7 +42,7 @@ defmodule Restbench.Arrows do
     |> Repo.insert()
   end
 
-  @spec update_arrow(User.t() | Admin.t(), Server.t(), map()) ::
+  @spec update_arrow(User.t() | Admin.t(), Arrow.t(), map()) ::
           {:ok, Arrow.t()} | {:error, Ecto.Changeset.t()} | {:error, :unauthorized}
   def update_arrow(%User{id: user_id}, %Arrow{user_id: user_id} = arrow, attrs) do
     arrow
