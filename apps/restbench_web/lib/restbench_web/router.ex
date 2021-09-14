@@ -118,6 +118,6 @@ defmodule RestbenchWeb.Router do
   end
 
   scope "/", RestbenchWeb do
-    forward "/api", Plugs.MockApiRouter
+    forward "/api", Plugs.ApiRouter
   end
 end

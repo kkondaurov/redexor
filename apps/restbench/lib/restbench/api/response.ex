@@ -1,4 +1,4 @@
-defmodule Restbench.MockApi.Response do
+defmodule Restbench.Api.Response do
   defstruct code: 200, payload: %{}, headers: []
 
   @type __MODULE__ :: %{

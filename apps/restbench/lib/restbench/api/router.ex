@@ -1,8 +1,8 @@
-defmodule Restbench.MockApi.Router do
+defmodule Restbench.Api.Router do
 
   require Logger
 
-  alias Restbench.MockApi.Response
+  alias Restbench.Api.Response
   alias Restbench.MockRoutes
   alias Restbench.MockRoutes.MockRoute
 

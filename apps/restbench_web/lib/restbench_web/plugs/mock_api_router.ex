@@ -1,10 +1,10 @@
-defmodule RestbenchWeb.Plugs.MockApiRouter do
+defmodule RestbenchWeb.Plugs.ApiRouter do
   require Logger
 
   import Plug.Conn
 
-  alias Restbench.MockApi.Response
-  alias Restbench.MockApi.Router, as: MockApiRouter
+  alias Restbench.Api.Response
+  alias Restbench.Api.Router
 
   def init(default), do: default
 
@@ -16,7 +16,7 @@ defmodule RestbenchWeb.Plugs.MockApiRouter do
     %Response{
       code: code,
       payload: payload
-    } = MockApiRouter.handle(mock_server_id, method, path, request_params)
+    } = Router.handle(mock_server_id, method, path, request_params)
 
     conn
     |> put_status(code)
