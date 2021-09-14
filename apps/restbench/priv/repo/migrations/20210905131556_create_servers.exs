@@ -1,8 +1,8 @@
-defmodule Restbench.Repo.Migrations.CreateMockServers do
+defmodule Restbench.Repo.Migrations.CreateServers do
   use Ecto.Migration
 
   def change do
-    create table(:mock_servers, primary_key: false) do
+    create table(:servers, primary_key: false) do
       add :id, :binary_id, primary_key: true
       add :title, :string
       add :enabled, :boolean, default: false, null: false
@@ -11,6 +11,6 @@ defmodule Restbench.Repo.Migrations.CreateMockServers do
       timestamps()
     end
 
-    create index(:mock_servers, [:user_id])
+    create index(:servers, [:user_id])
   end
 end

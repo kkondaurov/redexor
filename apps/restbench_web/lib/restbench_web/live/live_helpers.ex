@@ -11,11 +11,11 @@ defmodule RestbenchWeb.LiveHelpers do
 
   ## Examples
 
-      <%= live_modal RestbenchWeb.MockServerLive.FormComponent,
-        id: @mock_server.id || :new,
+      <%= live_modal RestbenchWeb.ServerLive.FormComponent,
+        id: @server.id || :new,
         action: @live_action,
-        mock_server: @mock_server,
-        return_to: Routes.mock_server_index_path(@socket, :index) %>
+        server: @server,
+        return_to: Routes.server_index_path(@socket, :index) %>
   """
   def live_modal(component, opts) do
     path = Keyword.fetch!(opts, :return_to)

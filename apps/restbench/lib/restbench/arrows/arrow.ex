@@ -1,4 +1,4 @@
-defmodule Restbench.MockRoutes.MockRoute do
+defmodule Restbench.Arrows.Arrow do
   @moduledoc false
 
   use Ecto.Schema
@@ -10,20 +10,20 @@ defmodule Restbench.MockRoutes.MockRoute do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
-  schema "mock_routes" do
+  schema "arrows" do
     field :enabled, :boolean, default: false
     field :method, :string
     field :path, :string
     field :title, :string
-    belongs_to :mock_server, Restbench.MockServers.MockServer
+    belongs_to :server, Restbench.Servers.Server
     belongs_to :user, Restbench.Accounts.User
 
     timestamps()
   end
 
   @doc false
-  def changeset(mock_route, attrs) do
-    mock_route
+  def changeset(arrow, attrs) do
+    arrow
     |> cast(attrs, [:title, :path, :method, :enabled])
     |> validate_required([:title, :path, :method, :enabled])
     |> validate_inclusion(:method, @allowed_methods)

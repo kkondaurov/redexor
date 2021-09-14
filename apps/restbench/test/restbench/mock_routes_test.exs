@@ -1,64 +1,64 @@
-defmodule Restbench.MockRoutesTest do
+defmodule Restbench.ArrowsTest do
   use Restbench.DataCase
 
   alias Restbench.AccountsFixtures
-  alias Restbench.MockRoutes
-  alias Restbench.MockServersFixtures
+  alias Restbench.Arrows
+  alias Restbench.ServersFixtures
 
   setup do
     user = AccountsFixtures.user_fixture()
-    mock_server = MockServersFixtures.mock_server_fixture(user)
-    {:ok, user: user, mock_server: mock_server}
+    server = ServersFixtures.server_fixture(user)
+    {:ok, user: user, server: server}
   end
 
-  describe "mock_routes" do
-    alias Restbench.MockRoutes.MockRoute
+  describe "arrows" do
+    alias Restbench.Arrows.Arrow
 
-    import Restbench.MockRoutesFixtures
+    import Restbench.ArrowsFixtures
 
     @invalid_attrs %{enabled: nil, method: nil, path: nil, title: nil}
 
-    test "list_mock_routes/2 returns all mock_routes", %{user: user, mock_server: mock_server} do
-      mock_route = mock_route_fixture(user, mock_server)
-      assert MockRoutes.list_mock_routes(user, mock_server.id) == [mock_route]
+    test "list_arrows/2 returns all arrows", %{user: user, server: server} do
+      arrow = arrow_fixture(user, server)
+      assert Arrows.list_arrows(user, server.id) == [arrow]
     end
 
-    test "get_mock_route!/1 returns the mock_route with given id", %{
+    test "get_arrow!/1 returns the arrow with given id", %{
       user: user,
-      mock_server: mock_server
+      server: server
     } do
-      mock_route = mock_route_fixture(user, mock_server)
-      assert MockRoutes.get_mock_route(user, mock_route.id) == mock_route
+      arrow = arrow_fixture(user, server)
+      assert Arrows.get_arrow(user, arrow.id) == arrow
     end
 
-    test "create_mock_route/3 with valid data creates a mock_route", %{
+    test "create_arrow/3 with valid data creates a arrow", %{
       user: user,
-      mock_server: mock_server
+      server: server
     } do
       valid_attrs = %{enabled: true, method: "GET", path: "some path", title: "some title"}
 
-      assert {:ok, %MockRoute{} = mock_route} =
-               MockRoutes.create_mock_route(user, mock_server, valid_attrs)
+      assert {:ok, %Arrow{} = arrow} =
+               Arrows.create_arrow(user, server, valid_attrs)
 
-      assert mock_route.enabled == true
-      assert mock_route.method == "GET"
-      assert mock_route.path == "some path"
-      assert mock_route.title == "some title"
+      assert arrow.enabled == true
+      assert arrow.method == "GET"
+      assert arrow.path == "some path"
+      assert arrow.title == "some title"
     end
 
-    test "create_mock_route/1 with invalid data returns error changeset", %{
+    test "create_arrow/1 with invalid data returns error changeset", %{
       user: user,
-      mock_server: mock_server
+      server: server
     } do
       assert {:error, %Ecto.Changeset{}} =
-               MockRoutes.create_mock_route(user, mock_server, @invalid_attrs)
+               Arrows.create_arrow(user, server, @invalid_attrs)
     end
 
-    test "update_mock_route/2 with valid data updates the mock_route", %{
+    test "update_arrow/2 with valid data updates the arrow", %{
       user: user,
-      mock_server: mock_server
+      server: server
     } do
-      mock_route = mock_route_fixture(user, mock_server)
+      arrow = arrow_fixture(user, server)
 
       update_attrs = %{
         enabled: false,
@@ -67,39 +67,39 @@ defmodule Restbench.MockRoutesTest do
         title: "some updated title"
       }
 
-      assert {:ok, %MockRoute{} = mock_route} =
-               MockRoutes.update_mock_route(user, mock_route, update_attrs)
+      assert {:ok, %Arrow{} = arrow} =
+               Arrows.update_arrow(user, arrow, update_attrs)
 
-      assert mock_route.enabled == false
-      assert mock_route.method == "POST"
-      assert mock_route.path == "some updated path"
-      assert mock_route.title == "some updated title"
+      assert arrow.enabled == false
+      assert arrow.method == "POST"
+      assert arrow.path == "some updated path"
+      assert arrow.title == "some updated title"
     end
 
-    test "update_mock_route/2 with invalid data returns error changeset", %{
+    test "update_arrow/2 with invalid data returns error changeset", %{
       user: user,
-      mock_server: mock_server
+      server: server
     } do
-      mock_route = mock_route_fixture(user, mock_server)
+      arrow = arrow_fixture(user, server)
 
       assert {:error, %Ecto.Changeset{}} =
-               MockRoutes.update_mock_route(user, mock_route, @invalid_attrs)
+               Arrows.update_arrow(user, arrow, @invalid_attrs)
 
-      assert mock_route == MockRoutes.get_mock_route(user, mock_route.id)
+      assert arrow == Arrows.get_arrow(user, arrow.id)
     end
 
-    test "delete_mock_route/2 deletes the mock_route", %{user: user, mock_server: mock_server} do
-      mock_route = mock_route_fixture(user, mock_server)
-      assert {:ok, %MockRoute{}} = MockRoutes.delete_mock_route(user, mock_route)
-      assert is_nil(MockRoutes.get_mock_route(user, mock_route.id))
+    test "delete_arrow/2 deletes the arrow", %{user: user, server: server} do
+      arrow = arrow_fixture(user, server)
+      assert {:ok, %Arrow{}} = Arrows.delete_arrow(user, arrow)
+      assert is_nil(Arrows.get_arrow(user, arrow.id))
     end
 
-    test "change_mock_route/2 returns a mock_route changeset", %{
+    test "change_arrow/2 returns a arrow changeset", %{
       user: user,
-      mock_server: mock_server
+      server: server
     } do
-      mock_route = mock_route_fixture(user, mock_server)
-      assert %Ecto.Changeset{} = MockRoutes.change_mock_route(mock_route)
+      arrow = arrow_fixture(user, server)
+      assert %Ecto.Changeset{} = Arrows.change_arrow(arrow)
     end
   end
 end

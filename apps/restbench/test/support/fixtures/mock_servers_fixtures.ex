@@ -1,20 +1,20 @@
-defmodule Restbench.MockServersFixtures do
+defmodule Restbench.ServersFixtures do
   @moduledoc """
   This module defines test helpers for creating
-  entities via the `Restbench.MockServers` context.
+  entities via the `Restbench.Servers` context.
   """
 
   @doc """
-  Generate a mock_server.
+  Generate a server.
   """
-  def mock_server_fixture(user, attrs \\ %{}) do
+  def server_fixture(user, attrs \\ %{}) do
     attrs =
       Enum.into(attrs, %{
         enabled: true,
         title: "some title"
       })
 
-    {:ok, mock_server} = Restbench.MockServers.create_mock_server(user, attrs)
-    mock_server
+    {:ok, server} = Restbench.Servers.create_server(user, attrs)
+    server
   end
 end

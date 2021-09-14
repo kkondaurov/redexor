@@ -8,15 +8,15 @@ defmodule RestbenchWeb.Plugs.ApiRouter do
 
   def init(default), do: default
 
-  def call(%Plug.Conn{path_info: [mock_server_id | path_parts], method: method} = conn, _default) do
+  def call(%Plug.Conn{path_info: [server_id | path_parts], method: method} = conn, _default) do
     path = Enum.join(path_parts, "/")
-    Logger.info(method: method, mock_server_id: mock_server_id, path: path, query_params: conn.query_params, body_params: conn.body_params)
+    Logger.info(method: method, server_id: server_id, path: path, query_params: conn.query_params, body_params: conn.body_params)
     request_params = Map.merge(conn.query_params, conn.body_params)
 
     %Response{
       code: code,
       payload: payload
-    } = Router.handle(mock_server_id, method, path, request_params)
+    } = Router.handle(server_id, method, path, request_params)
 
     conn
     |> put_status(code)

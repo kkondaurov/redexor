@@ -1,13 +1,13 @@
-defmodule Restbench.MockRoutesFixtures do
+defmodule Restbench.ArrowsFixtures do
   @moduledoc """
   This module defines test helpers for creating
-  entities via the `Restbench.MockRoutes` context.
+  entities via the `Restbench.Arrows` context.
   """
 
   @doc """
-  Generate a mock_route.
+  Generate a arrow.
   """
-  def mock_route_fixture(user, mock_server, attrs \\ %{}) do
+  def arrow_fixture(user, server, attrs \\ %{}) do
     attrs =
       attrs
       |> Enum.into(%{
@@ -17,7 +17,7 @@ defmodule Restbench.MockRoutesFixtures do
         title: "some title"
       })
 
-    {:ok, mock_route} = Restbench.MockRoutes.create_mock_route(user, mock_server, attrs)
-    mock_route
+    {:ok, arrow} = Restbench.Arrows.create_arrow(user, server, attrs)
+    arrow
   end
 end
