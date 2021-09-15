@@ -41,8 +41,9 @@ config :arrow_api, ArrowApi.Endpoint,
 #
 # If you are doing OTP releases, you need to instruct Phoenix
 # to start each relevant endpoint:
-#
-#     config :restbench_web, RestbenchWeb.Endpoint, server: true
-#
+
+config :restbench_web, RestbenchWeb.Endpoint, server: true
+config :arrow_api, ArrowApi.Endpoint, server: true
+
 # Then you can assemble a release by calling `mix release`.
 # See `mix help release` for more information.
