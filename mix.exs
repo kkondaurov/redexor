@@ -11,7 +11,7 @@ defmodule Restbench.Umbrella.MixProject do
       releases: [
         restbench: [
           version: "0.0.1",
-          applications: [restbench_web: :permanent, restbench: :permanent]
+          applications: [restbench: :permanent, restbench_web: :permanent, arrow_api: :permanent]
         ]
       ]
     ]
