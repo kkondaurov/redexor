@@ -12,7 +12,7 @@ defmodule Restbench.Accounts.UserNotifier do
     email =
       new()
       |> to(recipient)
-      |> from({"[rest]bench", "noreply@example.com"})
+      |> from({"Restbench", "info@restbench.com"})
       |> subject(subject)
       |> text_body(body)
 
