@@ -10,7 +10,7 @@ use Mix.Config
 # which you should run after static files are built and
 # before starting your production server.
 config :restbench_web, RestbenchWeb.Endpoint,
-  url: [host: "restbench.com", port: 80],
+  url: [scheme: "https", host: "restbench.com", port: 80],
   cache_static_manifest: "priv/static/cache_manifest.json"
   KEYWORD
 
