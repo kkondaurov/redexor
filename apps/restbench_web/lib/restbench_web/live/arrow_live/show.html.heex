@@ -50,7 +50,7 @@
 <table class="table is-striped is-fullwidth mt-4">
   <tbody id="response">
     <%= for response <- @responses do %>
-      <tr id={"response-#{response.id}"}>
+      <tr id={"response-#{response.id}"} class={"#{mark_arrow_response(@arrow.response_id, response.id)}"}>
         <td style="width:50px;">
           <%= link to: "#", phx_click: "activate_response", phx_value_id: response.id do %>
             <%= if response.id == @arrow.response_id do %>

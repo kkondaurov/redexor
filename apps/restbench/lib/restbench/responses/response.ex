@@ -26,33 +26,42 @@ defmodule Restbench.Responses.Response do
   @doc false
   def changeset(response, attrs) do
     response
-    |> maybe_cast_json_body(attrs)
-    |> cast(attrs, [:title, :type, :code, :arrow_id, :text_body])
+    |> cast(attrs, [:title, :type, :code, :arrow_id])
     |> validate_required([:title, :type, :code])
     |> validate_inclusion(:type, @implemented_types)
     |> validate_inclusion(:code, @allowed_codes)
-    |> validate_body()
+    |> validate_body(attrs)
   end
 
-  defp maybe_cast_json_body(changeset, %{"json_body" => json_body}), do: cast_json_body(changeset, json_body)
-  defp maybe_cast_json_body(changeset, %{json_body: json_body}), do: cast_json_body(changeset, json_body)
-  defp maybe_cast_json_body(changeset, _), do: changeset
+  defp validate_body(changeset, attrs) do
+    case get_field(changeset, :type) do
+      "TEXT" ->
+        changeset
+        |> cast(attrs, [:text_body])
+        |> validate_required(:text_body)
 
-  defp cast_json_body(changeset, json_body) do
+      "JSON" ->
+        changeset
+        |> cast_json_body(attrs)
+        |> validate_required(:json_body)
+
+      _ -> changeset
+    end
+  end
+
+  defp cast_json_body(changeset, %{"json_body" => json_body}), do: do_cast_json_body(changeset, json_body)
+  defp cast_json_body(changeset, %{json_body: json_body}), do: do_cast_json_body(changeset, json_body)
+  defp cast_json_body(changeset, _), do: changeset
+
+  defp do_cast_json_body(changeset, json_body) do
     case Jason.decode(json_body) do
-      {:ok, map} -> cast(changeset, %{json_body: map}, [:json_body])
+      {:ok, map} ->
+        cast(changeset, %{json_body: map}, [:json_body])
+
       {:error, _} ->
         changeset
         |> cast(%{}, [])
         |> add_error(:json_body, "has invalid format")
-    end
-  end
-
-  defp validate_body(changeset) do
-    case get_field(changeset, :type) do
-      "TEXT" -> validate_required(changeset, :text_body)
-      "JSON" -> validate_required(changeset, :json_body)
-      _ -> changeset
     end
   end
 
