@@ -20,4 +20,4 @@ erl_crash.dump
 *.ez
 
 /config/local.exs
-/apps/*/config.local.exs
+.env
