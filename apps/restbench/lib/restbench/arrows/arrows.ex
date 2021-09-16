@@ -10,7 +10,7 @@ defmodule Restbench.Arrows do
   alias Restbench.Repo
   alias Restbench.Servers.Server
 
-  @spec list_arrows(User.t(), String.t()) :: [Arrow.t()]
+  @spec list_arrows(User.t() | Admin.t(), String.t()) :: [Arrow.t()]
   def list_arrows(user, server_id) do
     Arrow
     |> scope(user)
@@ -19,16 +19,16 @@ defmodule Restbench.Arrows do
     |> Repo.all()
   end
 
-  @spec get_arrow(User.t(), String.t()) :: Arrow.t() | nil
+  @spec get_arrow(User.t() | Admin.t(), String.t()) :: Arrow.t() | nil
   def get_arrow(user, id) do
     Arrow
     |> scope(user)
     |> Repo.get(id)
   end
 
-  @spec create_arrow(User.t() | Admin.t(), Server.t(), map()) ::
-          {:ok, Arrow.t()} | {:error, Ecto.Changeset.t()}
-  def create_arrow(%User{id: user_id}, %Server{id: server_id}, attrs) do
+  @spec create_arrow(User.t(), Server.t(), map()) ::
+          {:ok, Arrow.t()} | {:error, Ecto.Changeset.t()} | {:error, :unauthorized}
+  def create_arrow(%User{id: user_id}, %Server{id: server_id, user_id: user_id}, attrs) do
     %Arrow{}
     |> Ecto.Changeset.change(user_id: user_id)
     |> Ecto.Changeset.change(server_id: server_id)
@@ -36,11 +36,7 @@ defmodule Restbench.Arrows do
     |> Repo.insert()
   end
 
-  def create_server(%Admin{}, attrs) do
-    %Arrow{}
-    |> Arrow.changeset(attrs)
-    |> Repo.insert()
-  end
+  def create_arrow(%User{}, %Server{}, _attrs), do: {:error, :unauthorized}
 
   @spec update_arrow(User.t() | Admin.t(), Arrow.t(), map()) ::
           {:ok, Arrow.t()} | {:error, Ecto.Changeset.t()} | {:error, :unauthorized}

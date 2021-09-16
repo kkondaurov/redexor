@@ -17,6 +17,7 @@ defmodule Restbench.Arrows.Arrow do
     field :title, :string
     belongs_to :server, Restbench.Servers.Server
     belongs_to :user, Restbench.Accounts.User
+    belongs_to :response, Restbench.Responses.Response
 
     timestamps()
   end
@@ -24,7 +25,7 @@ defmodule Restbench.Arrows.Arrow do
   @doc false
   def changeset(arrow, attrs) do
     arrow
-    |> cast(attrs, [:title, :path, :method, :enabled])
+    |> cast(attrs, [:title, :path, :method, :enabled, :response_id])
     |> validate_required([:title, :path, :method, :enabled])
     |> validate_inclusion(:method, @allowed_methods)
     |> update_change(:path, fn path ->
