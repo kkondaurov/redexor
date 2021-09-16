@@ -110,5 +110,6 @@ defmodule Restbench.Arrows do
     |> where([r, _s], r.method == ^method and r.path == ^path)
     |> where([r, s], r.enabled and s.enabled)
     |> Repo.one()
+    |> Repo.preload([:response])
   end
 end

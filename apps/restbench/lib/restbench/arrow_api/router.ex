@@ -22,7 +22,7 @@ defmodule Restbench.ArrowApi.Router do
         arrow_id: arrow.id
       )
 
-      %Response{code: 200, payload: %{foo: "bar"}}
+      Response.build(arrow.response)
     else
       {:server_id_valid, _} ->
         Logger.warn(
