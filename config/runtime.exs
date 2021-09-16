@@ -11,7 +11,6 @@ if config_env() == :prod do
       environment variable DATABASE_URL is missing.
       For example: ecto://USER:PASS@HOST/DATABASE
       """
-
   config :restbench, Restbench.Repo,
     # ssl: true,
     url: database_url,
@@ -45,6 +44,23 @@ if config_env() == :prod do
 
   config :restbench_web, RestbenchWeb.Endpoint, server: true
   config :arrow_api, ArrowApi.Endpoint, server: true
+
+  mailjet_api_key =
+    System.get_env("MAILJET_API_KEY") ||
+      raise """
+      environment variable MAILJET_API_KEY is missing.
+      """
+
+  mailjet_api_secret =
+    System.get_env("MAILJET_API_SECRET") ||
+      raise """
+      environment variable MAILJET_API_SECRET is missing.
+      """
+
+  config :restbench, Restbench.Mailer,
+    adapter: Swoosh.Adapters.Mailjet,
+    api_key: mailjet_api_key,
+    secret: mailjet_api_secret
 
   # Then you can assemble a release by calling `mix release`.
   # See `mix help release` for more information.
