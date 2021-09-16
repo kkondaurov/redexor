@@ -19,7 +19,8 @@ defmodule Restbench.ArrowApi.Router do
         server_id: server_id,
         method: method,
         path: path,
-        arrow_id: arrow.id
+        arrow_id: arrow.id,
+        response_id: arrow.response_id
       )
 
       Response.build(arrow.response)
