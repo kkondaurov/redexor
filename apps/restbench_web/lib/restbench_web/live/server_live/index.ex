@@ -30,7 +30,7 @@ defmodule RestbenchWeb.ServerLive.Index do
     case Servers.get_server(user, id) do
       %Server{} = server ->
         socket
-        |> assign(:page_title, "Edit #{server.title} - restbench")
+        |> assign(:page_title, "Edit #{server.title}")
         |> assign(:server, server)
 
       nil ->
