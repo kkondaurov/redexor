@@ -102,6 +102,10 @@ defmodule RestbenchWeb.Router do
 
       live "/:id/routes/new", ServerLive.Show, :new_route
       live "/:id/routes/:arrow_id/edit", ServerLive.Show, :edit_route
+
+      live "/:id/routes/:arrow_id/", ArrowLive.Show, :show
+      live "/:id/routes/:arrow_id/responses/new", ArrowLive.Show, :new_response
+      live "/:id/routes/:arrow_id/responses/:response_id/edit", ArrowLive.Show, :edit_response
     end
   end
 

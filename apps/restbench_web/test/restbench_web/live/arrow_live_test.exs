@@ -31,7 +31,7 @@ defmodule RestbenchWeb.ArrowLiveTest do
     |> recycle()
   end
 
-  describe "Index" do
+  describe "ServerShow" do
     setup [:create_arrow]
 
     test "lists all arrows", %{

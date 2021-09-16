@@ -1,0 +1,46 @@
+<section class="is-meduim">
+  <h2><%= @title %></h2>
+
+  <.form
+    let={f}
+    for={@changeset}
+    id="response-form"
+    phx-target={@myself}
+    phx-change="validate"
+    phx-submit="save">
+
+    <div class="field">
+      <%= label f, :title, class: "label" %>
+      <%= text_input f, :title, class: "input" %>
+      <%= error_tag f, :title %>
+    </div>
+
+    <div class="field">
+      <%= label f, :type, class: "label" %>
+      <%= text_input f, :type, class: "input" %>
+      <%= error_tag f, :type %>
+    </div>
+
+    <div class="field">
+      <%= label f, :code, class: "label" do %>HTTP Code<% end %>
+      <%= number_input f, :code, class: "input" %>
+      <%= error_tag f, :code %>
+    </div>
+
+    <div class="field">
+      <%= label f, :text_body, class: "label" %>
+      <%= textarea f, :text_body, class: "textarea" %>
+      <%= error_tag f, :text_body %>
+    </div>
+
+    <div class="field">
+      <%= label f, :json_body, class: "label" %>
+      <%= textarea f, :json_body, class: "textarea", value: Jason.encode!(Ecto.Changeset.get_field(@changeset, :json_body) || %{}, pretty: true) %>
+      <%= error_tag f, :json_body %>
+    </div>
+
+    <div>
+      <%= submit "Save", phx_disable_with: "Saving...", class: "button is-link"  %>
+    </div>
+  </.form>
+</section>

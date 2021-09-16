@@ -28,7 +28,7 @@ defmodule RestbenchWeb.ServerLive.Show do
       %Server{} = server ->
         socket =
           socket
-          |> assign(:page_title, page_title(socket.assigns.live_action))
+          |> assign(:page_title, page_title(socket.assigns.live_action, server))
           |> assign(:server, server)
           |> assign(:arrows, Arrows.list_arrows(user, server.id))
           |> assign(:id, server.id)
@@ -52,8 +52,9 @@ defmodule RestbenchWeb.ServerLive.Show do
         |> assign(:arrow, arrow)
 
       nil ->
-        socket = put_flash(socket, :error, "Route not found")
-        {:noreply, push_redirect(socket, to: "/servers", replace: true)}
+        socket
+        |> put_flash(:error, "Route not found")
+        |> push_redirect(to: "/servers", replace: true)
     end
   end
 
@@ -111,8 +112,8 @@ defmodule RestbenchWeb.ServerLive.Show do
     end
   end
 
-  defp page_title(:show), do: "Show Server"
-  defp page_title(:edit), do: "Edit Server"
-  defp page_title(:new_route), do: "New Route"
-  defp page_title(:edit_route), do: "Edit Route"
+  defp page_title(:show, server), do: "#{server.title} - Servers - restbench"
+  defp page_title(:edit, server), do: "Edit #{server.title}"
+  defp page_title(:new_route, _server), do: "New Route"
+  defp page_title(:edit_route, _server), do: "Edit Route"
 end

@@ -19,10 +19,11 @@ defmodule Restbench.ArrowApi.Router do
         server_id: server_id,
         method: method,
         path: path,
-        arrow_id: arrow.id
+        arrow_id: arrow.id,
+        response_id: arrow.response_id
       )
 
-      %Response{code: 200, payload: %{foo: "bar"}}
+      Response.build(arrow.response)
     else
       {:server_id_valid, _} ->
         Logger.warn(
