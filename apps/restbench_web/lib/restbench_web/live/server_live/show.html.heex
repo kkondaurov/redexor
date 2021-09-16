@@ -57,13 +57,15 @@
             <% end %>
           <% end %>
         </td>
-        <td style="width:50px">
-          <strong><%= arrow.method %></strong>
-        </td>
         <td>
-          https://<%= @server.id %>.<%= api_host() %><%= arrow.path %>
+          <%= live_patch to: Routes.arrow_show_path(@socket, :show, @server.id, arrow) do %>
+            <%= arrow.title %>
+          <% end %>
           <br/>
-          <small class="has-text-grey"><%= arrow.title %></small>
+          <strong><%= arrow.method %></strong>
+          <small class="has-text-grey">
+            https://<%= @server.id %>.<%= api_host() %><%= arrow.path %>
+          </small>
         </td>        
         <td style="width:200px;">
           <%= live_patch to: Routes.server_show_path(@socket, :edit_route, @server.id, arrow), class: "button is-small is-warning has-icons-left" do %>

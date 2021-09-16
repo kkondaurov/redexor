@@ -28,7 +28,7 @@ defmodule RestbenchWeb.ServerLive.Show do
       %Server{} = server ->
         socket =
           socket
-          |> assign(:page_title, page_title(socket.assigns.live_action))
+          |> assign(:page_title, page_title(socket.assigns.live_action, server))
           |> assign(:server, server)
           |> assign(:arrows, Arrows.list_arrows(user, server.id))
           |> assign(:id, server.id)
@@ -111,8 +111,8 @@ defmodule RestbenchWeb.ServerLive.Show do
     end
   end
 
-  defp page_title(:show), do: "Show Server"
-  defp page_title(:edit), do: "Edit Server"
-  defp page_title(:new_route), do: "New Route"
-  defp page_title(:edit_route), do: "Edit Route"
+  defp page_title(:show, server), do: "#{server.title} - Servers"
+  defp page_title(:edit, server), do: "Edit #{server.title} - Servers"
+  defp page_title(:new_route, server), do: "New Route - #{server.title} - Servers"
+  defp page_title(:edit_route, server), do: "Edit Route - #{server.title} - Servers"
 end

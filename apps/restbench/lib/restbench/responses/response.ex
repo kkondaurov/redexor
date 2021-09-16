@@ -12,7 +12,7 @@ defmodule Restbench.Responses.Response do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
-  schema "arrows" do
+  schema "responses" do
     field :title, :string
     belongs_to :arrow, Restbench.Arrows.Arrow
     field :type, :string

@@ -30,7 +30,7 @@ defmodule RestbenchWeb.ServerLive.Index do
     case Servers.get_server(user, id) do
       %Server{} = server ->
         socket
-        |> assign(:page_title, "Edit Server")
+        |> assign(:page_title, "Edit #{server.title} - restbench")
         |> assign(:server, server)
 
       nil ->
@@ -41,13 +41,13 @@ defmodule RestbenchWeb.ServerLive.Index do
 
   defp apply_action(socket, :new, _params) do
     socket
-    |> assign(:page_title, "New Server")
+    |> assign(:page_title, "New Server - restbench")
     |> assign(:server, %Server{})
   end
 
   defp apply_action(socket, :index, _params) do
     socket
-    |> assign(:page_title, "Listing Servers")
+    |> assign(:page_title, "Servers - restbench")
     |> assign(:server, nil)
   end
 

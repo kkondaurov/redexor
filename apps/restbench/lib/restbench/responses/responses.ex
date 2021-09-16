@@ -28,7 +28,8 @@ defmodule Restbench.Responses do
 
   defp scope(queryable, %User{id: user_id}) do
     queryable
-    |> join(:inner, [r], a in Arrow, as: :arrow, on: a.id == r.arrow_id and a.user_id == ^user_id)
+    |> join(:inner, [r], a in Arrow, on: a.id == r.arrow_id)
+    |> where([_r, a], a.user_id == ^user_id)
   end
 
   defp scope(queryable, %Admin{}), do: queryable
