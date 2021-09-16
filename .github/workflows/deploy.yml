@@ -50,6 +50,8 @@ jobs:
             /bin/bash
             export DATABASE_URL=${{ secrets.DATABASE_URL }}
             export SECRET_KEY_BASE=${{ secrets.SECRET_KEY_BASE }}
+            export MAILJET_API_KEY=${{ secrets.MAILJET_API_KEY }}
+            export MAILJET_API_SECRET=${{ secrets.MAILJET_API_SECRET }}
             cd ~/src \
             && git fetch origin \
             && git reset --hard origin/master \
