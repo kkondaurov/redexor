@@ -34,7 +34,7 @@ jobs:
       run: mix test
       env:
         SECRET_KEY_BASE: "y9f1dkbHZscl5kAiPuiL+PEhNtIvF3wErRQCm5rt++whf8xR2p2dTCKAZo7VIh2s"
-        DATABASE_URL: ecto://postgres:postgres@localhost/restbench_test
+        DATABASE_URL: ecto://postgres:postgres@localhost/redexor_test
 
   deploy:
     needs: test
@@ -65,4 +65,4 @@ jobs:
           username: ${{ secrets.PROD_HOST_USER }}
           key: ${{ secrets.PROD_SSH_KEY }}
           script: |
-            sudo service restbench restart
+            sudo service redexor restart

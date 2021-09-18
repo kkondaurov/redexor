@@ -37,7 +37,7 @@ defmodule ArrowApi.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:restbench, in_umbrella: true},
+      {:redexor, in_umbrella: true},
       {:phoenix, "~> 1.6.0-rc.0", [env: :prod, repo: "hexpm", hex: "phoenix", override: true]},
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.4"},

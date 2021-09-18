@@ -1,0 +1,64 @@
+<article>
+<h1>Listing Servers</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <%= live_modal RedexorWeb.ServerLive.FormComponent,
+    id: @server.id || :new,
+    title: @page_title,
+    action: @live_action,
+    server: @server,
+    user: @user,
+    return_to: Routes.server_index_path(@socket, :index) %>
+<% end %>
+
+<%= unless @live_action in [:new, :edit] do %>
+  <%= live_patch to: Routes.server_index_path(@socket, :new), class: "button is-small is-primary has-icons-left has-text-light" do %>
+    <span class="icon is-small">
+      <i class="fas fa-plus"></i>
+    </span>
+    <span>Create</span>
+  <% end %>
+<% end %>
+
+<%= if @servers != [] do %>
+<table class="table is-striped is-fullwidth mt-4">
+  <tbody id="servers">
+    <%= for server <- @servers do %>
+      <tr id={"server-#{server.id}"}>
+        <td style="width:50px;">
+          <%= link to: "#", phx_click: "toggle", phx_value_id: server.id do %>
+            <%= if server.enabled do %>
+              <span class="icon is-size-4 has-text-success">
+                <i class="fas fa-toggle-on"></i>
+              </span>
+            <% else %>
+              <span class="icon is-size-4 has-text-danger">
+                <i class="fas fa-toggle-off"></i>
+              </span>
+            <% end %>
+          <% end %>
+        </td>
+        <td>
+          <%= live_patch server.title, to: Routes.server_show_path(@socket, :show, server) %>
+        </td>
+        <td style="width:200px;">
+          <%= live_patch to: Routes.server_index_path(@socket, :edit, server), class: "button is-small is-warning has-icons-left" do %>
+            <span class="icon is-small">
+              <i class="fas fa-edit"></i>
+            </span>
+            <span>Edit</span>
+          <% end %>
+          <%= link to: "#", phx_click: "delete", phx_value_id: server.id, data: [confirm: "Are you sure?"], class: "button is-small is-danger has-icons-left" do %>
+            <span class="icon is-small">
+              <i class="fas fa-trash"></i>
+            </span> 
+            <span>Delete</span>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% end %>
+
+</article>

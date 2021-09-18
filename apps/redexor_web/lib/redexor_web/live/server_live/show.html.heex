@@ -1,0 +1,88 @@
+<span><%= live_redirect "Back", to: Routes.server_index_path(@socket, :index), class: "button is-light" %></span>
+
+<h1>
+  <%= link to: "#", phx_click: "toggle", phx_value_id: @server.id, class: "ml-3 mr-1" do %>
+    <%= if @server.enabled do %>
+      <span class="icon is-size-3 has-text-success">
+        <i class="fas fa-toggle-on"></i>
+      </span>
+    <% else %>
+      <span class="icon is-size-3 has-text-danger">
+        <i class="fas fa-toggle-off"></i>
+      </span>
+    <% end %>
+  <% end %>  
+  <%= @server.title %>
+</h1>
+
+<h3 class="mt-5">Routes</h3>
+
+<article>
+<%= if @live_action in [:new_route, :edit_route] do %>
+  <%= live_modal RedexorWeb.ArrowLive.FormComponent,
+    id: @arrow.id || :new,
+    title: @page_title,
+    action: @live_action,
+    arrow: @arrow,
+    user: @user,
+    server: @server,
+    return_to: Routes.server_show_path(@socket, :show, @server) %>
+<% end %>
+</article>
+
+<%= unless @live_action in [:new_route, :edit_route] do %>
+  <%= live_patch to: Routes.server_show_path(@socket, :new_route, @server.id), class: "button is-small is-primary has-icons-left has-text-light" do %>
+    <span class="icon is-small">
+      <i class="fas fa-plus"></i>
+    </span>
+    <span>Create</span>
+  <% end %>
+<% end %>
+
+<%= if @arrows != [] do %>
+<table class="table is-striped is-fullwidth mt-4">
+  <tbody id="arrow">
+    <%= for arrow <- @arrows do %>
+      <tr id={"arrow-#{arrow.id}"}>
+        <td style="width:50px;">
+          <%= link to: "#", phx_click: "toggle_route", phx_value_id: arrow.id do %>
+            <%= if arrow.enabled do %>
+              <span class="icon is-size-4 has-text-success">
+                <i class="fas fa-toggle-on"></i>
+              </span>
+            <% else %>
+              <span class="icon is-size-4 has-text-danger">
+                <i class="fas fa-toggle-off"></i>
+              </span>
+            <% end %>
+          <% end %>
+        </td>
+        <td>
+          <%= live_patch to: Routes.arrow_show_path(@socket, :show, @server.id, arrow) do %>
+            <%= arrow.title %>
+          <% end %>
+          <br/>
+          <strong><%= arrow.method %></strong>
+          <small class="has-text-grey">
+            https://<%= @server.id %>.<%= api_host() %><%= arrow.path %>
+          </small>
+        </td>        
+        <td style="width:200px;">
+          <%= live_patch to: Routes.server_show_path(@socket, :edit_route, @server.id, arrow), class: "button is-small is-warning has-icons-left" do %>
+            <span class="icon is-small">
+              <i class="fas fa-edit"></i>
+            </span>
+            <span>Edit</span>
+          <% end %>
+          <%= link to: "#", phx_click: "delete_route", phx_value_id: arrow.id, data: [confirm: "Are you sure?"], class: "button is-small is-danger has-icons-left" do %>
+            <span class="icon is-small">
+              <i class="fas fa-trash"></i>
+            </span> 
+            <span>Delete</span>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% end %>

@@ -1,9 +1,9 @@
 defmodule ArrowApi.DynamicRouterTest do
   use ArrowApi.ConnCase
 
-  alias Restbench.Support.ArrowsFixtures
-  alias Restbench.Support.AccountsFixtures
-  alias Restbench.Support.ServersFixtures
+  alias Redexor.Support.ArrowsFixtures
+  alias Redexor.Support.AccountsFixtures
+  alias Redexor.Support.ServersFixtures
 
   require Logger
 
