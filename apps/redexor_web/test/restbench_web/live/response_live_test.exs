@@ -18,7 +18,7 @@ defmodule RedexorWeb.ResponseLiveTest do
   @invalid_attrs %{
     title: nil,
     code: nil,
-    type: nil,
+    type: "JSON",
     json_body: nil,
     text_body: nil
   }
