@@ -14,7 +14,7 @@ defmodule RedexorWeb.ArrowLiveTest do
     path: "some updated path",
     title: "some updated title"
   }
-  @invalid_attrs %{enabled: false, method: nil, path: nil, title: nil}
+  @invalid_attrs %{enabled: false, method: "PUT", path: nil, title: nil}
 
   defp create_arrow(_) do
     user = AccountsFixtures.user_fixture()

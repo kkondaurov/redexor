@@ -36,7 +36,6 @@ defmodule RedexorWeb.ServerLiveTest do
 
       {:ok, _index_live, html} = live(conn, Routes.server_index_path(conn, :index))
 
-      assert html =~ "Listing Servers"
       assert html =~ server.title
     end
 

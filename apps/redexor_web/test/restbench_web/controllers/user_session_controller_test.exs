@@ -19,7 +19,7 @@ defmodule RedexorWeb.UserSessionControllerTest do
 
     test "redirects if already logged in", %{conn: conn, user: user} do
       conn = conn |> log_in_user(user) |> get(Routes.user_session_path(conn, :new))
-      assert redirected_to(conn) == "/"
+      assert redirected_to(conn) == Routes.server_index_path(conn, :index)
     end
   end
 

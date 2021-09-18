@@ -1,17 +1,10 @@
 <%= if @current_admin do %>
-  <div class="navbar-menu">
-    <div class="navbar-end">
-      <div class="buttons">
-        <%= link to: Routes.admin_settings_path(@conn, :edit), class: "navbar-item button is-light has-icons-left has-background-danger has-text-light" do %>
-          <span class="icon is-small is-left has-text-light">
-            <i class="fas fa-cog"></i>
-          </span>
-          <span><%= @current_admin.email %></span>
-        <% end %>
-        <div class="navbar-item">
-          <%= link "Log out", to: Routes.admin_session_path(@conn, :delete), method: :delete, class: "button is-light" %>
-        </div>
-      </div>
+  <div class="navbar-item has-dropdown is-right is-hoverable">
+    <a class="navbar-link has-text-danger"><span><%= @current_admin.email %></span></a>
+    <div class="navbar-dropdown">
+      <%= link "Profile", to: Routes.admin_settings_path(@conn, :edit), class: "navbar-item" %>
+      <hr class="navbar-divider">
+      <%= link "Log out", to: Routes.admin_session_path(@conn, :delete), method: :delete, class:  "navbar-item" %>
     </div>
   </div>
 <% end %>

@@ -1,23 +1,20 @@
-<div class="navbar-menu">
+<div class="navbar-start">
 <%= if @current_user do %>
-  <div class="navbar-end">
-    <div class="buttons">
-      <%= link to: Routes.user_settings_path(@conn, :edit), class: "navbar-item button is-light has-text-dark has-icons-left" do %>
-        <span class="icon is-small is-left">
-          <i class="fas fa-cog"></i>
-        </span>
-        <span><%= @current_user.email %></span>
-      <% end %>
-      <div class="navbar-item">
-        <%= link "Log out", to: Routes.user_session_path(@conn, :delete), method: :delete, class: "button is-light" %>
+    <%= live_patch "Manage Servers", to: Routes.server_index_path(@conn, :index), class: "navbar-item" %>
+<% end %>
+</div>
+<div class="navbar-end">
+  <%= if @current_user do %>
+    <div class="navbar-item has-dropdown is-right is-hoverable">
+      <a class="navbar-link"><%= @current_user.email %></a>
+      <div class="navbar-dropdown">
+        <%= link "Profile", to: Routes.user_settings_path(@conn, :edit), class: "navbar-item"%>
+        <hr class="navbar-divider">
+        <%= link "Log out", to: Routes.user_session_path(@conn, :delete), method: :delete, class: "navbar-item" %>
       </div>
     </div>
-  </div>
-<% else %>
-  <div class="navbar-start">
-  </div>
-  <div class="navbar-end">
-    <div class="buttons">
+  <% else %>
+    <div class="buttons mb-0">
       <div class="navbar-item">
         <%= link "Register", to: Routes.user_registration_path(@conn, :new), class: "button is-primary" %>
       </div>
@@ -25,6 +22,8 @@
         <%= link "Log in", to: Routes.user_session_path(@conn, :new), class: "button is-light" %>
       </div>
     </div>
-  </div>
-<% end %>
+  <% end %>
+  <%= if @current_admin do %>
+    <%= render "_admin_menu.html", assigns %>
+  <% end %>
 </div>
