@@ -17,7 +17,7 @@
 
     <div class="field">
       <%= label f, :type, class: "label" %>
-      <%= text_input f, :type, class: "input" %>
+      <%= select f, :type, @types, class: "input" %>
       <%= error_tag f, :type %>
     </div>
 

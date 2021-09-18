@@ -16,6 +16,7 @@ defmodule RedexorWeb.ArrowLive.FormComponent do
     {:ok,
      socket
      |> assign(assigns)
+     |> assign(:methods, Arrows.Arrow.allowed_methods())
      |> assign(:changeset, changeset)}
   end
 

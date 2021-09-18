@@ -16,6 +16,7 @@ defmodule RedexorWeb.ResponseLive.FormComponent do
     {:ok,
      socket
      |> assign(assigns)
+     |> assign(:types, Responses.Response.implemented_types())
      |> assign(:changeset, changeset)}
   end
 
