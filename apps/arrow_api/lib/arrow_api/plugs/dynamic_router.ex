@@ -9,8 +9,8 @@ defmodule ArrowApi.Plugs.DynamicRouter do
 
   import Plug.Conn
 
-  alias Restbench.ArrowApi.Response
-  alias Restbench.ArrowApi.Router
+  alias Redexor.ArrowApi.Response
+  alias Redexor.ArrowApi.Router
 
   def init(default), do: default
 

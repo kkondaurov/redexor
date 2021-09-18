@@ -1,4 +1,4 @@
-defmodule Restbench.Umbrella.MixProject do
+defmodule Redexor.Umbrella.MixProject do
   use Mix.Project
 
   def project do
@@ -9,9 +9,9 @@ defmodule Restbench.Umbrella.MixProject do
       deps: deps(),
       aliases: aliases(),
       releases: [
-        restbench: [
+        redexor: [
           version: "0.0.1",
-          applications: [restbench: :permanent, restbench_web: :permanent, arrow_api: :permanent]
+          applications: [redexor: :permanent, redexor_web: :permanent, arrow_api: :permanent]
         ]
       ]
     ]

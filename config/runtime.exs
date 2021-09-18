@@ -11,7 +11,7 @@ if config_env() == :prod do
       environment variable DATABASE_URL is missing.
       For example: ecto://USER:PASS@HOST/DATABASE
       """
-  config :restbench, Restbench.Repo,
+  config :redexor, Redexor.Repo,
     # ssl: true,
     url: database_url,
     pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10")
@@ -23,7 +23,7 @@ if config_env() == :prod do
       You can generate one by calling: mix phx.gen.secret
       """
 
-  config :restbench_web, RestbenchWeb.Endpoint,
+  config :redexor_web, RedexorWeb.Endpoint,
     http: [
       port: String.to_integer(System.get_env("PORT") || "4000"),
       transport_options: [socket_opts: [:inet6]]
@@ -42,7 +42,7 @@ if config_env() == :prod do
   # If you are doing OTP releases, you need to instruct Phoenix
   # to start each relevant endpoint:
 
-  config :restbench_web, RestbenchWeb.Endpoint, server: true
+  config :redexor_web, RedexorWeb.Endpoint, server: true
   config :arrow_api, ArrowApi.Endpoint, server: true
 
   mailjet_api_key =
@@ -57,7 +57,7 @@ if config_env() == :prod do
       environment variable MAILJET_API_SECRET is missing.
       """
 
-  config :restbench, Restbench.Mailer,
+  config :redexor, Redexor.Mailer,
     adapter: Swoosh.Adapters.Mailjet,
     api_key: mailjet_api_key,
     secret: mailjet_api_secret

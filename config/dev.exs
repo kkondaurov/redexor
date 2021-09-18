@@ -1,10 +1,10 @@
 use Mix.Config
 
 # Configure your database
-config :restbench, Restbench.Repo,
+config :redexor, Redexor.Repo,
   username: "postgres",
   password: "postgres",
-  database: "restbench_dev",
+  database: "redexor_dev",
   hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
@@ -15,7 +15,7 @@ config :restbench, Restbench.Repo,
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with webpack to recompile .js and .css sources.
-config :restbench_web, RestbenchWeb.Endpoint,
+config :redexor_web, RedexorWeb.Endpoint,
   http: [port: 4000],
   debug_errors: true,
   code_reloader: true,
@@ -55,14 +55,14 @@ config :arrow_api, ArrowApi.Endpoint,
 # different ports.
 
 # Watch static and templates for browser reloading.
-config :restbench_web, RestbenchWeb.Endpoint,
+config :redexor_web, RedexorWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/static/images/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/restbench_web/(live|views)/.*(ex)$",
-      ~r"lib/restbench_web/templates/.*(eex)$"
+      ~r"lib/redexor_web/(live|views)/.*(ex)$",
+      ~r"lib/redexor_web/templates/.*(eex)$"
     ]
   ]
 

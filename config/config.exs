@@ -13,19 +13,19 @@ config :arrow_api,
   generators: [context_app: false]
 
 # Configure Mix tasks and generators
-config :restbench,
-  ecto_repos: [Restbench.Repo]
+config :redexor,
+  ecto_repos: [Redexor.Repo]
 
-config :restbench_web,
-  ecto_repos: [Restbench.Repo],
-  generators: [context_app: :restbench]
+config :redexor_web,
+  ecto_repos: [Redexor.Repo],
+  generators: [context_app: :redexor]
 
 # Configures the endpoint
-config :restbench_web, RestbenchWeb.Endpoint,
+config :redexor_web, RedexorWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "FcLC40aHlktfR8s7rP5066avsylnjWjTpNVmKn3Jn/zIq49XNG0k/UuOLLOY0LgM",
-  render_errors: [view: RestbenchWeb.ErrorView, accepts: ~w(html json), layout: false],
-  pubsub_server: Restbench.PubSub,
+  render_errors: [view: RedexorWeb.ErrorView, accepts: ~w(html json), layout: false],
+  pubsub_server: Redexor.PubSub,
   live_view: [signing_salt: "r3cnCcPZ"]
 
 # Configures the endpoint
@@ -47,11 +47,11 @@ config :esbuild,
   version: "0.12.18",
   default: [
     args: ~w(js/app.js --bundle --target=es2016 --outdir=../priv/static/assets),
-    cd: Path.expand("../apps/restbench_web/assets", __DIR__),
+    cd: Path.expand("../apps/redexor_web/assets", __DIR__),
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
   ]
 
-config :restbench, Restbench.Mailer, adapter: Swoosh.Adapters.Local
+config :redexor, Redexor.Mailer, adapter: Swoosh.Adapters.Local
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
