@@ -27,13 +27,11 @@ defmodule ArrowApi.Plugs.DynamicRouter do
       body_params: conn.body_params
     )
 
-    request_params = Map.merge(conn.query_params, conn.body_params)
-
     %ApiResponse{
       code: code,
       payload: payload,
       latency: latency
-    } = Router.handle(server_id, method, path, request_params)
+    } = Router.handle(server_id, method, path, conn.query_params, conn.body_params)
 
     if latency > 0 do
       Logger.info(message: "Emulating response latency", method: method, server_id: server_id, path: path, latency: latency)
