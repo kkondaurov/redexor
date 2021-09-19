@@ -5,11 +5,11 @@ defmodule Redexor.ArrowApi.Router do
 
   require Logger
 
-  alias Redexor.ArrowApi.Response
+  alias Redexor.ArrowApi.ApiResponse
   alias Redexor.Arrows
   alias Redexor.Arrows.Arrow
 
-  @spec handle(String.t(), String.t(), String.t(), map()) :: Response.t()
+  @spec handle(String.t(), String.t(), String.t(), map()) :: ApiResponse.t()
   def handle(server_id, method, path, _params) do
     with {:server_id_valid, {:ok, server_uuid}} <- {:server_id_valid, Ecto.UUID.cast(server_id)},
          {:arrow_exists, %Arrow{} = arrow} <-
@@ -23,7 +23,7 @@ defmodule Redexor.ArrowApi.Router do
         response_id: arrow.response_id
       )
 
-      Response.build(arrow.response)
+      ApiResponse.build(arrow.response)
     else
       {:server_id_valid, _} ->
         Logger.warn(
@@ -34,7 +34,7 @@ defmodule Redexor.ArrowApi.Router do
           path: path
         )
 
-        %Response{code: 400}
+        %ApiResponse{code: 400}
 
       {:arrow_exists, nil} ->
         Logger.warn(
@@ -45,7 +45,7 @@ defmodule Redexor.ArrowApi.Router do
           path: path
         )
 
-        %Response{code: 404}
+        %ApiResponse{code: 404}
     end
   end
 end

@@ -1,9 +1,9 @@
-defmodule Redexor.ArrowApi.Response do
+defmodule Redexor.ArrowApi.ApiResponse do
   @moduledoc """
   A struct defining Arrow API response.
   """
 
-  alias Redexor.Responses.Response, as: ArrowResponse
+  alias Redexor.Responses.Response
 
   defstruct code: 200, payload: "", headers: []
 
@@ -15,14 +15,14 @@ defmodule Redexor.ArrowApi.Response do
 
   def build(nil), do: %__MODULE__{code: 200, payload: %{}}
 
-  def build(%ArrowResponse{type: "TEXT"} = resp) do
+  def build(%Response{type: "TEXT"} = resp) do
     %__MODULE__{
       code: resp.code,
       payload: resp.text_body
     }
   end
 
-  def build(%ArrowResponse{type: "JSON"} = resp) do
+  def build(%Response{type: "JSON"} = resp) do
     %__MODULE__{
       code: resp.code,
       payload: resp.json_body
