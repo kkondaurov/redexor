@@ -8,7 +8,7 @@ defmodule Redexor.Responses.Response do
 
   @allowed_codes [200, 431, 451] ++ Enum.to_list(400..429) ++ Enum.to_list(500..511)
 
-  @allowed_latencies [0, 50, 100, 200, 500, 1_000, 2_000]
+  @allowed_latencies [0, 50, 100, 200, 500, 1_000, 2_000, 5_000, 10_000, 20_000]
 
   @implemented_types ["TEXT", "JSON"]
 
