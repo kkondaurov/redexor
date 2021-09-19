@@ -8,6 +8,7 @@ defmodule Redexor.Arrows do
   alias Redexor.Admins.Admin
   alias Redexor.Arrows.Arrow
   alias Redexor.Repo
+  alias Redexor.Responses.Response
   alias Redexor.Servers.Server
 
   @spec list_arrows(User.t() | Admin.t(), String.t()) :: [Arrow.t()]
@@ -24,6 +25,7 @@ defmodule Redexor.Arrows do
     Arrow
     |> scope(user)
     |> Repo.get(id)
+    |> preload_selected_response()
   end
 
   @spec create_arrow(User.t(), Server.t(), map()) ::
@@ -53,14 +55,6 @@ defmodule Redexor.Arrows do
   end
 
   def update_arrow(_user, _arrow, _attrs), do: {:error, :unauthorized}
-
-  @spec maybe_set_response(User.t() | Admin.t(), Arrow.t(), String.t()) ::
-    {:ok, Arrow.t()} | {:error, Ecto.Changeset.t()} | {:error, :unauthorized}
-  def maybe_set_response(user, %Arrow{response_id: nil} = arrow, response_id) do
-    update_arrow(user, arrow, %{response_id: response_id})
-  end
-
-  def maybe_set_response(_user, arrow, _response_id), do: {:ok, arrow}
 
   @spec delete_arrow(User.t() | Admin.t(), Arrow.t()) ::
           {:ok, Arrow.t()} | {:error, Ecto.Changeset.t()} | {:error, :unauthorized}
@@ -110,6 +104,11 @@ defmodule Redexor.Arrows do
     |> where([r, _s], r.method == ^method and r.path == ^path)
     |> where([r, s], r.enabled and s.enabled)
     |> Repo.one()
-    |> Repo.preload([:response])
+    |> preload_selected_response()
+  end
+
+  @spec preload_selected_response(Arrow.t()) :: Arrow.t()
+  def preload_selected_response(arrow) do
+    Repo.preload(arrow, [response: from(r in Response, where: r.selected)])
   end
 end

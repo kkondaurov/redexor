@@ -3,7 +3,6 @@ defmodule RedexorWeb.ResponseLive.FormComponent do
 
   use RedexorWeb, :live_component
   require Logger
-  alias Redexor.Arrows
   alias Redexor.Responses
 
   @impl true
@@ -54,8 +53,7 @@ defmodule RedexorWeb.ResponseLive.FormComponent do
     arrow = socket.assigns[:arrow]
 
     case Responses.create_response(user, arrow, response_params) do
-      {:ok, response} ->
-        {:ok, _arrow} = Arrows.maybe_set_response(user, arrow, response.id)
+      {:ok, _response} ->
         {:noreply,
          socket
          |> put_flash(:info, "Response created successfully")

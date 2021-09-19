@@ -36,10 +36,10 @@ defmodule Redexor.Responses do
 
 
   @spec create_response(User.t(), Arrow.t(), map()) ::
-          {:ok, Response.t()} | {:error, Ecto.Changeset.t()}
-  def create_response(%User{id: user_id}, %Arrow{id: arrow_id, user_id: user_id}, attrs) do
+          {:ok, Response.t()} | {:error, Ecto.Changeset.t()} | {:error, :unauthorized}
+  def create_response(%User{id: user_id}, %Arrow{user_id: user_id} = arrow, attrs) do
     %Response{}
-    |> Ecto.Changeset.change(arrow_id: arrow_id)
+    |> Ecto.Changeset.change(arrow_id: arrow.id)
     |> Response.changeset(attrs)
     |> Repo.insert()
   end
@@ -48,7 +48,7 @@ defmodule Redexor.Responses do
 
   @spec update_response(User.t() | Admin.t(), Arrow.t(), map()) ::
           {:ok, Arrow.t()} | {:error, Ecto.Changeset.t()} | {:error, :unauthorized}
-  def update_response(%User{} = user, %Response{} = response, attrs) do
+  def update_response(user, %Response{} = response, attrs) do
     if authorized?(user, response) do
       response
       |> Response.changeset(attrs)
@@ -66,7 +66,7 @@ defmodule Redexor.Responses do
 
   @spec delete_response(User.t() | Admin.t(), Response.t()) ::
           {:ok, Response.t()} | {:error, Ecto.Changeset.t()} | {:error, :unauthorized}
-  def delete_response(%User{} = user, %Response{} = response) do
+  def delete_response(user, %Response{} = response) do
     if authorized?(user, response) do
       Repo.delete(response)
     else
@@ -74,8 +74,23 @@ defmodule Redexor.Responses do
     end
   end
 
-  def delete_response(%Admin{}, %Response{} = response) do
-    Repo.delete(response)
+  @spec set_selected(User.t(), Response.t()) ::
+    {:ok, Response.t()} | {:error, Ecto.Changeset.t()} | {:error, :unauthorized}
+  def set_selected(%User{} = user, %Response{arrow_id: arrow_id, id: response_id} = response) do
+    if authorized?(user, response) do
+      Ecto.Multi.new()
+      |> Ecto.Multi.update_all(:reset_selected, from(r in Response, where: r.arrow_id == ^arrow_id and r.id != ^response_id), set: [selected: false])
+      |> Ecto.Multi.update(:set_selected, fn _ ->
+        Ecto.Changeset.change(response, %{selected: true})
+      end)
+      |> Repo.transaction()
+      |> case do
+        {:ok, %{set_selected: %Response{} = response}} -> {:ok, response}
+        otherwise -> otherwise
+      end
+    else
+      {:error, :unauthorized}
+    end
   end
 
   defp authorized?(%User{id: user_id}, %Response{} = response) do
@@ -84,6 +99,8 @@ defmodule Redexor.Responses do
     } = Repo.preload(response, [:arrow])
     user_id == arrow_user_id
   end
+
+  defp authorized?(%Admin{}, %Response{}), do: true
 
   @spec change_response(Response.t(), map) :: Ecto.Changeset.t()
   def change_response(%Response{} = response, attrs \\ %{}) do

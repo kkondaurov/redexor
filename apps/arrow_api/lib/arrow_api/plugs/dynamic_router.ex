@@ -9,7 +9,7 @@ defmodule ArrowApi.Plugs.DynamicRouter do
 
   import Plug.Conn
 
-  alias Redexor.ArrowApi.Response
+  alias Redexor.ArrowApi.ApiResponse
   alias Redexor.ArrowApi.Router
 
   def init(default), do: default
@@ -29,7 +29,7 @@ defmodule ArrowApi.Plugs.DynamicRouter do
 
     request_params = Map.merge(conn.query_params, conn.body_params)
 
-    %Response{
+    %ApiResponse{
       code: code,
       payload: payload
     } = Router.handle(server_id, method, path, request_params)

@@ -17,7 +17,10 @@ defmodule Redexor.Arrows.Arrow do
     field :title, :string
     belongs_to :server, Redexor.Servers.Server
     belongs_to :user, Redexor.Accounts.User
-    belongs_to :response, Redexor.Responses.Response
+    # currently selected response
+    has_one :response, Redexor.Responses.Response
+    # all the route responses
+    has_many :responses, Redexor.Responses.Response
 
     timestamps()
   end
@@ -25,7 +28,7 @@ defmodule Redexor.Arrows.Arrow do
   @doc false
   def changeset(arrow, attrs) do
     arrow
-    |> cast(attrs, [:title, :path, :method, :enabled, :response_id])
+    |> cast(attrs, [:title, :path, :method, :enabled])
     |> validate_required([:title, :path, :method, :enabled])
     |> validate_inclusion(:method, @allowed_methods)
     |> update_change(:path, fn path ->

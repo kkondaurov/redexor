@@ -1,7 +1,6 @@
 defmodule Redexor.ResponsesTest do
   use Redexor.DataCase
 
-  alias Redexor.Arrows
   alias Redexor.Responses
   alias Redexor.Responses.Response
   alias Redexor.Support.AccountsFixtures
@@ -71,36 +70,40 @@ defmodule Redexor.ResponsesTest do
       })
     end
 
-    test "cannot delete response that is route's default", %{user: user, arrow: arrow} do
-      {:ok, response} = Responses.create_response(user, arrow, %{
+    test "delete_response/2 deletes proper response", %{user: user, arrow: arrow} do
+      {:ok, first_response} = Responses.create_response(user, arrow, %{
         code: 403,
         type: "TEXT",
-        text_body: "hello world!",
-        title: "response title"
+        text_body: "first_response",
+        title: "first_response"
       })
-      {:ok, _arrow} = Arrows.maybe_set_response(user, arrow, response.id)
-      assert_raise Ecto.ConstraintError, fn ->
-        Responses.delete_response(user, response)
-      end
-    end
 
-    test "can delete response that is not route's default", %{user: user, arrow: arrow} do
-      {:ok, default_response} = Responses.create_response(user, arrow, %{
-        code: 403,
-        type: "TEXT",
-        text_body: "hello world!",
-        title: "default response"
-      })
-      {:ok, _arrow} = Arrows.maybe_set_response(user, arrow, default_response.id)
-
-      {:ok, %{id: non_default_response_id} = non_default_response} = Responses.create_response(user, arrow, %{
+      {:ok, %{id: second_response_id} = second_response} = Responses.create_response(user, arrow, %{
         code: 404,
         type: "TEXT",
-        text_body: "whatever!",
-        title: "non-default response"
+        text_body: "second_response",
+        title: "second_response"
       })
-      assert {:ok, %Response{id: ^non_default_response_id}} = Responses.delete_response(user, non_default_response)
-      assert Responses.list_responses(user, arrow.id) == [default_response]
+      assert {:ok, %Response{id: ^second_response_id}} = Responses.delete_response(user, second_response)
+      assert Responses.list_responses(user, arrow.id) == [first_response]
+    end
+
+    test "set_selected/2 selects given response", %{user: user, arrow: arrow} do
+      {:ok, first_response} = Responses.create_response(user, arrow, %{
+        code: 403,
+        type: "TEXT",
+        text_body: "first_response",
+        title: "first_response"
+      })
+
+      {:ok, %{id: second_response_id} = second_response} = Responses.create_response(user, arrow, %{
+        code: 404,
+        type: "TEXT",
+        text_body: "second_response",
+        title: "second_response"
+      })
+      assert {:ok, %Response{id: ^second_response_id, selected: true}} = Responses.set_selected(user, second_response)
+      assert %Response{selected: false} = Responses.get_response(user, first_response.id)
     end
   end
 end
