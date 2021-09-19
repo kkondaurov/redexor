@@ -28,6 +28,12 @@
     </div>
 
     <div class="field">
+      <%= label f, :latency, class: "label" do %>Latency, ms<% end %>
+      <%= select f, :latency, @latencies, class: "input" %>
+      <%= error_tag f, :latency %>
+    </div>
+
+    <div class="field">
       <%= label f, :text_body, class: "label" %>
       <%= textarea f, :text_body, class: "textarea" %>
       <%= error_tag f, :text_body %>
