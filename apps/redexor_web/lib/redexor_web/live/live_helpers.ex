@@ -28,6 +28,6 @@ defmodule RedexorWeb.LiveHelpers do
 
   def format_response_body(%Response{} = response), do: Response.to_html(response)
 
-  def mark_arrow_response(response_id, response_id), do: "default-response"
+  def mark_arrow_response(%Response{id: response_id}, response_id), do: "default-response"
   def mark_arrow_response(_, _), do: ""
 end

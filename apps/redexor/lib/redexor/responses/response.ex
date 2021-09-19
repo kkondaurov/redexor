@@ -14,7 +14,8 @@ defmodule Redexor.Responses.Response do
   @foreign_key_type :binary_id
   schema "responses" do
     field :title, :string
-    belongs_to :arrow, Redexor.Arrows.Arrow, on_replace: :nilify
+    belongs_to :arrow, Redexor.Arrows.Arrow
+    field :selected, :boolean, default: false
     field :type, :string
     field :code, :integer
     field :text_body, :string
@@ -26,8 +27,8 @@ defmodule Redexor.Responses.Response do
   @doc false
   def changeset(response, attrs) do
     response
-    |> cast(attrs, [:title, :type, :code, :arrow_id])
-    |> validate_required([:title, :type, :code])
+    |> cast(attrs, [:title, :type, :code, :arrow_id, :selected])
+    |> validate_required([:title, :type, :code, :selected])
     |> validate_inclusion(:type, @implemented_types)
     |> validate_inclusion(:code, @allowed_codes)
     |> validate_body(attrs)

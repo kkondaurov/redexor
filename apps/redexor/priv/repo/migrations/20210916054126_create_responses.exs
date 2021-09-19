@@ -5,7 +5,8 @@ defmodule Redexor.Repo.Migrations.CreateResponses do
     create table(:responses, primary_key: false) do
       add :id, :binary_id, primary_key: true
       add :title, :string
-      add :arrow_id, references(:arrows, type: :uuid, on_delete: :nothing)
+      add :arrow_id, references(:arrows, type: :uuid, on_delete: :delete_all)
+      add :selected, :boolean, default: false
       add :type, :string
       add :code, :integer
       add :text_body, :text
@@ -15,9 +16,6 @@ defmodule Redexor.Repo.Migrations.CreateResponses do
     end
 
     create index(:responses, [:arrow_id])
-
-    alter table(:arrows) do
-      add :response_id, references(:responses, type: :uuid, on_delete: :nothing)
-    end
+    create unique_index(:responses, [:arrow_id, :selected], where: "selected = true")
   end
 end

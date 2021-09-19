@@ -95,17 +95,17 @@ defmodule RedexorWeb.ArrowLive.Show do
     end
   end
 
-  def handle_event("activate_response", %{"id" => id}, socket) do
+  def handle_event("select_response", %{"id" => id}, socket) do
     user = socket.assigns[:user]
     arrow = socket.assigns[:arrow]
 
     case Responses.get_response(user, id) do
       %Response{} = response ->
-        {:ok, arrow} = Arrows.update_arrow(user, arrow, %{response_id: id})
+        {:ok, _response} = Responses.set_selected(user, response)
         socket =
           socket
           |> assign(:responses, Responses.list_responses(user, response.arrow_id))
-          |> assign(:arrow, arrow)
+          |> assign(:arrow, Arrows.get_arrow(user, arrow.id))
         {:noreply, socket}
 
       nil ->

@@ -35,25 +35,22 @@
 </article>
 
 <%= unless @live_action in [:new_response, :edit_response] do %>
-    <%= if is_nil(@arrow.response_id) do %>
-        <div class="notification is-danger is-light">This route has no responses</div>
-    <% end %>
-    <%= live_patch to: Routes.arrow_show_path(@socket, :new_response, @arrow.server_id, @arrow), class: "button is-small is-primary has-icons-left has-text-light" do %>
-        <span class="icon is-small">
-        <i class="fas fa-plus"></i>
-        </span>
-        <span>Create</span>
-    <% end %>  
+  <%= live_patch to: Routes.arrow_show_path(@socket, :new_response, @arrow.server_id, @arrow), class: "button is-small is-primary has-icons-left has-text-light" do %>
+      <span class="icon is-small">
+      <i class="fas fa-plus"></i>
+      </span>
+      <span>Create</span>
+  <% end %>  
 <% end %>
 
 <%= if @responses != [] do %>
 <table class="table is-striped is-fullwidth mt-4">
   <tbody id="response">
     <%= for response <- @responses do %>
-      <tr id={"response-#{response.id}"} class={"#{mark_arrow_response(@arrow.response_id, response.id)}"}>
+      <tr id={"response-#{response.id}"} class={"#{mark_arrow_response(@arrow.response, response.id)}"}>
         <td style="width:50px;">
-          <%= link to: "#", phx_click: "activate_response", phx_value_id: response.id do %>
-            <%= if response.id == @arrow.response_id do %>
+          <%= link to: "#", phx_click: "select_response", phx_value_id: response.id, class: "select-response" do %>
+            <%= if @arrow.response && response.id == @arrow.response.id do %>
               <span class="icon is-size-4 has-text-success">
                 <i class="fas fa-dot-circle"></i>
               </span>
@@ -80,7 +77,7 @@
             </span>
             <span>Edit</span>
           <% end %>
-          <%= unless response.id == @arrow.response_id do %>
+          <%= unless @arrow.response && response.id == @arrow.response.id do %>
             <%= link to: "#", phx_click: "delete_response", phx_value_id: response.id, data: [confirm: "Are you sure?"], class: "button is-small is-danger has-icons-left" do %>
                 <span class="icon is-small">
                 <i class="fas fa-trash"></i>
@@ -94,8 +91,3 @@
   </tbody>
 </table>
 <% end %>
-
-<script>
-(function() {
-})();
-</script>

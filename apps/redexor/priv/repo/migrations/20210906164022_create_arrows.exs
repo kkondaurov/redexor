@@ -8,7 +8,7 @@ defmodule Redexor.Repo.Migrations.CreateArrows do
       add :path, :string
       add :method, :string
       add :enabled, :boolean, default: false, null: false
-      add :server_id, references(:servers, type: :uuid, on_delete: :nothing)
+      add :server_id, references(:servers, type: :uuid, on_delete: :delete_all)
       add :user_id, references(:users, type: :uuid, on_delete: :nothing)
 
       timestamps()

@@ -20,7 +20,7 @@ defmodule Redexor.ArrowApi.Router do
         method: method,
         path: path,
         arrow_id: arrow.id,
-        response_id: arrow.response_id
+        response_id: arrow.response.id
       )
 
       ApiResponse.build(arrow.response)

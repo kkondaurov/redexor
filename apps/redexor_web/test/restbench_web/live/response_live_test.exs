@@ -41,7 +41,7 @@ defmodule RedexorWeb.ResponseLiveTest do
   describe "ArrowShow" do
     setup [:create_arrow]
 
-    test "given a route without responses, a created response is listed for the route and is its default", %{
+    test "given a route without responses, a created response is listed for the route", %{
       conn: conn,
       user: user,
       server: server,
@@ -49,31 +49,30 @@ defmodule RedexorWeb.ResponseLiveTest do
     } do
       conn = authenticate_user(conn, user)
 
-      {:ok, index_live, html} = live(conn, Routes.arrow_show_path(conn, :show, server, arrow))
+      {:ok, show_live, html} = live(conn, Routes.arrow_show_path(conn, :show, server, arrow))
 
       assert html =~ arrow.title
 
-      assert index_live |> element("a", "Create") |> render_click() =~
+      assert show_live |> element("a", "Create") |> render_click() =~
                "New Response"
 
-      assert_patch(index_live, Routes.arrow_show_path(conn, :new_response, server.id, arrow.id))
+      assert_patch(show_live, Routes.arrow_show_path(conn, :new_response, server.id, arrow.id))
 
-      assert index_live
+      assert show_live
              |> form("#response-form", response: @invalid_attrs)
              |> render_change() =~ "can&#39;t be blank"
 
-      {:ok, show_live, html} =
-        index_live
+      {:ok, _show_live, html} =
+        show_live
         |> form("#response-form", response: @create_attrs)
         |> render_submit()
         |> follow_redirect(conn, Routes.arrow_show_path(conn, :show, server.id, arrow.id))
 
       assert html =~ "Response created successfully"
       assert html =~ @create_attrs.title
-      assert show_live |> element("#response", @create_attrs.title) |> render() =~ "default-response"
     end
 
-    test "given a route with a response, a created response is listed, but route's default response is unchanged", %{
+    test "response can be selected", %{
       conn: conn,
       user: user,
       server: server,
@@ -81,48 +80,23 @@ defmodule RedexorWeb.ResponseLiveTest do
     } do
       conn = authenticate_user(conn, user)
 
-      {:ok, index_live, html} = live(conn, Routes.arrow_show_path(conn, :show, server, arrow))
+      {:ok, show_live, _html} = live(conn, Routes.arrow_show_path(conn, :show, server, arrow))
 
-      assert html =~ arrow.title
-
-      assert index_live |> element("a", "Create") |> render_click() =~
-               "New Response"
-
-      assert_patch(index_live, Routes.arrow_show_path(conn, :new_response, server.id, arrow.id))
-
-      assert index_live
-             |> form("#response-form", response: @invalid_attrs)
-             |> render_change() =~ "can&#39;t be blank"
+      # Create first response
+      assert show_live |> element("a", "Create") |> render_click() =~ "New Response"
+      assert_patch(show_live, Routes.arrow_show_path(conn, :new_response, server.id, arrow.id))
 
       {:ok, show_live, html} =
-        index_live
+        show_live
         |> form("#response-form", response: @create_attrs)
         |> render_submit()
         |> follow_redirect(conn, Routes.arrow_show_path(conn, :show, server.id, arrow.id))
 
       assert html =~ "Response created successfully"
       assert html =~ @create_attrs.title
-      assert show_live |> element("#response tr", @create_attrs.title) |> render() =~ "default-response"
 
-      # "Reload" the page
-      {:ok, index_live, html} = live(conn, Routes.arrow_show_path(conn, :show, server, arrow))
-
-      assert html =~ @create_attrs.title
-
-      assert index_live |> element("a", "Create") |> render_click() =~
-               "New Response"
-
-      assert_patch(index_live, Routes.arrow_show_path(conn, :new_response, server.id, arrow.id))
-
-      {:ok, show_live, html} =
-        index_live
-        |> form("#response-form", response: %{@create_attrs | title: "Second response"})
-        |> render_submit()
-        |> follow_redirect(conn, Routes.arrow_show_path(conn, :show, server.id, arrow.id))
-
-      assert html =~ "Response created successfully"
-      assert html =~ "Second response"
-      refute show_live |> element("#response tr", "Second response") |> render() =~ "default-response"
+      # Select the created response
+      assert show_live |> element("a.select-response") |> render_click()
       assert show_live |> element("#response tr", @create_attrs.title) |> render() =~ "default-response"
     end
   end

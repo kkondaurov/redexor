@@ -38,7 +38,7 @@ defmodule Redexor.ArrowApiRouterTest do
         text_body: "hello world!",
         title: "response title"
       })
-      {:ok, arrow} = Arrows.maybe_set_response(user, arrow, response.id)
+      {:ok, _} = Responses.set_selected(user, response)
       assert %ApiResponse{code: 403, payload: "hello world!"} = Router.handle(server.id, arrow.method, arrow.path, %{})
     end
 
@@ -49,7 +49,7 @@ defmodule Redexor.ArrowApiRouterTest do
         json_body: "{\"foo\":\"bar\"}",
         title: "response title"
       })
-      {:ok, arrow} = Arrows.maybe_set_response(user, arrow, response.id)
+      {:ok, _} = Responses.set_selected(user, response)
       assert %ApiResponse{code: 403, payload:  %{"foo" => "bar"}} = Router.handle(server.id, arrow.method, arrow.path, %{})
     end
 

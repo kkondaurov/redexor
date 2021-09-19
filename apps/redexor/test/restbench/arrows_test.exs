@@ -23,12 +23,12 @@ defmodule Redexor.ArrowsTest do
       assert Arrows.list_arrows(user, server.id) == [arrow]
     end
 
-    test "get_arrow!/1 returns the arrow with given id", %{
+    test "get_arrow/1 returns the arrow with given id", %{
       user: user,
       server: server
     } do
-      arrow = arrow_fixture(user, server)
-      assert Arrows.get_arrow(user, arrow.id) == arrow
+      %Arrow{id: arrow_id} = arrow_fixture(user, server)
+      assert %Arrow{id: ^arrow_id} = Arrows.get_arrow(user, arrow_id)
     end
 
     test "create_arrow/3 with valid data creates a arrow", %{
@@ -77,11 +77,23 @@ defmodule Redexor.ArrowsTest do
       user: user,
       server: server
     } do
-      arrow = arrow_fixture(user, server)
+      %Arrow{
+        id: arrow_id,
+        enabled: enabled,
+        method: method,
+        path: path,
+        title: title
+      } = arrow = arrow_fixture(user, server)
 
       assert {:error, %Ecto.Changeset{}} = Arrows.update_arrow(user, arrow, @invalid_attrs)
 
-      assert arrow == Arrows.get_arrow(user, arrow.id)
+      assert %Arrow{
+        id: ^arrow_id,
+        enabled: ^enabled,
+        method: ^method,
+        path: ^path,
+        title: ^title
+      } = Arrows.get_arrow(user, arrow_id)
     end
 
     test "update_arrow/2 adds a leading slash", %{
