@@ -31,8 +31,14 @@ defmodule ArrowApi.Plugs.DynamicRouter do
 
     %ApiResponse{
       code: code,
-      payload: payload
+      payload: payload,
+      latency: latency
     } = Router.handle(server_id, method, path, request_params)
+
+    if latency > 0 do
+      Logger.info(message: "Emulating response latency", method: method, server_id: server_id, path: path, latency: latency)
+      Process.sleep(latency)
+    end
 
     conn
     |> put_status(code)
