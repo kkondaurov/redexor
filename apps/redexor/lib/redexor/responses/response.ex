@@ -8,6 +8,8 @@ defmodule Redexor.Responses.Response do
 
   @allowed_codes [200, 431, 451] ++ Enum.to_list(400..429) ++ Enum.to_list(500..511)
 
+  @allowed_latencies [0, 50, 100, 200, 500, 1_000, 2_000, 5_000, 10_000, 20_000]
+
   @implemented_types ["TEXT", "JSON"]
 
   @primary_key {:id, :binary_id, autogenerate: true}
@@ -18,6 +20,7 @@ defmodule Redexor.Responses.Response do
     field :selected, :boolean, default: false
     field :type, :string
     field :code, :integer
+    field :latency, :integer, default: 0
     field :text_body, :string
     field :json_body, :map
 
@@ -27,10 +30,11 @@ defmodule Redexor.Responses.Response do
   @doc false
   def changeset(response, attrs) do
     response
-    |> cast(attrs, [:title, :type, :code, :arrow_id, :selected])
+    |> cast(attrs, [:title, :type, :code, :arrow_id, :selected, :latency])
     |> validate_required([:title, :type, :code, :selected])
     |> validate_inclusion(:type, @implemented_types)
     |> validate_inclusion(:code, @allowed_codes)
+    |> validate_inclusion(:latency, @allowed_latencies)
     |> validate_body(attrs)
   end
 
@@ -68,6 +72,7 @@ defmodule Redexor.Responses.Response do
 
   def allowed_codes, do: @allowed_codes
   def implemented_types, do: @implemented_types
+  def allowed_latencies, do: @allowed_latencies
 
   def to_html(%__MODULE__{type: "TEXT", text_body: text_body}), do: text_body
 
