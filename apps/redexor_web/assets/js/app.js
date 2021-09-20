@@ -20,14 +20,28 @@ let Hooks = {}
 Hooks.ToggleResponseBody = {
   mounted() {
     this.el.addEventListener("click", e => {
-        let rbe = e.target.nextElementSibling;
+        const rbe = e.target.nextElementSibling;
         rbe.style.display = rbe.style.display === "none" ? "" : "none" ;
+    })
+  }
+}
+Hooks.ToggleLogDetails = {
+  mounted() {
+    this.el.addEventListener("click", e => {
+        const el = document.getElementById(e.target.dataset["toggleTarget"])
+        el.style.display = el.style.display === "none" ? "" : "none" ;
     })
   }
 }
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
-let liveSocket = new LiveSocket("/live", Socket, {params: {_csrf_token: csrfToken}, hooks: Hooks})
+let liveSocket = new LiveSocket("/live", Socket, {
+  params: {
+    _csrf_token: csrfToken,
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+  },
+  hooks: Hooks
+})
 
 // Connect if there are any LiveViews on the page
 liveSocket.connect()

@@ -22,7 +22,7 @@ defmodule Redexor.Repo.Migrations.CreateLogs do
     create index(:request_log, [:arrow_id])
   end
 
-  defp create_monthly_partitions(table, start_date, 0), do: :ok
+  defp create_monthly_partitions(_table, _start_date, 0), do: :ok
   defp create_monthly_partitions(table, start_date, months) do
     start_date = Date.beginning_of_month(start_date)
     end_date = Date.end_of_month(start_date)

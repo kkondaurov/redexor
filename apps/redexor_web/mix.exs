@@ -52,7 +52,8 @@ defmodule RedexorWeb.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
       {:esbuild, "~> 0.2", runtime: Mix.env() == :dev},
-      {:floki, ">= 0.30.0", only: :test}
+      {:floki, ">= 0.30.0", only: :test},
+      {:timex, "~> 3.7"}
     ]
   end
 

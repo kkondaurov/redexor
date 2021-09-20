@@ -1,4 +1,6 @@
 defmodule Redexor.RequestLog.RequestLogEntry do
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
 
