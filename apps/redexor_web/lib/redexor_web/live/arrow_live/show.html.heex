@@ -19,9 +19,22 @@
 <b><%= @arrow.method %></b> https://<%= @arrow.server_id %>.<%= api_host() %><%= @arrow.path %>
 </pre>
 
-<%= if @arrow.response do %>
-  <p class="mt-3"><strong>Latency:</strong> <%= @arrow.response.latency %> ms</p>
-<% end %>
+<div class="buttons mt-3">
+  <%= live_patch to: Routes.arrow_log_path(@socket, :index, @arrow.server_id, @arrow), class: "button is-small is-info has-icons-left" do %>
+    <span class="icon is-small">
+      <i class="fas fa-clipboard-list"></i>
+    </span>
+    <span>View Log</span>
+  <% end %>
+  <%= if @arrow.response do %>
+    <span class="button is-small is-gray has-icons-left" style="cursor:default;">
+      <span class="icon is-small">
+        <i class="fas fa-hourglass-half"></i>
+      </span>
+      Current Latency&nbsp;<strong><%= @arrow.response.latency %> ms</strong>
+    </span>
+  <% end %>
+</div>
 
 <h3 class="mt-5">Responses</h3>
 

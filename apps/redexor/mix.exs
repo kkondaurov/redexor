@@ -48,7 +48,8 @@ defmodule Redexor.MixProject do
       {:ecto_psql_extras, "~> 0.6"},
       {:esbuild, "~> 0.2", runtime: Mix.env() == :dev},
       {:swoosh, "~> 1.4"},
-      {:hackney, "~> 1.9"}
+      {:hackney, "~> 1.9"},
+      {:phoenix_pubsub, "~> 2.0"}
     ]
   end
 
