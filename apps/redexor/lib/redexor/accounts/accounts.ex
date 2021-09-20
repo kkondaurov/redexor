@@ -228,7 +228,9 @@ defmodule Redexor.Accounts do
   """
   def get_user_by_session_token(token) do
     {:ok, query} = UserToken.verify_session_token_query(token)
-    Repo.one(query)
+    query
+    |> where([_, u], not u.blocked)
+    |> Repo.one()
   end
 
   @doc """
@@ -347,4 +349,38 @@ defmodule Redexor.Accounts do
       {:error, :user, changeset, _} -> {:error, changeset}
     end
   end
+
+  @spec list() :: [User.t()]
+  def list() do
+    User
+    |> order_by(desc: :id)
+    |> join(:left, [u], s in Redexor.Servers.Server, on: s.user_id == u.id)
+    |> join(:left, [u, _s], r in Redexor.RdxRoutes.RdxRoute, on: r.user_id == u.id)
+    |> join(:left, [u, _s, r], e in Redexor.RequestLog.RequestLogEntry, on: e.rdx_route_id == r.id)
+    |> group_by([u, _s, _r], u.id)
+    |> select([u, s, r, e], %{u |
+      server_count: count(s.id, :distinct),
+      route_count: count(r.id, :distinct),
+      last_request_at: max(e.inserted_at)
+    })
+    |> Repo.all()
+  end
+
+  # TODO use Ecto.Multi transaction
+  def toggle_blocked!(user) do
+    user
+    |> User.blocked_changeset()
+    |> Repo.update!()
+    |> maybe_delete_token()
+    |> Redexor.Servers.disable_servers_of_blocked_user()
+  end
+
+  defp maybe_delete_token(%User{blocked: false} = user), do: user
+  defp maybe_delete_token(%User{id: user_id, blocked: true} = user) do
+    from(ut in UserToken, where: ut.user_id == ^user_id and ut.context == "session")
+    |> Repo.delete_all()
+
+    user
+  end
+
 end

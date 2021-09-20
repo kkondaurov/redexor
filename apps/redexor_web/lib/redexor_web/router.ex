@@ -51,6 +51,9 @@ defmodule RedexorWeb.Router do
       get "/settings", AdminSettingsController, :edit
       put "/settings", AdminSettingsController, :update
       get "/settings/confirm_email/:token", AdminSettingsController, :confirm_email
+
+      get "/users", AdminUsersController, :index
+      post "/users/:id/toggle_blocked", AdminUsersController, :toggle_blocked
     end
 
     live_dashboard "/live_dashboard",

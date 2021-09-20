@@ -1,0 +1,35 @@
+<h1>Users</h1>
+
+<table class="table is-striped is-fullwidth mt-4">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Created</th>
+            <th>Confirmed</th>
+            <th>Servers</th>
+            <th>Routes</th>
+            <th>Last request</th>
+            <th></th>            
+        </tr>
+    </thead>
+  <tbody id="users">
+    <%= for user <- @users do %>
+      <tr id={"user-#{user.id}"}>
+        <td><%= user.email %></td>
+        <td><%= format_datetime user.inserted_at, timezone: "Etc/UTC" %></td>
+        <td><%= user.confirmed_at && format_datetime(user.confirmed_at, timezone: "Etc/UTC") || "Never" %></td>
+        <td><%= user.server_count %></td>
+        <td><%= user.route_count %></td>
+        <td><%= user.last_request_at && format_datetime(user.last_request_at, timezone: "Etc/UTC") || "Never" %></td>
+        <td>
+            <%= link to: Routes.admin_users_path(@conn, :toggle_blocked, user.id), method: :post, class: "button is-small #{block_toggle_class(user)} has-icons-left" do %>
+                <span class="icon is-small">
+                <i class="fas fa-trash"></i>
+                </span> 
+                <span><%= block_toggle_label(user) %></span>
+            <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
