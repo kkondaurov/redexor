@@ -12,6 +12,7 @@ defmodule Redexor.Accounts.User do
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
+    field :blocked, :boolean, default: false
 
     field :server_count, :integer, virtual: true
     field :route_count, :integer, virtual: true
@@ -143,5 +144,9 @@ defmodule Redexor.Accounts.User do
     else
       add_error(changeset, :current_password, "is not valid")
     end
+  end
+
+  def blocked_changeset(%Redexor.Accounts.User{blocked: blocked} = user) do
+    change(user, blocked: !blocked)
   end
 end

@@ -363,4 +363,10 @@ defmodule Redexor.Accounts do
     })
     |> Repo.all()
   end
+
+  def toggle_blocked!(user) do
+    user
+    |> User.blocked_changeset()
+    |> Repo.update!()
+  end
 end

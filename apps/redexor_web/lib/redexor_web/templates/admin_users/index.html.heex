@@ -21,7 +21,14 @@
         <td><%= user.server_count %></td>
         <td><%= user.route_count %></td>
         <td><%= user.last_request_at && format_datetime(user.last_request_at, timezone: "Etc/UTC") || "Never" %></td>
-        <td></td>
+        <td>
+            <%= link to: Routes.admin_users_path(@conn, :toggle_blocked, user.id), method: :post, class: "button is-small #{block_toggle_class(user)} has-icons-left" do %>
+                <span class="icon is-small">
+                <i class="fas fa-trash"></i>
+                </span> 
+                <span><%= block_toggle_label(user) %></span>
+            <% end %>
+        </td>
       </tr>
     <% end %>
   </tbody>
