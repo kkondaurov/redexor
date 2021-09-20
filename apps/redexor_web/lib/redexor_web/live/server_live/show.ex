@@ -4,8 +4,8 @@ defmodule RedexorWeb.ServerLive.Show do
   use RedexorWeb, :live_view
 
   alias Redexor.Accounts.User
-  alias Redexor.Arrows
-  alias Redexor.Arrows.Arrow
+  alias Redexor.RdxRoutes
+  alias Redexor.RdxRoutes.RdxRoute
   alias Redexor.Servers
   alias Redexor.Servers.Server
 
@@ -30,7 +30,7 @@ defmodule RedexorWeb.ServerLive.Show do
           socket
           |> assign(:page_title, page_title(socket.assigns.live_action, server))
           |> assign(:server, server)
-          |> assign(:arrows, Arrows.list_arrows(user, server.id))
+          |> assign(:rdx_routes, RdxRoutes.list_rdx_routes(user, server.id))
           |> assign(:id, server.id)
           |> apply_action(socket.assigns.live_action, params)
 
@@ -42,14 +42,14 @@ defmodule RedexorWeb.ServerLive.Show do
     end
   end
 
-  defp apply_action(socket, :edit_route, %{"arrow_id" => id} = _params) do
+  defp apply_action(socket, :edit_route, %{"rdx_route_id" => id} = _params) do
     user = socket.assigns[:user]
 
-    case Arrows.get_arrow(user, id) do
-      %Arrow{} = arrow ->
+    case RdxRoutes.get_rdx_route(user, id) do
+      %RdxRoute{} = rdx_route ->
         socket
         |> assign(:id, socket.assigns.server.id)
-        |> assign(:arrow, arrow)
+        |> assign(:rdx_route, rdx_route)
 
       nil ->
         socket
@@ -60,7 +60,7 @@ defmodule RedexorWeb.ServerLive.Show do
 
   defp apply_action(socket, :new_route, _params) do
     socket
-    |> assign(:arrow, %Arrow{})
+    |> assign(:rdx_route, %RdxRoute{})
   end
 
   defp apply_action(socket, _action, _params), do: socket
@@ -84,10 +84,10 @@ defmodule RedexorWeb.ServerLive.Show do
     user = socket.assigns[:user]
     server = socket.assigns[:server]
 
-    case Arrows.get_arrow(user, id) do
-      %Arrow{} = arrow ->
-        {:ok, _arrow} = Arrows.delete_arrow(user, arrow)
-        socket = assign(socket, :arrows, Arrows.list_arrows(user, server.id))
+    case RdxRoutes.get_rdx_route(user, id) do
+      %RdxRoute{} = rdx_route ->
+        {:ok, _rdx_route} = RdxRoutes.delete_rdx_route(user, rdx_route)
+        socket = assign(socket, :rdx_routes, RdxRoutes.list_rdx_routes(user, server.id))
         {:noreply, socket}
 
       nil ->
@@ -100,10 +100,10 @@ defmodule RedexorWeb.ServerLive.Show do
     user = socket.assigns[:user]
     server = socket.assigns[:server]
 
-    case Arrows.get_arrow(user, id) do
-      %Arrow{} = arrow ->
-        {:ok, _arrow} = Arrows.toggle_arrow(user, arrow)
-        socket = assign(socket, :arrows, Arrows.list_arrows(user, server.id))
+    case RdxRoutes.get_rdx_route(user, id) do
+      %RdxRoute{} = rdx_route ->
+        {:ok, _rdx_route} = RdxRoutes.toggle_rdx_route(user, rdx_route)
+        socket = assign(socket, :rdx_routes, RdxRoutes.list_rdx_routes(user, server.id))
         {:noreply, socket}
 
       nil ->

@@ -101,12 +101,12 @@ defmodule RedexorWeb.Router do
       live "/:id/show/edit", ServerLive.Show, :edit
 
       live "/:id/routes/new", ServerLive.Show, :new_route
-      live "/:id/routes/:arrow_id/edit", ServerLive.Show, :edit_route
+      live "/:id/routes/:rdx_route_id/edit", ServerLive.Show, :edit_route
 
-      live "/:id/routes/:arrow_id/", ArrowLive.Show, :show
-      live "/:id/routes/:arrow_id/log", ArrowLive.Log, :index
-      live "/:id/routes/:arrow_id/responses/new", ArrowLive.Show, :new_response
-      live "/:id/routes/:arrow_id/responses/:response_id/edit", ArrowLive.Show, :edit_response
+      live "/:id/routes/:rdx_route_id/", RdxRouteLive.Show, :show
+      live "/:id/routes/:rdx_route_id/log", RdxRouteLive.Log, :index
+      live "/:id/routes/:rdx_route_id/response_templates/new", RdxRouteLive.Show, :new_response
+      live "/:id/routes/:rdx_route_id/response_templates/:response_id/edit", RdxRouteLive.Show, :edit_response
     end
   end
 

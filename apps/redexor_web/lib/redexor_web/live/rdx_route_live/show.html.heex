@@ -1,0 +1,110 @@
+<span><%= live_redirect "Back", to: Routes.server_show_path(@socket, :show, @rdx_route.server_id), class: "button is-light" %></span>
+
+<h1>
+  <%= link to: "#", phx_click: "toggle", phx_value_id: @rdx_route.id, class: "ml-3 mr-1" do %>
+    <%= if @rdx_route.enabled do %>
+      <span class="icon is-size-3 has-text-success">
+        <i class="fas fa-toggle-on"></i>
+      </span>
+    <% else %>
+      <span class="icon is-size-3 has-text-danger">
+        <i class="fas fa-toggle-off"></i>
+      </span>
+    <% end %>
+  <% end %>  
+  <%= @rdx_route.title %>
+</h1>
+
+<pre>
+<b><%= @rdx_route.method %></b> https://<%= @rdx_route.server_id %>.<%= api_host() %><%= @rdx_route.path %>
+</pre>
+
+<div class="buttons mt-3">
+  <%= live_patch to: Routes.rdx_route_log_path(@socket, :index, @rdx_route.server_id, @rdx_route), class: "button is-small is-info has-icons-left" do %>
+    <span class="icon is-small">
+      <i class="fas fa-clipboard-list"></i>
+    </span>
+    <span>View Log</span>
+  <% end %>
+  <%= if @rdx_route.response_template do %>
+    <span class="button is-small is-gray has-icons-left" style="cursor:default;">
+      <span class="icon is-small">
+        <i class="fas fa-hourglass-half"></i>
+      </span>
+      Current Latency&nbsp;<strong><%= @rdx_route.response_template.latency %> ms</strong>
+    </span>
+  <% end %>
+</div>
+
+<h3 class="mt-5">Response Templates</h3>
+
+<article>
+<%= if @live_action in [:new_response, :edit_response] do %>
+  <%= live_modal RedexorWeb.ResponseLive.FormComponent,
+    id: @response_template.id || :new,
+    title: @page_title,
+    action: @live_action,
+    rdx_route: @rdx_route,
+    user: @user,
+    response_template: @response_template,
+    return_to: Routes.rdx_route_show_path(@socket, :show, @rdx_route.server_id, @rdx_route) %>
+<% end %>
+</article>
+
+<%= unless @live_action in [:new_response, :edit_response] do %>
+  <%= live_patch to: Routes.rdx_route_show_path(@socket, :new_response, @rdx_route.server_id, @rdx_route), class: "button is-small is-primary has-icons-left has-text-light" do %>
+      <span class="icon is-small">
+      <i class="fas fa-plus"></i>
+      </span>
+      <span>Create</span>
+  <% end %>  
+<% end %>
+
+<%= if @response_templates != [] do %>
+<table class="table is-striped is-fullwidth mt-4">
+  <tbody id="response_template">
+    <%= for response_template <- @response_templates do %>
+      <tr id={"response_template-#{response_template.id}"} class={"#{mark_rdx_route_response(@rdx_route.response_template, response_template.id)}"}>
+        <td style="width:50px;">
+          <%= link to: "#", phx_click: "select_response", phx_value_id: response_template.id, class: "select-response_template" do %>
+            <%= if @rdx_route.response_template && response_template.id == @rdx_route.response_template.id do %>
+              <span class="icon is-size-4 has-text-success">
+                <i class="fas fa-dot-circle"></i>
+              </span>
+            <% else %>
+              <span class="icon is-size-4 has-text-grey-light">
+                <i class="fas fa-dot-circle"></i>
+              </span>
+            <% end %>
+          <% end %>
+        </td>
+        <td style="width:50px;">
+        <b><%= response_template.code %></b>
+        </td>
+        <td>
+          <a href="#" id={"body-toggle-#{response_template.id}"} phx-hook="ToggleResponseBody">
+            <%= response_template.title %>
+          </a>
+          <pre style="display:none;"><%= format_response_body(response_template) %></pre>
+        </td>        
+        <td style="width:200px;">
+          <%= live_patch to: Routes.rdx_route_show_path(@socket, :edit_response, @rdx_route.server_id, response_template.rdx_route_id, response_template.id), class: "button is-small is-warning has-icons-left" do %>
+            <span class="icon is-small">
+              <i class="fas fa-edit"></i>
+            </span>
+            <span>Edit</span>
+          <% end %>
+          <%= unless @rdx_route.response_template && response_template.id == @rdx_route.response_template.id do %>
+            <%= link to: "#", phx_click: "delete_response", phx_value_id: response_template.id, data: [confirm: "Are you sure?"], class: "button is-small is-danger has-icons-left" do %>
+                <span class="icon is-small">
+                <i class="fas fa-trash"></i>
+                </span> 
+                <span>Delete</span>
+            <% end %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% end %>

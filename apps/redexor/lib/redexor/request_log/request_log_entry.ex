@@ -8,7 +8,7 @@ defmodule Redexor.RequestLog.RequestLogEntry do
 
   @foreign_key_type :binary_id
   schema "request_log" do
-    belongs_to :arrow, Redexor.Arrows.Arrow
+    belongs_to :rdx_route, Redexor.RdxRoutes.RdxRoute
     field :response_code, :integer
     field :latency, :integer
     field :inserted_at, :utc_datetime
@@ -19,7 +19,7 @@ defmodule Redexor.RequestLog.RequestLogEntry do
 
   def changeset(entry, attrs) do
     entry
-    |> cast(attrs, [:arrow_id, :response_code, :latency, :inserted_at, :response_body, :query_params, :body_params])
-    |> validate_required([:arrow_id, :response_code, :latency])
+    |> cast(attrs, [:rdx_route_id, :response_code, :latency, :inserted_at, :response_body, :query_params, :body_params])
+    |> validate_required([:rdx_route_id, :response_code, :latency])
   end
 end

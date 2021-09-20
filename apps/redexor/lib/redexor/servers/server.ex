@@ -13,7 +13,7 @@ defmodule Redexor.Servers.Server do
     field :title, :string
     belongs_to :user, Redexor.Accounts.User
 
-    has_many :arrows, Redexor.Arrows.Arrow
+    has_many :rdx_routes, Redexor.RdxRoutes.RdxRoute
 
     timestamps()
   end

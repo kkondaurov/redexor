@@ -3,45 +3,45 @@ defmodule RedexorWeb.ResponseLive.FormComponent do
 
   use RedexorWeb, :live_component
   require Logger
-  alias Redexor.Responses
+  alias Redexor.ResponseTemplates
 
   @impl true
-  def update(%{arrow: arrow, response: response} = assigns, socket) do
+  def update(%{rdx_route: rdx_route, response_template: response_template} = assigns, socket) do
     changeset =
-      response
-      |> Map.put(:arrow_id, arrow.id)
-      |> Responses.change_response()
+      response_template
+      |> Map.put(:rdx_route_id, rdx_route.id)
+      |> ResponseTemplates.change_response()
 
     {:ok,
      socket
      |> assign(assigns)
-     |> assign(:types, Responses.Response.implemented_types())
-     |> assign(:latencies, Responses.Response.allowed_latencies())
+     |> assign(:types, ResponseTemplates.ResponseTemplate.implemented_types())
+     |> assign(:latencies, ResponseTemplates.ResponseTemplate.allowed_latencies())
      |> assign(:changeset, changeset)}
   end
 
   @impl true
-  def handle_event("validate", %{"response" => response_params}, socket) do
+  def handle_event("validate", %{"response_template" => response_params}, socket) do
     changeset =
-      socket.assigns.response
-      |> Responses.change_response(response_params)
+      socket.assigns.response_template
+      |> ResponseTemplates.change_response(response_params)
       |> Map.put(:action, :validate)
 
     {:noreply, assign(socket, :changeset, changeset)}
   end
 
-  def handle_event("save", %{"response" => response_params}, socket) do
+  def handle_event("save", %{"response_template" => response_params}, socket) do
     save_response(socket, socket.assigns.action, response_params)
   end
 
   defp save_response(socket, :edit_response, response_params) do
     user = socket.assigns[:user]
 
-    case Responses.update_response(user, socket.assigns.response, response_params) do
+    case ResponseTemplates.update_response(user, socket.assigns.response_template, response_params) do
       {:ok, _response} ->
         {:noreply,
          socket
-         |> put_flash(:info, "Response updated successfully")
+         |> put_flash(:info, "Response Template updated successfully")
          |> push_redirect(to: socket.assigns.return_to)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -51,13 +51,13 @@ defmodule RedexorWeb.ResponseLive.FormComponent do
 
   defp save_response(socket, :new_response, response_params) do
     user = socket.assigns[:user]
-    arrow = socket.assigns[:arrow]
+    rdx_route = socket.assigns[:rdx_route]
 
-    case Responses.create_response(user, arrow, response_params) do
+    case ResponseTemplates.create_response(user, rdx_route, response_params) do
       {:ok, _response} ->
         {:noreply,
          socket
-         |> put_flash(:info, "Response created successfully")
+         |> put_flash(:info, "Response Template created successfully")
          |> push_redirect(to: socket.assigns.return_to)}
 
       {:error, %Ecto.Changeset{} = changeset} ->

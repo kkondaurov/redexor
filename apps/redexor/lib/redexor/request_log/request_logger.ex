@@ -1,7 +1,7 @@
 defmodule Redexor.RequestLogger do
   use GenServer
   require Logger
-  alias Redexor.Arrows.Arrow
+  alias Redexor.RdxRoutes.RdxRoute
   alias Redexor.RequestLog
   alias Redexor.RequestLog.RequestLogEntry
 
@@ -11,7 +11,7 @@ defmodule Redexor.RequestLogger do
     GenServer.start_link(__MODULE__, nil, name: @name)
   end
 
-  def logged_request_topic(arrow_id), do: "logged_api_request:#{arrow_id}"
+  def logged_request_topic(rdx_route_id), do: "logged_api_request:#{rdx_route_id}"
 
   def new_request_topic(), do: "new_api_request"
 
@@ -29,15 +29,15 @@ defmodule Redexor.RequestLogger do
 
   defp record_request!(payload) do
     %{
-      arrow: %Arrow{} = arrow,
-      response: response,
+      rdx_route: %RdxRoute{} = rdx_route,
+      response_template: response_template,
       query_params: query_params,
       body_params: body_params
     } = payload
 
-    %RequestLogEntry{} = entry = RequestLog.log!(arrow, response, query_params, body_params)
+    %RequestLogEntry{} = entry = RequestLog.log!(rdx_route, response_template, query_params, body_params)
 
-    topic = logged_request_topic(arrow.id)
+    topic = logged_request_topic(rdx_route.id)
     Logger.info(message: "Logged request", entry: entry)
 
     Phoenix.PubSub.broadcast!(Redexor.PubSub, topic, {:logged_request, entry})

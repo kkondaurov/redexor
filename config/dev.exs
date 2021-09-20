@@ -24,7 +24,7 @@ config :redexor_web, RedexorWeb.Endpoint,
     esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
   ]
 
-config :arrow_api, ArrowApi.Endpoint,
+config :rdx_route_api, RdxRouteApi.Endpoint,
   http: [port: 4001],
   debug_errors: true,
   code_reloader: true,
