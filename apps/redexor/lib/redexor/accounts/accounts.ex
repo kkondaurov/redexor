@@ -347,4 +347,20 @@ defmodule Redexor.Accounts do
       {:error, :user, changeset, _} -> {:error, changeset}
     end
   end
+
+  @spec list() :: [User.t()]
+  def list() do
+    User
+    |> order_by(desc: :id)
+    |> join(:left, [u], s in Redexor.Servers.Server, on: s.user_id == u.id)
+    |> join(:left, [u, _s], r in Redexor.RdxRoutes.RdxRoute, on: r.user_id == u.id)
+    |> join(:left, [u, _s, r], e in Redexor.RequestLog.RequestLogEntry, on: e.rdx_route_id == r.id)
+    |> group_by([u, _s, _r], u.id)
+    |> select([u, s, r, e], %{u |
+      server_count: count(s.id, :distinct),
+      route_count: count(r.id, :distinct),
+      last_request_at: max(e.inserted_at)
+    })
+    |> Repo.all()
+  end
 end

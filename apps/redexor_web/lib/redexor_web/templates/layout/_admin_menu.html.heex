@@ -2,6 +2,7 @@
   <div class="navbar-item has-dropdown is-right is-hoverable">
     <a class="navbar-link has-text-danger"><span><%= @current_admin.email %></span></a>
     <div class="navbar-dropdown">
+      <%= link "Users", to: Routes.admin_users_path(@conn, :index), class: "navbar-item" %>
       <%= link "Profile", to: Routes.admin_settings_path(@conn, :edit), class: "navbar-item" %>
       <hr class="navbar-divider">
       <%= link "Log out", to: Routes.admin_session_path(@conn, :delete), method: :delete, class:  "navbar-item" %>

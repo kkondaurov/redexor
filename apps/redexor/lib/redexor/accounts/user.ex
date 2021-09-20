@@ -13,6 +13,10 @@ defmodule Redexor.Accounts.User do
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
 
+    field :server_count, :integer, virtual: true
+    field :route_count, :integer, virtual: true
+    field :last_request_at, :utc_datetime, virtual: true
+
     timestamps()
   end
 
