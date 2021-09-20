@@ -5,7 +5,7 @@ defmodule Redexor.Repo.Migrations.CreateLogs do
     execute """
     CREATE TABLE request_log (
       id              bigserial NOT NULL,
-      rdx_route_id        UUID      NOT NULL REFERENCES rdx_routes(id),
+      rdx_route_id        UUID      NOT NULL REFERENCES rdx_routes(id) ON DELETE CASCADE,
       response_code   INTEGER   NOT NULL,
       latency         INTEGER   NOT NULL,
       inserted_at     TIMESTAMP NOT NULL DEFAULT (now() AT TIME ZONE 'UTC'),
