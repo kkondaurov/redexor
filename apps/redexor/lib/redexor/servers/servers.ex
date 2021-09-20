@@ -94,4 +94,11 @@ defmodule Redexor.Servers do
   end
 
   defp scope(queryable, %Admin{}), do: queryable
+
+  def disable_servers_of_blocked_user(%User{blocked: false}), do: :ok
+
+  def disable_servers_of_blocked_user(%User{id: user_id, blocked: true}) do
+    from(s in Server, where: s.user_id == ^user_id)
+    |> Repo.update_all(set: [enabled: false])
+  end
 end

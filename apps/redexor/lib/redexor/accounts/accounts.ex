@@ -228,7 +228,9 @@ defmodule Redexor.Accounts do
   """
   def get_user_by_session_token(token) do
     {:ok, query} = UserToken.verify_session_token_query(token)
-    Repo.one(query)
+    query
+    |> where([_, u], not u.blocked)
+    |> Repo.one()
   end
 
   @doc """
@@ -364,9 +366,21 @@ defmodule Redexor.Accounts do
     |> Repo.all()
   end
 
+  # TODO use Ecto.Multi transaction
   def toggle_blocked!(user) do
     user
     |> User.blocked_changeset()
     |> Repo.update!()
+    |> maybe_delete_token()
+    |> Redexor.Servers.disable_servers_of_blocked_user()
   end
+
+  defp maybe_delete_token(%User{blocked: false} = user), do: user
+  defp maybe_delete_token(%User{id: user_id, blocked: true} = user) do
+    from(ut in UserToken, where: ut.user_id == ^user_id and ut.context == "session")
+    |> Repo.delete_all()
+
+    user
+  end
+
 end
