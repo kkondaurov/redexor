@@ -13,11 +13,16 @@ defmodule Redexor.Application do
       {Phoenix.PubSub, name: Redexor.PubSub},
       # Start a worker by calling: Redexor.Worker.start_link(arg)
       # {Redexor.Worker, arg}
-    ] ++ children_for_env(Mix.env())
+    ] ++ request_logger_config()
 
     Supervisor.start_link(children, strategy: :one_for_one, name: Redexor.Supervisor)
   end
 
-  def children_for_env(:test), do: []
-  def children_for_env(_), do: [Redexor.RequestLogger]
+  def request_logger_config() do
+    if Application.get_env(:redexor, :disable_request_logger) do
+      []
+    else
+      [Redexor.RequestLogger]
+    end
+  end
 end

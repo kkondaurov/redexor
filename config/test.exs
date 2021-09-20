@@ -27,5 +27,7 @@ config :redexor_web, RedexorWeb.Endpoint,
   http: [port: 4002],
   server: false
 
+config :redexor, disable_request_logger: true
+
 # Print only warnings and errors during test
 config :logger, level: :warn
