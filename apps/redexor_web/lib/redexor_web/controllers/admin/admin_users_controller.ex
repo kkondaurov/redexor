@@ -2,7 +2,6 @@ defmodule RedexorWeb.AdminUsersController do
   use RedexorWeb, :controller
 
   alias Redexor.Accounts
-  alias Redexor.Servers
 
   def index(conn, _params) do
     users = Accounts.list()
