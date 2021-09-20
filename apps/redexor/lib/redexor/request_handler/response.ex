@@ -1,6 +1,6 @@
-defmodule Redexor.ArrowApi.ApiResponse do
+defmodule Redexor.RequestHandler.ApiResponse do
   @moduledoc """
-  A struct defining Arrow API response.
+  A struct defining Route API response.
   """
 
   alias Redexor.Responses.Response

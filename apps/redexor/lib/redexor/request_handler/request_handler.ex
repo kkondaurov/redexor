@@ -1,11 +1,11 @@
-defmodule Redexor.ArrowApi.Router do
+defmodule Redexor.RequestHandler do
   @moduledoc """
-  Context for Arrow API business logic.
+  Context for Route API business logic.
   """
 
   require Logger
 
-  alias Redexor.ArrowApi.ApiResponse
+  alias Redexor.RequestHandler.ApiResponse
   alias Redexor.Arrows
   alias Redexor.Arrows.Arrow
 

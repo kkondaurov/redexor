@@ -9,8 +9,8 @@ defmodule ArrowApi.Plugs.DynamicRouter do
 
   import Plug.Conn
 
-  alias Redexor.ArrowApi.ApiResponse
-  alias Redexor.ArrowApi.Router
+  alias Redexor.RequestHandler
+  alias Redexor.RequestHandler.ApiResponse
 
   def init(default), do: default
 
@@ -31,7 +31,7 @@ defmodule ArrowApi.Plugs.DynamicRouter do
       code: code,
       payload: payload,
       latency: latency
-    } = Router.handle(server_id, method, path, conn.query_params, conn.body_params)
+    } = RequestHandler.handle(server_id, method, path, conn.query_params, conn.body_params)
 
     if latency > 0 do
       Logger.info(message: "Emulating response latency", method: method, server_id: server_id, path: path, latency: latency)

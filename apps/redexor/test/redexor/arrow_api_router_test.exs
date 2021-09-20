@@ -1,9 +1,9 @@
-defmodule Redexor.ArrowApiRouterTest do
+defmodule Redexor.RequestHandlerTest do
   use Redexor.DataCase
 
   alias Redexor.Arrows
-  alias Redexor.ArrowApi.Router
-  alias Redexor.ArrowApi.ApiResponse
+  alias Redexor.RequestHandler
+  alias Redexor.RequestHandler.ApiResponse
   alias Redexor.Servers
   alias Redexor.Support.AccountsFixtures
   alias Redexor.Support.ArrowsFixtures
@@ -28,7 +28,7 @@ defmodule Redexor.ArrowApiRouterTest do
   describe "Test servers, methods and paths" do
 
     test "handle/4 returns empty response given enabled server and route without a configured response", %{server: server, arrow: arrow} do
-      assert %ApiResponse{code: 200, payload: %{}} = Router.handle(server.id, arrow.method, arrow.path, %{}, %{})
+      assert %ApiResponse{code: 200, payload: %{}} = RequestHandler.handle(server.id, arrow.method, arrow.path, %{}, %{})
     end
 
     test "handle/4 returns configured text response", %{server: server, user: user, arrow: arrow} do
@@ -39,7 +39,7 @@ defmodule Redexor.ArrowApiRouterTest do
         title: "response title"
       })
       {:ok, _} = Responses.set_selected(user, response)
-      assert %ApiResponse{code: 403, payload: "hello world!"} = Router.handle(server.id, arrow.method, arrow.path, %{}, %{})
+      assert %ApiResponse{code: 403, payload: "hello world!"} = RequestHandler.handle(server.id, arrow.method, arrow.path, %{}, %{})
     end
 
     test "handle/4 returns configured json response", %{server: server, user: user, arrow: arrow} do
@@ -50,26 +50,26 @@ defmodule Redexor.ArrowApiRouterTest do
         title: "response title"
       })
       {:ok, _} = Responses.set_selected(user, response)
-      assert %ApiResponse{code: 403, payload:  %{"foo" => "bar"}} = Router.handle(server.id, arrow.method, arrow.path, %{}, %{})
+      assert %ApiResponse{code: 403, payload:  %{"foo" => "bar"}} = RequestHandler.handle(server.id, arrow.method, arrow.path, %{}, %{})
     end
 
     test "handle/4 returns error givem enabled server, but method and path of a disabled arrow", %{user: user, server: server, arrow: arrow} do
       {:ok, arrow} = Arrows.update_arrow(user, arrow, %{enabled: false})
-      assert %ApiResponse{code: 404} = Router.handle(server.id, arrow.method, arrow.path, %{}, %{})
+      assert %ApiResponse{code: 404} = RequestHandler.handle(server.id, arrow.method, arrow.path, %{}, %{})
     end
 
     test "handle/4 returns error given enabled server, but non-existent path and method", %{server: server} do
-      assert %ApiResponse{code: 404} = Router.handle(server.id, "GET", "/whatever", %{}, %{})
+      assert %ApiResponse{code: 404} = RequestHandler.handle(server.id, "GET", "/whatever", %{}, %{})
     end
 
     test "handle/4 returns error given disabled server, and existing method and path", %{user: user, server: server, arrow: arrow} do
       {:ok, server} = Servers.update_server(user, server, %{enabled: false})
-      assert %ApiResponse{code: 404} = Router.handle(server.id, arrow.method, arrow.path, %{}, %{})
+      assert %ApiResponse{code: 404} = RequestHandler.handle(server.id, arrow.method, arrow.path, %{}, %{})
     end
 
     test "handle/4 returns error given non-existent server", %{arrow: arrow} do
       fake_server_id = Ecto.UUID.autogenerate()
-      assert %ApiResponse{code: 404} = Router.handle(fake_server_id, arrow.method, arrow.path, %{}, %{})
+      assert %ApiResponse{code: 404} = RequestHandler.handle(fake_server_id, arrow.method, arrow.path, %{}, %{})
     end
   end
 end

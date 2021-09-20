@@ -2,7 +2,7 @@ defmodule Redexor.RequestLog do
   @moduledoc false
 
   import Ecto.Query
-  alias Redexor.ArrowApi.ApiResponse
+  alias Redexor.RequestHandler.ApiResponse
   alias Redexor.Arrows.Arrow
   alias Redexor.RequestLog.RequestLogEntry
   alias Redexor.Repo
