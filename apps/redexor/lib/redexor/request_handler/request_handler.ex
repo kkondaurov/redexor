@@ -20,7 +20,7 @@ defmodule Redexor.RequestHandler do
         method: method,
         path: path,
         rdx_route_id: rdx_route.id,
-        response_id: rdx_route.response_template.id
+        response_id: rdx_route.response_template && rdx_route.response_template.id
       )
 
       api_response = ApiResponse.build(rdx_route.response_template)
