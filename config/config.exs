@@ -9,7 +9,7 @@
 # move said applications out of the umbrella.
 use Mix.Config
 
-config :arrow_api,
+config :rdx_route_api,
   generators: [context_app: false]
 
 # Configure Mix tasks and generators
@@ -29,10 +29,10 @@ config :redexor_web, RedexorWeb.Endpoint,
   live_view: [signing_salt: "r3cnCcPZ"]
 
 # Configures the endpoint
-config :arrow_api, ArrowApi.Endpoint,
+config :rdx_route_api, RdxRouteApi.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "cYsLmRjGM1s7hIMYFLna+udEAlDrQmApQNi5R7XeFGttqxtDCL1ARcpRC6P4VFzV",
-  render_errors: [view: ArrowApi.ErrorView, accepts: ~w(html json), layout: false],
+  render_errors: [view: RdxRouteApi.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: Redexor.PubSub
 
 # Configures Elixir's Logger

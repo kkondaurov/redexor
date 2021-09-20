@@ -27,12 +27,12 @@ defmodule RedexorWeb.LiveHelpers do
     live_component(RedexorWeb.ModalComponent, modal_opts)
   end
 
-  def api_host(), do: Application.get_env(:arrow_api, ArrowApi.Endpoint)[:url][:host]
+  def api_host(), do: Application.get_env(:rdx_route_api, RdxRouteApi.Endpoint)[:url][:host]
 
   def format_response_body(%Response{} = response), do: Response.to_html(response)
 
-  def mark_arrow_response(%Response{id: response_id}, response_id), do: "default-response"
-  def mark_arrow_response(_, _), do: ""
+  def mark_rdx_route_response(%Response{id: response_id}, response_id), do: "default-response"
+  def mark_rdx_route_response(_, _), do: ""
 
   def format_datetime(utc_datetime, opts \\ []) do
     timezone_name = opts[:timezone] || @default_timezone

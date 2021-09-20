@@ -1,8 +1,8 @@
-defmodule Redexor.Repo.Migrations.CreateArrows do
+defmodule Redexor.Repo.Migrations.CreateRdxRoutes do
   use Ecto.Migration
 
   def change do
-    create table(:arrows, primary_key: false) do
+    create table(:rdx_routes, primary_key: false) do
       add :id, :binary_id, primary_key: true
       add :title, :string
       add :path, :string
@@ -14,8 +14,8 @@ defmodule Redexor.Repo.Migrations.CreateArrows do
       timestamps()
     end
 
-    create index(:arrows, [:server_id])
-    create index(:arrows, [:user_id])
-    create index(:arrows, [:enabled])
+    create index(:rdx_routes, [:server_id])
+    create index(:rdx_routes, [:user_id])
+    create index(:rdx_routes, [:enabled])
   end
 end

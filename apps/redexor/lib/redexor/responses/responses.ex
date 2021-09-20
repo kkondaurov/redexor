@@ -6,15 +6,15 @@ defmodule Redexor.Responses do
   import Ecto.Query, warn: false
   alias Redexor.Accounts.User
   alias Redexor.Admins.Admin
-  alias Redexor.Arrows.Arrow
+  alias Redexor.RdxRoutes.RdxRoute
   alias Redexor.Repo
   alias Redexor.Responses.Response
 
   @spec list_responses(User.t() | Admin.t(), String.t()) :: [Response.t()]
-  def list_responses(user, arrow_id) do
+  def list_responses(user, rdx_route_id) do
     Response
     |> scope(user)
-    |> where([r], r.arrow_id == ^arrow_id)
+    |> where([r], r.rdx_route_id == ^rdx_route_id)
     |> order_by([r], desc: r.id)
     |> Repo.all()
   end
@@ -28,26 +28,26 @@ defmodule Redexor.Responses do
 
   defp scope(queryable, %User{id: user_id}) do
     queryable
-    |> join(:inner, [r], a in Arrow, on: a.id == r.arrow_id)
+    |> join(:inner, [r], a in RdxRoute, on: a.id == r.rdx_route_id)
     |> where([_r, a], a.user_id == ^user_id)
   end
 
   defp scope(queryable, %Admin{}), do: queryable
 
 
-  @spec create_response(User.t(), Arrow.t(), map()) ::
+  @spec create_response(User.t(), RdxRoute.t(), map()) ::
           {:ok, Response.t()} | {:error, Ecto.Changeset.t()} | {:error, :unauthorized}
-  def create_response(%User{id: user_id}, %Arrow{user_id: user_id} = arrow, attrs) do
+  def create_response(%User{id: user_id}, %RdxRoute{user_id: user_id} = rdx_route, attrs) do
     %Response{}
-    |> Ecto.Changeset.change(arrow_id: arrow.id)
+    |> Ecto.Changeset.change(rdx_route_id: rdx_route.id)
     |> Response.changeset(attrs)
     |> Repo.insert()
   end
 
-  def create_response(%User{}, %Arrow{}, _attrs), do: {:error, :unauthorized}
+  def create_response(%User{}, %RdxRoute{}, _attrs), do: {:error, :unauthorized}
 
-  @spec update_response(User.t() | Admin.t(), Arrow.t(), map()) ::
-          {:ok, Arrow.t()} | {:error, Ecto.Changeset.t()} | {:error, :unauthorized}
+  @spec update_response(User.t() | Admin.t(), RdxRoute.t(), map()) ::
+          {:ok, RdxRoute.t()} | {:error, Ecto.Changeset.t()} | {:error, :unauthorized}
   def update_response(user, %Response{} = response, attrs) do
     if authorized?(user, response) do
       response
@@ -76,10 +76,10 @@ defmodule Redexor.Responses do
 
   @spec set_selected(User.t(), Response.t()) ::
     {:ok, Response.t()} | {:error, Ecto.Changeset.t()} | {:error, :unauthorized}
-  def set_selected(%User{} = user, %Response{arrow_id: arrow_id, id: response_id} = response) do
+  def set_selected(%User{} = user, %Response{rdx_route_id: rdx_route_id, id: response_id} = response) do
     if authorized?(user, response) do
       Ecto.Multi.new()
-      |> Ecto.Multi.update_all(:reset_selected, from(r in Response, where: r.arrow_id == ^arrow_id and r.id != ^response_id), set: [selected: false])
+      |> Ecto.Multi.update_all(:reset_selected, from(r in Response, where: r.rdx_route_id == ^rdx_route_id and r.id != ^response_id), set: [selected: false])
       |> Ecto.Multi.update(:set_selected, fn _ ->
         Ecto.Changeset.change(response, %{selected: true})
       end)
@@ -95,9 +95,9 @@ defmodule Redexor.Responses do
 
   defp authorized?(%User{id: user_id}, %Response{} = response) do
     %Response{
-     arrow: %Arrow{user_id: arrow_user_id}
-    } = Repo.preload(response, [:arrow])
-    user_id == arrow_user_id
+     rdx_route: %RdxRoute{user_id: rdx_route_user_id}
+    } = Repo.preload(response, [:rdx_route])
+    user_id == rdx_route_user_id
   end
 
   defp authorized?(%Admin{}, %Response{}), do: true

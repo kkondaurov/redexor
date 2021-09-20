@@ -30,7 +30,7 @@ if config_env() == :prod do
     ],
     secret_key_base: secret_key_base
 
-  config :arrow_api, ArrowApi.Endpoint,
+  config :rdx_route_api, RdxRouteApi.Endpoint,
     http: [
       port: String.to_integer(System.get_env("API_PORT") || "4001"),
       transport_options: [socket_opts: [:inet6]]
@@ -43,7 +43,7 @@ if config_env() == :prod do
   # to start each relevant endpoint:
 
   config :redexor_web, RedexorWeb.Endpoint, server: true
-  config :arrow_api, ArrowApi.Endpoint, server: true
+  config :rdx_route_api, RdxRouteApi.Endpoint, server: true
 
   mailjet_api_key =
     System.get_env("MAILJET_API_KEY") ||

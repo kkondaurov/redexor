@@ -5,7 +5,7 @@ defmodule Redexor.Repo.Migrations.CreateLogs do
     execute """
     CREATE TABLE request_log (
       id              bigserial NOT NULL,
-      arrow_id        UUID      NOT NULL REFERENCES arrows(id),
+      rdx_route_id        UUID      NOT NULL REFERENCES rdx_routes(id),
       response_code   INTEGER   NOT NULL,
       latency         INTEGER   NOT NULL,
       inserted_at     TIMESTAMP NOT NULL DEFAULT (now() AT TIME ZONE 'UTC'),
@@ -19,7 +19,7 @@ defmodule Redexor.Repo.Migrations.CreateLogs do
 
     create_monthly_partitions("request_log", Date.utc_today(), 120)
 
-    create index(:request_log, [:arrow_id])
+    create index(:request_log, [:rdx_route_id])
   end
 
   defp create_monthly_partitions(_table, _start_date, 0), do: :ok

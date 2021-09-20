@@ -1,0 +1,52 @@
+<span><%= live_redirect "Back", to: Routes.rdx_route_show_path(@socket, :show, @rdx_route.server_id, @rdx_route.id), class: "button is-light" %></span>
+
+<h1>
+  <%= @rdx_route.title %>
+</h1>
+
+<pre>
+<b><%= @rdx_route.method %></b> https://<%= @rdx_route.server_id %>.<%= api_host() %><%= @rdx_route.path %>
+</pre>
+
+<h3 class="mt-5">Request Log <small>(last 50 entries)</small></h3>
+
+<%= if @entries != [] do %>
+<table class="table is-fullwidth mt-4">
+  <tbody id="entry">
+    <thead>
+      <tr>
+        <th>Timestamp</th>
+        <th>HTTP Status</th>
+        <th>Latency, ms</th>
+        <th></th>
+      </tr>
+    </thead>
+    <%= for entry <- @entries do %>
+      <tr id={"entry-#{entry.id}"}>
+        <td>
+            <time><%= format_datetime(entry.inserted_at, timezone: @timezone, format: "{D} {Mshort} {YYYY} {h24}:{m}:{s} {Zabbr}") %></time>
+        </td>
+        <td>
+          <%= entry.response_code %>
+        </td>
+        <td>
+          <%= entry.latency %>
+        </td>
+        <td>
+          <a id={"log-details-toggle-#{entry.id}"} data-toggle-target={"details-#{entry.id}"} class="button is-small" href="#" phx-hook="ToggleLogDetails">Details</a>
+        </td>
+      </tr>
+      <tr id={"details-#{entry.id}"} style="display:none;">
+        <td colspan="4">
+          <strong>Query params</strong>
+          <pre><%= entry.query_params %></pre>
+          <strong>Body params</strong>
+          <pre><%= entry.body_params %></pre>
+          <strong>Response</strong>
+          <pre><%= entry.response_body %></pre>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% end %>

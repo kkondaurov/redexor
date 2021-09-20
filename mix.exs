@@ -11,7 +11,7 @@ defmodule Redexor.Umbrella.MixProject do
       releases: [
         redexor: [
           version: "0.0.1",
-          applications: [redexor: :permanent, redexor_web: :permanent, arrow_api: :permanent]
+          applications: [redexor: :permanent, redexor_web: :permanent, route_api: :permanent]
         ]
       ]
     ]

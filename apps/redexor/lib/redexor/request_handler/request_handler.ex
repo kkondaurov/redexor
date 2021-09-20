@@ -6,25 +6,25 @@ defmodule Redexor.RequestHandler do
   require Logger
 
   alias Redexor.RequestHandler.ApiResponse
-  alias Redexor.Arrows
-  alias Redexor.Arrows.Arrow
+  alias Redexor.RdxRoutes
+  alias Redexor.RdxRoutes.RdxRoute
 
   @spec handle(String.t(), String.t(), String.t(), map(), map()) :: ApiResponse.t()
   def handle(server_id, method, path, query_params, body_params) do
     with {:server_id_valid, {:ok, server_uuid}} <- {:server_id_valid, Ecto.UUID.cast(server_id)},
-         {:arrow_exists, %Arrow{} = arrow} <-
-           {:arrow_exists, Arrows.find_enabled_route(server_uuid, method, path)} do
+         {:rdx_route_exists, %RdxRoute{} = rdx_route} <-
+           {:rdx_route_exists, RdxRoutes.find_enabled_route(server_uuid, method, path)} do
       Logger.info(
         message: "Processed API request",
         server_id: server_id,
         method: method,
         path: path,
-        arrow_id: arrow.id,
-        response_id: arrow.response.id
+        rdx_route_id: rdx_route.id,
+        response_id: rdx_route.response.id
       )
 
-      api_response = ApiResponse.build(arrow.response)
-      broadcast(arrow, api_response, query_params, body_params)
+      api_response = ApiResponse.build(rdx_route.response)
+      broadcast(rdx_route, api_response, query_params, body_params)
       api_response
     else
       {:server_id_valid, _} ->
@@ -38,7 +38,7 @@ defmodule Redexor.RequestHandler do
 
         %ApiResponse{code: 400}
 
-      {:arrow_exists, nil} ->
+      {:rdx_route_exists, nil} ->
         Logger.warn(
           message: "Server or Route not found or disabled",
           error: 404,
@@ -51,9 +51,9 @@ defmodule Redexor.RequestHandler do
     end
   end
 
-  defp broadcast(arrow, response, query_params, body_params) do
+  defp broadcast(rdx_route, response, query_params, body_params) do
     Phoenix.PubSub.broadcast!(Redexor.PubSub, Redexor.RequestLogger.new_request_topic(), {:new_request, %{
-      arrow: arrow,
+      rdx_route: rdx_route,
       response: response,
       query_params: query_params,
       body_params: body_params

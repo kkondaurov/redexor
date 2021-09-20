@@ -3,16 +3,16 @@ defmodule Redexor.RequestLog do
 
   import Ecto.Query
   alias Redexor.RequestHandler.ApiResponse
-  alias Redexor.Arrows.Arrow
+  alias Redexor.RdxRoutes.RdxRoute
   alias Redexor.RequestLog.RequestLogEntry
   alias Redexor.Repo
 
   @default_per_page 50
 
-  @spec log!(Arrow.t(), ApiResponse.t(), map(), map()) :: RequestLogEntry.t() | no_return()
-  def log!(%Arrow{} = arrow, %ApiResponse{} = response, query_params, body_params) do
+  @spec log!(RdxRoute.t(), ApiResponse.t(), map(), map()) :: RequestLogEntry.t() | no_return()
+  def log!(%RdxRoute{} = rdx_route, %ApiResponse{} = response, query_params, body_params) do
     attrs = %{
-      arrow_id: arrow.id,
+      rdx_route_id: rdx_route.id,
       response_code: response.code,
       latency: response.latency,
       response_body: build_response_body(response.payload),
@@ -28,9 +28,9 @@ defmodule Redexor.RequestLog do
   defp build_response_body(body) when is_binary(body), do: body
   defp build_response_body(body) when is_map(body), do: Jason.encode!(body, pretty: true)
 
-  def list(%Arrow{id: arrow_id}, per_page \\ @default_per_page) do
+  def list(%RdxRoute{id: rdx_route_id}, per_page \\ @default_per_page) do
     RequestLogEntry
-    |> where([e], e.arrow_id == ^arrow_id)
+    |> where([e], e.rdx_route_id == ^rdx_route_id)
     |> order_by([e], desc: e.id)
     |> limit(^per_page)
     |> Repo.all()

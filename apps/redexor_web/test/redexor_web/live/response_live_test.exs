@@ -2,7 +2,7 @@ defmodule RedexorWeb.ResponseLiveTest do
   use RedexorWeb.ConnCase
 
   import Phoenix.LiveViewTest
-  alias Redexor.Support.ArrowsFixtures
+  alias Redexor.Support.RdxRoutesFixtures
   alias Redexor.Support.AccountsFixtures
   alias Redexor.Support.ServersFixtures
   alias RedexorWeb.UserAuth
@@ -23,11 +23,11 @@ defmodule RedexorWeb.ResponseLiveTest do
     text_body: nil
   }
 
-  defp create_arrow(_) do
+  defp create_rdx_route(_) do
     user = AccountsFixtures.user_fixture()
     server = ServersFixtures.server_fixture(user)
-    arrow = ArrowsFixtures.arrow_fixture(user, server)
-    %{arrow: arrow, user: user, server: server}
+    rdx_route = RdxRoutesFixtures.rdx_route_fixture(user, server)
+    %{rdx_route: rdx_route, user: user, server: server}
   end
 
   defp authenticate_user(conn, user) do
@@ -38,25 +38,25 @@ defmodule RedexorWeb.ResponseLiveTest do
     |> recycle()
   end
 
-  describe "ArrowShow" do
-    setup [:create_arrow]
+  describe "RdxRouteShow" do
+    setup [:create_rdx_route]
 
     test "given a route without responses, a created response is listed for the route", %{
       conn: conn,
       user: user,
       server: server,
-      arrow: arrow
+      rdx_route: rdx_route
     } do
       conn = authenticate_user(conn, user)
 
-      {:ok, show_live, html} = live(conn, Routes.arrow_show_path(conn, :show, server, arrow))
+      {:ok, show_live, html} = live(conn, Routes.rdx_route_show_path(conn, :show, server, rdx_route))
 
-      assert html =~ arrow.title
+      assert html =~ rdx_route.title
 
       assert show_live |> element("a", "Create") |> render_click() =~
                "New Response"
 
-      assert_patch(show_live, Routes.arrow_show_path(conn, :new_response, server.id, arrow.id))
+      assert_patch(show_live, Routes.rdx_route_show_path(conn, :new_response, server.id, rdx_route.id))
 
       assert show_live
              |> form("#response-form", response: @invalid_attrs)
@@ -66,7 +66,7 @@ defmodule RedexorWeb.ResponseLiveTest do
         show_live
         |> form("#response-form", response: @create_attrs)
         |> render_submit()
-        |> follow_redirect(conn, Routes.arrow_show_path(conn, :show, server.id, arrow.id))
+        |> follow_redirect(conn, Routes.rdx_route_show_path(conn, :show, server.id, rdx_route.id))
 
       assert html =~ "Response created successfully"
       assert html =~ @create_attrs.title
@@ -76,21 +76,21 @@ defmodule RedexorWeb.ResponseLiveTest do
       conn: conn,
       user: user,
       server: server,
-      arrow: arrow
+      rdx_route: rdx_route
     } do
       conn = authenticate_user(conn, user)
 
-      {:ok, show_live, _html} = live(conn, Routes.arrow_show_path(conn, :show, server, arrow))
+      {:ok, show_live, _html} = live(conn, Routes.rdx_route_show_path(conn, :show, server, rdx_route))
 
       # Create first response
       assert show_live |> element("a", "Create") |> render_click() =~ "New Response"
-      assert_patch(show_live, Routes.arrow_show_path(conn, :new_response, server.id, arrow.id))
+      assert_patch(show_live, Routes.rdx_route_show_path(conn, :new_response, server.id, rdx_route.id))
 
       {:ok, show_live, html} =
         show_live
         |> form("#response-form", response: @create_attrs)
         |> render_submit()
-        |> follow_redirect(conn, Routes.arrow_show_path(conn, :show, server.id, arrow.id))
+        |> follow_redirect(conn, Routes.rdx_route_show_path(conn, :show, server.id, rdx_route.id))
 
       assert html =~ "Response created successfully"
       assert html =~ @create_attrs.title

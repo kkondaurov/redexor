@@ -16,7 +16,7 @@ defmodule Redexor.Responses.Response do
   @foreign_key_type :binary_id
   schema "responses" do
     field :title, :string
-    belongs_to :arrow, Redexor.Arrows.Arrow
+    belongs_to :rdx_route, Redexor.RdxRoutes.RdxRoute
     field :selected, :boolean, default: false
     field :type, :string
     field :code, :integer
@@ -30,7 +30,7 @@ defmodule Redexor.Responses.Response do
   @doc false
   def changeset(response, attrs) do
     response
-    |> cast(attrs, [:title, :type, :code, :arrow_id, :selected, :latency])
+    |> cast(attrs, [:title, :type, :code, :rdx_route_id, :selected, :latency])
     |> validate_required([:title, :type, :code, :selected])
     |> validate_inclusion(:type, @implemented_types)
     |> validate_inclusion(:code, @allowed_codes)

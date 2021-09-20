@@ -6,10 +6,10 @@ defmodule RedexorWeb.ResponseLive.FormComponent do
   alias Redexor.Responses
 
   @impl true
-  def update(%{arrow: arrow, response: response} = assigns, socket) do
+  def update(%{rdx_route: rdx_route, response: response} = assigns, socket) do
     changeset =
       response
-      |> Map.put(:arrow_id, arrow.id)
+      |> Map.put(:rdx_route_id, rdx_route.id)
       |> Responses.change_response()
 
     {:ok,
@@ -51,9 +51,9 @@ defmodule RedexorWeb.ResponseLive.FormComponent do
 
   defp save_response(socket, :new_response, response_params) do
     user = socket.assigns[:user]
-    arrow = socket.assigns[:arrow]
+    rdx_route = socket.assigns[:rdx_route]
 
-    case Responses.create_response(user, arrow, response_params) do
+    case Responses.create_response(user, rdx_route, response_params) do
       {:ok, _response} ->
         {:noreply,
          socket

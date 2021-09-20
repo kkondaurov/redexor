@@ -1,13 +1,13 @@
-defmodule Redexor.Support.ArrowsFixtures do
+defmodule Redexor.Support.RdxRoutesFixtures do
   @moduledoc """
   This module defines test helpers for creating
-  entities via the `Redexor.Arrows` context.
+  entities via the `Redexor.RdxRoutes` context.
   """
 
   @doc """
-  Generate a arrow.
+  Generate a rdx_route.
   """
-  def arrow_fixture(user, server, attrs \\ %{}) do
+  def rdx_route_fixture(user, server, attrs \\ %{}) do
     attrs =
       attrs
       |> Enum.into(%{
@@ -17,7 +17,7 @@ defmodule Redexor.Support.ArrowsFixtures do
         title: "some title"
       })
 
-    {:ok, arrow} = Redexor.Arrows.create_arrow(user, server, attrs)
-    arrow
+    {:ok, rdx_route} = Redexor.RdxRoutes.create_rdx_route(user, server, attrs)
+    rdx_route
   end
 end
