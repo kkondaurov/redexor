@@ -54,7 +54,7 @@ defmodule RedexorWeb.ResponseLiveTest do
       assert html =~ rdx_route.title
 
       assert show_live |> element("a", "Create") |> render_click() =~
-               "New ResponseTemplate"
+               "New Response Template"
 
       assert_patch(show_live, Routes.rdx_route_show_path(conn, :new_response, server.id, rdx_route.id))
 
@@ -68,7 +68,7 @@ defmodule RedexorWeb.ResponseLiveTest do
         |> render_submit()
         |> follow_redirect(conn, Routes.rdx_route_show_path(conn, :show, server.id, rdx_route.id))
 
-      assert html =~ "ResponseTemplate created successfully"
+      assert html =~ "Response Template created successfully"
       assert html =~ @create_attrs.title
     end
 
@@ -83,7 +83,7 @@ defmodule RedexorWeb.ResponseLiveTest do
       {:ok, show_live, _html} = live(conn, Routes.rdx_route_show_path(conn, :show, server, rdx_route))
 
       # Create first response_template
-      assert show_live |> element("a", "Create") |> render_click() =~ "New ResponseTemplate"
+      assert show_live |> element("a", "Create") |> render_click() =~ "New Response Template"
       assert_patch(show_live, Routes.rdx_route_show_path(conn, :new_response, server.id, rdx_route.id))
 
       {:ok, show_live, html} =
@@ -92,7 +92,7 @@ defmodule RedexorWeb.ResponseLiveTest do
         |> render_submit()
         |> follow_redirect(conn, Routes.rdx_route_show_path(conn, :show, server.id, rdx_route.id))
 
-      assert html =~ "ResponseTemplate created successfully"
+      assert html =~ "Response Template created successfully"
       assert html =~ @create_attrs.title
 
       # Select the created response_template
