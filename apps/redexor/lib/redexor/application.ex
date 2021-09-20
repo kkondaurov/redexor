@@ -10,7 +10,8 @@ defmodule Redexor.Application do
       # Start the Ecto repository
       Redexor.Repo,
       # Start the PubSub system
-      #{Phoenix.PubSub, name: Redexor.PubSub}
+      {Phoenix.PubSub, name: Redexor.PubSub},
+      Redexor.RequestLogger
       # Start a worker by calling: Redexor.Worker.start_link(arg)
       # {Redexor.Worker, arg}
     ]

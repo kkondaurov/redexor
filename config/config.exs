@@ -33,7 +33,7 @@ config :arrow_api, ArrowApi.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "cYsLmRjGM1s7hIMYFLna+udEAlDrQmApQNi5R7XeFGttqxtDCL1ARcpRC6P4VFzV",
   render_errors: [view: ArrowApi.ErrorView, accepts: ~w(html json), layout: false],
-  pubsub_server: ArrowApi.PubSub
+  pubsub_server: Redexor.PubSub
 
 # Configures Elixir's Logger
 config :logger, :console,

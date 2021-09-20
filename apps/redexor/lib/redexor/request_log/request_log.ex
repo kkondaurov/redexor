@@ -9,20 +9,20 @@ defmodule Redexor.RequestLog do
 
   @default_per_page 50
 
-  @spec log(Arrow.t(), ApiResponse.t(), map(), map()) :: RequestLogEntry.t() | no_return()
-  def log(%Arrow{} = arrow, %ApiResponse{} = response, query_params, body_params) do
+  @spec log!(Arrow.t(), ApiResponse.t(), map(), map()) :: RequestLogEntry.t() | no_return()
+  def log!(%Arrow{} = arrow, %ApiResponse{} = response, query_params, body_params) do
     attrs = %{
       arrow_id: arrow.id,
       response_code: response.code,
       latency: response.latency,
       response_body: build_response_body(response.payload),
       query_params: URI.encode_query(query_params),
-      body_params: Jason.encode!(body_params, pretty: true)
+      body_params: Jason.encode!(body_params, pretty: true),
     }
 
     %RequestLogEntry{}
     |> RequestLogEntry.changeset(attrs)
-    |> Repo.insert!()
+    |> Repo.insert!(returning: true)
   end
 
   defp build_response_body(body) when is_binary(body), do: body

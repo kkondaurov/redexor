@@ -8,7 +8,6 @@ defmodule Redexor.ArrowApi.Router do
   alias Redexor.ArrowApi.ApiResponse
   alias Redexor.Arrows
   alias Redexor.Arrows.Arrow
-  alias Redexor.RequestLog
 
   @spec handle(String.t(), String.t(), String.t(), map(), map()) :: ApiResponse.t()
   def handle(server_id, method, path, query_params, body_params) do
@@ -24,9 +23,9 @@ defmodule Redexor.ArrowApi.Router do
         response_id: arrow.response.id
       )
 
-      arrow.response
-      |> ApiResponse.build()
-      |> tap(&(RequestLog.log(arrow, &1, query_params, body_params)))
+      api_response = ApiResponse.build(arrow.response)
+      broadcast(arrow, api_response, query_params, body_params)
+      api_response
     else
       {:server_id_valid, _} ->
         Logger.warn(
@@ -50,5 +49,14 @@ defmodule Redexor.ArrowApi.Router do
 
         %ApiResponse{code: 404}
     end
+  end
+
+  defp broadcast(arrow, response, query_params, body_params) do
+    Phoenix.PubSub.broadcast!(Redexor.PubSub, Redexor.RequestLogger.new_request_topic(), {:new_request, %{
+      arrow: arrow,
+      response: response,
+      query_params: query_params,
+      body_params: body_params
+    }})
   end
 end
