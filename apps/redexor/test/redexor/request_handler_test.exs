@@ -8,7 +8,7 @@ defmodule Redexor.RequestHandlerTest do
   alias Redexor.Support.AccountsFixtures
   alias Redexor.Support.RdxRoutesFixtures
   alias Redexor.Support.ServersFixtures
-  alias Redexor.Responses
+  alias Redexor.ResponseTemplates
 
   require Logger
 
@@ -27,29 +27,29 @@ defmodule Redexor.RequestHandlerTest do
 
   describe "Test servers, methods and paths" do
 
-    test "handle/4 returns empty response given enabled server and route without a configured response", %{server: server, rdx_route: rdx_route} do
+    test "handle/4 returns empty response_template given enabled server and route without a configured response_template", %{server: server, rdx_route: rdx_route} do
       assert %ApiResponse{code: 200, payload: %{}} = RequestHandler.handle(server.id, rdx_route.method, rdx_route.path, %{}, %{})
     end
 
-    test "handle/4 returns configured text response", %{server: server, user: user, rdx_route: rdx_route} do
-      {:ok, response} = Responses.create_response(user, rdx_route, %{
+    test "handle/4 returns configured text response_template", %{server: server, user: user, rdx_route: rdx_route} do
+      {:ok, response_template} = ResponseTemplates.create_response(user, rdx_route, %{
         code: 403,
         type: "TEXT",
         text_body: "hello world!",
-        title: "response title"
+        title: "response_template title"
       })
-      {:ok, _} = Responses.set_selected(user, response)
+      {:ok, _} = ResponseTemplates.set_selected(user, response_template)
       assert %ApiResponse{code: 403, payload: "hello world!"} = RequestHandler.handle(server.id, rdx_route.method, rdx_route.path, %{}, %{})
     end
 
-    test "handle/4 returns configured json response", %{server: server, user: user, rdx_route: rdx_route} do
-      {:ok, response} = Responses.create_response(user, rdx_route, %{
+    test "handle/4 returns configured json response_template", %{server: server, user: user, rdx_route: rdx_route} do
+      {:ok, response_template} = ResponseTemplates.create_response(user, rdx_route, %{
         code: 403,
         type: "JSON",
         json_body: "{\"foo\":\"bar\"}",
-        title: "response title"
+        title: "response_template title"
       })
-      {:ok, _} = Responses.set_selected(user, response)
+      {:ok, _} = ResponseTemplates.set_selected(user, response_template)
       assert %ApiResponse{code: 403, payload:  %{"foo" => "bar"}} = RequestHandler.handle(server.id, rdx_route.method, rdx_route.path, %{}, %{})
     end
 

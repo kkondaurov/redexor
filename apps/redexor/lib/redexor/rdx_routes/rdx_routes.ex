@@ -8,7 +8,7 @@ defmodule Redexor.RdxRoutes do
   alias Redexor.Admins.Admin
   alias Redexor.RdxRoutes.RdxRoute
   alias Redexor.Repo
-  alias Redexor.Responses.Response
+  alias Redexor.ResponseTemplates.ResponseTemplate
   alias Redexor.Servers.Server
 
   @spec list_rdx_routes(User.t() | Admin.t(), String.t()) :: [RdxRoute.t()]
@@ -109,6 +109,6 @@ defmodule Redexor.RdxRoutes do
 
   @spec preload_selected_response(RdxRoute.t()) :: RdxRoute.t()
   def preload_selected_response(rdx_route) do
-    Repo.preload(rdx_route, [response: from(r in Response, where: r.selected)])
+    Repo.preload(rdx_route, [response_template: from(r in ResponseTemplate, where: r.selected)])
   end
 end

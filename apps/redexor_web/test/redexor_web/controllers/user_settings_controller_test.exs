@@ -10,8 +10,8 @@ defmodule RedexorWeb.UserSettingsControllerTest do
   describe "GET /users/settings" do
     test "renders settings page", %{conn: conn} do
       conn = get(conn, Routes.user_settings_path(conn, :edit))
-      response = html_response(conn, 200)
-      assert response =~ "<h1>Settings</h1>"
+      response_template = html_response(conn, 200)
+      assert response_template =~ "<h1>Settings</h1>"
     end
 
     test "redirects if user is not logged in" do
@@ -50,11 +50,11 @@ defmodule RedexorWeb.UserSettingsControllerTest do
           }
         })
 
-      response = html_response(old_password_conn, 200)
-      assert response =~ "<h1>Settings</h1>"
-      assert response =~ "should be at least 12 character(s)"
-      assert response =~ "does not match password"
-      assert response =~ "is not valid"
+      response_template = html_response(old_password_conn, 200)
+      assert response_template =~ "<h1>Settings</h1>"
+      assert response_template =~ "should be at least 12 character(s)"
+      assert response_template =~ "does not match password"
+      assert response_template =~ "is not valid"
 
       assert get_session(old_password_conn, :user_token) == get_session(conn, :user_token)
     end
@@ -83,10 +83,10 @@ defmodule RedexorWeb.UserSettingsControllerTest do
           "user" => %{"email" => "with spaces"}
         })
 
-      response = html_response(conn, 200)
-      assert response =~ "<h1>Settings</h1>"
-      assert response =~ "must have the @ sign and no spaces"
-      assert response =~ "is not valid"
+      response_template = html_response(conn, 200)
+      assert response_template =~ "<h1>Settings</h1>"
+      assert response_template =~ "must have the @ sign and no spaces"
+      assert response_template =~ "is not valid"
     end
   end
 

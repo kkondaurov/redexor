@@ -6,10 +6,10 @@ defmodule RedexorWeb.UserRegistrationControllerTest do
   describe "GET /users/register" do
     test "renders registration page", %{conn: conn} do
       conn = get(conn, Routes.user_registration_path(conn, :new))
-      response = html_response(conn, 200)
-      assert response =~ "<h1>Register</h1>"
-      assert response =~ "Log in</a>"
-      assert response =~ "Register</a>"
+      response_template = html_response(conn, 200)
+      assert response_template =~ "<h1>Register</h1>"
+      assert response_template =~ "Log in</a>"
+      assert response_template =~ "Register</a>"
     end
 
     test "redirects if already logged in", %{conn: conn} do
@@ -43,9 +43,9 @@ defmodule RedexorWeb.UserRegistrationControllerTest do
 
       assert redirected_to(conn) =~ "/"
       conn = get(conn, "/")
-      response = html_response(conn, 200)
-      assert response =~ email
-      assert response =~ "Log out</a>"
+      response_template = html_response(conn, 200)
+      assert response_template =~ email
+      assert response_template =~ "Log out</a>"
     end
 
     test "render errors for invalid data", %{conn: conn} do
@@ -54,10 +54,10 @@ defmodule RedexorWeb.UserRegistrationControllerTest do
           "user" => %{"email" => "with spaces", "password" => "too short"}
         })
 
-      response = html_response(conn, 200)
-      assert response =~ "<h1>Register</h1>"
-      assert response =~ "must have the @ sign and no spaces"
-      assert response =~ "should be at least 12 character"
+      response_template = html_response(conn, 200)
+      assert response_template =~ "<h1>Register</h1>"
+      assert response_template =~ "must have the @ sign and no spaces"
+      assert response_template =~ "should be at least 12 character"
     end
   end
 end

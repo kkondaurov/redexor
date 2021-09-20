@@ -105,8 +105,8 @@ defmodule RedexorWeb.Router do
 
       live "/:id/routes/:rdx_route_id/", RdxRouteLive.Show, :show
       live "/:id/routes/:rdx_route_id/log", RdxRouteLive.Log, :index
-      live "/:id/routes/:rdx_route_id/responses/new", RdxRouteLive.Show, :new_response
-      live "/:id/routes/:rdx_route_id/responses/:response_id/edit", RdxRouteLive.Show, :edit_response
+      live "/:id/routes/:rdx_route_id/response_templates/new", RdxRouteLive.Show, :new_response
+      live "/:id/routes/:rdx_route_id/response_templates/:response_id/edit", RdxRouteLive.Show, :edit_response
     end
   end
 

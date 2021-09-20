@@ -2,7 +2,7 @@ defmodule RedexorWeb.LiveHelpers do
   @moduledoc false
 
   import Phoenix.LiveView.Helpers
-  alias Redexor.Responses.Response
+  alias Redexor.ResponseTemplates.ResponseTemplate
 
   @default_timezone "Etc/UTC"
   @default_timestamp_format "{YYYY}-{0M}-{0D} {h24}:{m}:{s} {Zabbr}"
@@ -29,9 +29,9 @@ defmodule RedexorWeb.LiveHelpers do
 
   def api_host(), do: Application.get_env(:rdx_route_api, RdxRouteApi.Endpoint)[:url][:host]
 
-  def format_response_body(%Response{} = response), do: Response.to_html(response)
+  def format_response_body(%ResponseTemplate{} = response_template), do: ResponseTemplate.to_html(response_template)
 
-  def mark_rdx_route_response(%Response{id: response_id}, response_id), do: "default-response"
+  def mark_rdx_route_response(%ResponseTemplate{id: response_id}, response_id), do: "default-response_template"
   def mark_rdx_route_response(_, _), do: ""
 
   def format_datetime(utc_datetime, opts \\ []) do

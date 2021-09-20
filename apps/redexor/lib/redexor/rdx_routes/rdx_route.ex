@@ -17,10 +17,10 @@ defmodule Redexor.RdxRoutes.RdxRoute do
     field :title, :string
     belongs_to :server, Redexor.Servers.Server
     belongs_to :user, Redexor.Accounts.User
-    # currently selected response
-    has_one :response, Redexor.Responses.Response
-    # all the route responses
-    has_many :responses, Redexor.Responses.Response
+    # currently selected response_template
+    has_one :response_template, Redexor.ResponseTemplates.ResponseTemplate
+    # all the route response_templates
+    has_many :response_templates, Redexor.ResponseTemplates.ResponseTemplate
 
     timestamps()
   end

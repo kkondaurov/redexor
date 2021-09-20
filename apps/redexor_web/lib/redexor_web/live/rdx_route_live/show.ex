@@ -6,8 +6,8 @@ defmodule RedexorWeb.RdxRouteLive.Show do
   alias Redexor.Accounts.User
   alias Redexor.RdxRoutes
   alias Redexor.RdxRoutes.RdxRoute
-  alias Redexor.Responses
-  alias Redexor.Responses.Response
+  alias Redexor.ResponseTemplates
+  alias Redexor.ResponseTemplates.ResponseTemplate
 
   @impl true
   def mount(_params, %{"user_token" => user_token} = _session, socket) do
@@ -31,7 +31,7 @@ defmodule RedexorWeb.RdxRouteLive.Show do
           |> assign(:page_title, page_title(socket.assigns.live_action, rdx_route))
           |> assign(:rdx_route, rdx_route)
           |> assign(:id, rdx_route.id)
-          |> assign(:responses, Responses.list_responses(user, rdx_route.id))
+          |> assign(:response_templates, ResponseTemplates.list_responses(user, rdx_route.id))
           |> apply_action(socket.assigns.live_action, params)
 
         {:noreply, socket}
@@ -45,11 +45,11 @@ defmodule RedexorWeb.RdxRouteLive.Show do
   defp apply_action(socket, :edit_response, %{"response_id" => id} = _params) do
     user = socket.assigns[:user]
 
-    case Responses.get_response(user, id) do
-      %Response{} = response ->
+    case ResponseTemplates.get_response(user, id) do
+      %ResponseTemplate{} = response_template ->
         socket
         |> assign(:rdx_route_id, socket.assigns.rdx_route.id)
-        |> assign(:response, response)
+        |> assign(:response_template, response_template)
 
       nil ->
         socket
@@ -60,7 +60,7 @@ defmodule RedexorWeb.RdxRouteLive.Show do
 
   defp apply_action(socket, :new_response, _params) do
     socket
-    |> assign(:response, %Response{})
+    |> assign(:response_template, %ResponseTemplate{})
   end
 
   defp apply_action(socket, _action, _params), do: socket
@@ -83,14 +83,14 @@ defmodule RedexorWeb.RdxRouteLive.Show do
   def handle_event("delete_response", %{"id" => id}, socket) do
     user = socket.assigns[:user]
 
-    case Responses.get_response(user, id) do
-      %Response{} = response ->
-        {:ok, _response} = Responses.delete_response(user, response)
-        socket = assign(socket, :responses, Responses.list_responses(user, response.rdx_route_id))
+    case ResponseTemplates.get_response(user, id) do
+      %ResponseTemplate{} = response_template ->
+        {:ok, _response} = ResponseTemplates.delete_response(user, response_template)
+        socket = assign(socket, :response_templates, ResponseTemplates.list_responses(user, response_template.rdx_route_id))
         {:noreply, socket}
 
       nil ->
-        socket = put_flash(socket, :error, "Response not found")
+        socket = put_flash(socket, :error, "Response Template not found")
         {:noreply, push_redirect(socket, to: "/servers", replace: true)}
     end
   end
@@ -99,23 +99,23 @@ defmodule RedexorWeb.RdxRouteLive.Show do
     user = socket.assigns[:user]
     rdx_route = socket.assigns[:rdx_route]
 
-    case Responses.get_response(user, id) do
-      %Response{} = response ->
-        {:ok, _response} = Responses.set_selected(user, response)
+    case ResponseTemplates.get_response(user, id) do
+      %ResponseTemplate{} = response_template ->
+        {:ok, _response} = ResponseTemplates.set_selected(user, response_template)
         socket =
           socket
-          |> assign(:responses, Responses.list_responses(user, response.rdx_route_id))
+          |> assign(:response_templates, ResponseTemplates.list_responses(user, response_template.rdx_route_id))
           |> assign(:rdx_route, RdxRoutes.get_rdx_route(user, rdx_route.id))
         {:noreply, socket}
 
       nil ->
-        socket = put_flash(socket, :error, "Response not found")
+        socket = put_flash(socket, :error, "Response Template not found")
         {:noreply, push_redirect(socket, to: "/servers", replace: true)}
     end
   end
 
   defp page_title(:show, %RdxRoute{title: title}), do: "#{title} - Routes - redexor"
-  defp page_title(:new_response, _), do: "New Response"
-  defp page_title(:edit_response, _), do: "Edit Response"
+  defp page_title(:new_response, _), do: "New Response Template"
+  defp page_title(:edit_response, _), do: "Edit Response Template"
 
 end

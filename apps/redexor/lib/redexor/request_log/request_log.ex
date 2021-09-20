@@ -10,12 +10,12 @@ defmodule Redexor.RequestLog do
   @default_per_page 50
 
   @spec log!(RdxRoute.t(), ApiResponse.t(), map(), map()) :: RequestLogEntry.t() | no_return()
-  def log!(%RdxRoute{} = rdx_route, %ApiResponse{} = response, query_params, body_params) do
+  def log!(%RdxRoute{} = rdx_route, %ApiResponse{} = api_response, query_params, body_params) do
     attrs = %{
       rdx_route_id: rdx_route.id,
-      response_code: response.code,
-      latency: response.latency,
-      response_body: build_response_body(response.payload),
+      response_code: api_response.code,
+      latency: api_response.latency,
+      response_body: build_response_body(api_response.payload),
       query_params: URI.encode_query(query_params),
       body_params: Jason.encode!(body_params, pretty: true),
     }

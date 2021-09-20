@@ -8,7 +8,7 @@ defmodule RedexorWeb.ResponseLiveTest do
   alias RedexorWeb.UserAuth
 
   @create_attrs %{
-    title: "Valid response",
+    title: "Valid response_template",
     code: 404,
     type: "TEXT",
     json_body: "",
@@ -41,7 +41,7 @@ defmodule RedexorWeb.ResponseLiveTest do
   describe "RdxRouteShow" do
     setup [:create_rdx_route]
 
-    test "given a route without responses, a created response is listed for the route", %{
+    test "given a route without response_templates, a created response_template is listed for the route", %{
       conn: conn,
       user: user,
       server: server,
@@ -54,25 +54,25 @@ defmodule RedexorWeb.ResponseLiveTest do
       assert html =~ rdx_route.title
 
       assert show_live |> element("a", "Create") |> render_click() =~
-               "New Response"
+               "New ResponseTemplate"
 
       assert_patch(show_live, Routes.rdx_route_show_path(conn, :new_response, server.id, rdx_route.id))
 
       assert show_live
-             |> form("#response-form", response: @invalid_attrs)
+             |> form("#response_template-form", response_template: @invalid_attrs)
              |> render_change() =~ "can&#39;t be blank"
 
       {:ok, _show_live, html} =
         show_live
-        |> form("#response-form", response: @create_attrs)
+        |> form("#response_template-form", response_template: @create_attrs)
         |> render_submit()
         |> follow_redirect(conn, Routes.rdx_route_show_path(conn, :show, server.id, rdx_route.id))
 
-      assert html =~ "Response created successfully"
+      assert html =~ "ResponseTemplate created successfully"
       assert html =~ @create_attrs.title
     end
 
-    test "response can be selected", %{
+    test "response_template can be selected", %{
       conn: conn,
       user: user,
       server: server,
@@ -82,22 +82,22 @@ defmodule RedexorWeb.ResponseLiveTest do
 
       {:ok, show_live, _html} = live(conn, Routes.rdx_route_show_path(conn, :show, server, rdx_route))
 
-      # Create first response
-      assert show_live |> element("a", "Create") |> render_click() =~ "New Response"
+      # Create first response_template
+      assert show_live |> element("a", "Create") |> render_click() =~ "New ResponseTemplate"
       assert_patch(show_live, Routes.rdx_route_show_path(conn, :new_response, server.id, rdx_route.id))
 
       {:ok, show_live, html} =
         show_live
-        |> form("#response-form", response: @create_attrs)
+        |> form("#response_template-form", response_template: @create_attrs)
         |> render_submit()
         |> follow_redirect(conn, Routes.rdx_route_show_path(conn, :show, server.id, rdx_route.id))
 
-      assert html =~ "Response created successfully"
+      assert html =~ "ResponseTemplate created successfully"
       assert html =~ @create_attrs.title
 
-      # Select the created response
-      assert show_live |> element("a.select-response") |> render_click()
-      assert show_live |> element("#response tr", @create_attrs.title) |> render() =~ "default-response"
+      # Select the created response_template
+      assert show_live |> element("a.select-response_template") |> render_click()
+      assert show_live |> element("#response_template tr", @create_attrs.title) |> render() =~ "default-response_template"
     end
   end
 end

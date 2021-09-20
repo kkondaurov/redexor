@@ -1,4 +1,4 @@
-defmodule Redexor.Responses.Response do
+defmodule Redexor.ResponseTemplates.ResponseTemplate do
   @moduledoc false
 
   use Ecto.Schema
@@ -14,7 +14,7 @@ defmodule Redexor.Responses.Response do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
-  schema "responses" do
+  schema "response_templates" do
     field :title, :string
     belongs_to :rdx_route, Redexor.RdxRoutes.RdxRoute
     field :selected, :boolean, default: false
@@ -28,8 +28,8 @@ defmodule Redexor.Responses.Response do
   end
 
   @doc false
-  def changeset(response, attrs) do
-    response
+  def changeset(response_template, attrs) do
+    response_template
     |> cast(attrs, [:title, :type, :code, :rdx_route_id, :selected, :latency])
     |> validate_required([:title, :type, :code, :selected])
     |> validate_inclusion(:type, @implemented_types)

@@ -11,10 +11,10 @@ defmodule RedexorWeb.UserSessionControllerTest do
   describe "GET /users/log_in" do
     test "renders log in page", %{conn: conn} do
       conn = get(conn, Routes.user_session_path(conn, :new))
-      response = html_response(conn, 200)
-      assert response =~ "<h1>Log in</h1>"
-      assert response =~ "Log in</a>"
-      assert response =~ "Register</a>"
+      response_template = html_response(conn, 200)
+      assert response_template =~ "<h1>Log in</h1>"
+      assert response_template =~ "Log in</a>"
+      assert response_template =~ "Register</a>"
     end
 
     test "redirects if already logged in", %{conn: conn, user: user} do
@@ -35,9 +35,9 @@ defmodule RedexorWeb.UserSessionControllerTest do
 
       # Now do a logged in request and assert on the menu
       conn = get(conn, "/")
-      response = html_response(conn, 200)
-      assert response =~ user.email
-      assert response =~ "Log out</a>"
+      response_template = html_response(conn, 200)
+      assert response_template =~ user.email
+      assert response_template =~ "Log out</a>"
     end
 
     test "logs the user in with remember me", %{conn: conn, user: user} do
@@ -74,9 +74,9 @@ defmodule RedexorWeb.UserSessionControllerTest do
           "user" => %{"email" => user.email, "password" => "invalid_password"}
         })
 
-      response = html_response(conn, 200)
-      assert response =~ "<h1>Log in</h1>"
-      assert response =~ "Invalid email or password"
+      response_template = html_response(conn, 200)
+      assert response_template =~ "<h1>Log in</h1>"
+      assert response_template =~ "Invalid email or password"
     end
   end
 

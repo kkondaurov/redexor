@@ -20,10 +20,10 @@ defmodule Redexor.RequestHandler do
         method: method,
         path: path,
         rdx_route_id: rdx_route.id,
-        response_id: rdx_route.response.id
+        response_id: rdx_route.response_template.id
       )
 
-      api_response = ApiResponse.build(rdx_route.response)
+      api_response = ApiResponse.build(rdx_route.response_template)
       broadcast(rdx_route, api_response, query_params, body_params)
       api_response
     else
@@ -51,10 +51,10 @@ defmodule Redexor.RequestHandler do
     end
   end
 
-  defp broadcast(rdx_route, response, query_params, body_params) do
+  defp broadcast(rdx_route, response_template, query_params, body_params) do
     Phoenix.PubSub.broadcast!(Redexor.PubSub, Redexor.RequestLogger.new_request_topic(), {:new_request, %{
       rdx_route: rdx_route,
-      response: response,
+      response_template: response_template,
       query_params: query_params,
       body_params: body_params
     }})
