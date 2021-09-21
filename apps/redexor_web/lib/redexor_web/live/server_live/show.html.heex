@@ -17,6 +17,18 @@
 
 <h3 class="mt-5">Routes</h3>
 
+<%= if @rdx_routes == [] and @live_action not in [:new_route, :edit_route] do %>
+<article class="message is-warning">
+  <div class="message-header">
+    <p>This server doesn't have any routes yet</p>
+  </div>
+  <div class="message-body">
+    <p>Each route handles a unique combination of request path and HTTP method.</p>
+    <p>By default, it answers 200 OK, but you can customize the response.</p>
+  </div>
+</article>
+<% end %>
+
 <article>
 <%= if @live_action in [:new_route, :edit_route] do %>
   <%= live_modal RedexorWeb.RdxRouteLive.FormComponent,
@@ -67,7 +79,13 @@
             https://<%= @server.id %>.<%= api_host() %><%= rdx_route.path %>
           </small>
         </td>        
-        <td style="width:200px;">
+        <td style="width:270px;">
+          <%= live_patch to: Routes.rdx_route_show_path(@socket, :show, @server.id, rdx_route), class: "button is-small is-info has-icons-left" do %>
+            <span class="icon is-small">
+              <i class="fas fa-reply"></i>
+            </span>
+            <span>Responses</span>
+          <% end %>   
           <%= live_patch to: Routes.server_show_path(@socket, :edit_route, @server.id, rdx_route), class: "button is-small is-warning has-icons-left" do %>
             <span class="icon is-small">
               <i class="fas fa-edit"></i>
