@@ -1,6 +1,49 @@
-<section class="columns">
-  <article class="column">
-  </article>
-  <article class="column">
-  </article>
+<section class="hero has-background-light">
+  <div class="hero-body">
+    <p class="title">
+      Mock API Endpoints
+    </p>
+    <div class="splide mb-5">
+      <div class="splide__track">
+        <ul class="splide__list">
+          <li class="splide__slide">
+            <p class="subtitle">Create routes</p>
+            <div class="mt-5 splide__slide__container">
+              <img src={Routes.static_path(@conn, "/images/screenshots/01.png")}>
+            </div>
+          </li>
+          <li class="splide__slide">
+            <p class="subtitle">Configure and switch between response templates</p>
+            <div class="splide__slide__container">
+              <img src={Routes.static_path(@conn, "/images/screenshots/02.png")}>
+            </div>
+          </li>
+          <li class="splide__slide">
+            <p class="subtitle">Emulate errors and latency</p>
+            <div class="splide__slide__container">
+              <img src={Routes.static_path(@conn, "/images/screenshots/03.png")}>
+            </div>
+          </li>
+          <li class="splide__slide">
+            <p class="subtitle">Watch your requests in real time</p>
+            <div class="splide__slide__container">
+              <img src={Routes.static_path(@conn, "/images/screenshots/04.png")}>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-5 has-text-centered">
+      <%= link "Register", to: Routes.user_registration_path(@conn, :new), class: "button is-primary is-large" %>
+    </div>
+  </div>  
 </section>
+
+<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/js/splide.min.js"></script>
+<script>
+	new Splide( '.splide', {
+    rewind: true,
+    autoHeight: true,
+  } ).mount();
+</script>
