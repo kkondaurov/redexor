@@ -14,20 +14,27 @@
     <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js")}></script>
   </head>
   <body>
-    <header class="container">
-      <nav class="navbar has-shadow mb-4" role="navigation" aria-label="main navigation">
-        <div class="navbar-brand">
-          <a class="logo navbar-item" href="/">
-            <img phx-track-static src={Routes.static_path(@conn, "/images/logo.svg")} style="max-height:60px" width="158" height="60"/>
-          </a>
-        </div>
-        <div class="navbar-menu is-align-items-center is-align-self-center">
-            <%= render "_user_menu.html", assigns %>
-        </div>
-      </nav>
-    </header>
-    <main role="main" class="container">
-      <%= @inner_content %>
-    </main>
+    <div class="body-wrapper">
+      <header class="container">
+        <nav class="navbar has-shadow mb-4" role="navigation" aria-label="main navigation">
+          <div class="navbar-brand">
+            <a class="logo navbar-item" href="/">
+              <img phx-track-static src={Routes.static_path(@conn, "/images/logo.svg")} style="max-height:60px" width="158" height="60"/>
+            </a>
+          </div>
+          <div class="navbar-menu is-align-items-center is-align-self-center">
+              <%= render "_user_menu.html", assigns %>
+          </div>
+        </nav>
+      </header>
+      <main role="main" class="container">
+        <%= @inner_content %>
+      </main>
+      <footer class="container">
+        <%= if @current_user do %>
+          <a href="mailto:info@redexor.com">info@redexor.com</a>
+        <% end %>
+      </footer>
+    </div>
   </body>
 </html>

@@ -1,4 +1,5 @@
 <article>
+<h1>Servers</h1>
 
 <%= if @live_action in [:new, :edit] do %>
   <%= live_modal RedexorWeb.ServerLive.FormComponent,
@@ -8,6 +9,18 @@
     server: @server,
     user: @user,
     return_to: Routes.server_index_path(@socket, :index) %>
+<% end %>
+
+<%= if @servers == [] and @live_action not in [:new, :edit] do %>
+<article class="message is-warning">
+  <div class="message-header">
+    <p>You don't have any servers yet</p>
+  </div>
+  <div class="message-body">
+    <p>Once you create a server, you'll be able to add its routes and configure responses.</p>
+    <p>Each server has its own subdomain, generated automatically.</p>
+  </div>
+</article>
 <% end %>
 
 <%= unless @live_action in [:new, :edit] do %>
@@ -40,7 +53,13 @@
         <td>
           <%= live_patch server.title, to: Routes.server_show_path(@socket, :show, server) %>
         </td>
-        <td style="width:200px;">
+        <td style="width:270px;">
+          <%= live_patch to: Routes.server_show_path(@socket, :show, server), class: "button is-small is-info has-icons-left" do %>
+            <span class="icon is-small">
+              <i class="fas fa-sitemap"></i>
+            </span>
+            <span>Routes</span>
+          <% end %>        
           <%= live_patch to: Routes.server_index_path(@socket, :edit, server), class: "button is-small is-warning has-icons-left" do %>
             <span class="icon is-small">
               <i class="fas fa-edit"></i>

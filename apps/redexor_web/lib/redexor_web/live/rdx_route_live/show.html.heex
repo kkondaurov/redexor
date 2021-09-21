@@ -38,6 +38,19 @@
 
 <h3 class="mt-5">Response Templates</h3>
 
+<%= if @response_templates == [] and @live_action not in [:new_response, :edit_response] do %>
+<article class="message is-warning">
+  <div class="message-header">
+    <p>This route has no response templates.</p>
+  </div>
+  <div class="message-body">
+    <p>Right now, the route answers 200 OK, but you can create and switch between several responses.</p>
+    <p>Each can have its own HTTP Code (like 200, 404, or 500) and contain static plain text or JSON.</p>
+    <p>You can also emulate response latency.</p>
+  </div>
+</article>
+<% end %>
+
 <article>
 <%= if @live_action in [:new_response, :edit_response] do %>
   <%= live_modal RedexorWeb.ResponseLive.FormComponent,

@@ -1,5 +1,10 @@
 /* This file is for your main application css. */
 @import "https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css";
+@import "https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/css/splide.min.css";
+
+main {
+  min-height: 100vh;
+}
 
 /* Alerts and form errors */
 .alert {
@@ -62,4 +67,8 @@ h2 {
 
 h3 {
   font-size: 1.5rem;
+}
+
+footer {
+  padding: 20px 10px;
 }
