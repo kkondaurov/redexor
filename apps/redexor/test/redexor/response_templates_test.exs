@@ -3,9 +3,7 @@ defmodule Redexor.ResponseTemplatesTest do
 
   alias Redexor.ResponseTemplates
   alias Redexor.ResponseTemplates.ResponseTemplate
-  alias Redexor.Support.AccountsFixtures
-  alias Redexor.Support.ServersFixtures
-  alias Redexor.Support.RdxRoutesFixtures
+  alias Redexor.Support.{AccountsFixtures, RdxRoutesFixtures, ServersFixtures}
 
   setup do
     user = AccountsFixtures.user_fixture()

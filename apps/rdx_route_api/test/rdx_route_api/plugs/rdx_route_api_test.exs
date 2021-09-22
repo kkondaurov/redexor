@@ -1,9 +1,7 @@
 defmodule RdxRouteApi.DynamicRouterTest do
   use RdxRouteApi.ConnCase
 
-  alias Redexor.Support.RdxRoutesFixtures
-  alias Redexor.Support.AccountsFixtures
-  alias Redexor.Support.ServersFixtures
+  alias Redexor.Support.{AccountsFixtures, RdxRoutesFixtures, ServersFixtures}
 
   require Logger
 

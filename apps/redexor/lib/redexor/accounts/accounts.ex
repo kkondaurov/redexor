@@ -351,8 +351,8 @@ defmodule Redexor.Accounts do
     end
   end
 
-  @spec list() :: [User.t()]
-  def list() do
+  @spec list :: [User.t()]
+  def list do
     User
     |> join(:left, [u], s in Redexor.Servers.Server, on: s.user_id == u.id)
     |> join(:left, [u, _s], r in Redexor.RdxRoutes.RdxRoute, on: r.user_id == u.id)

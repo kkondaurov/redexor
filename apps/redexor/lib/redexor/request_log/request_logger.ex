@@ -1,4 +1,8 @@
 defmodule Redexor.RequestLogger do
+  @moduledoc """
+  Consumes notification about requests handled by Route API appi.
+  """
+
   use GenServer
   require Logger
   alias Redexor.RdxRoutes.RdxRoute
@@ -13,7 +17,7 @@ defmodule Redexor.RequestLogger do
 
   def logged_request_topic(rdx_route_id), do: "logged_api_request:#{rdx_route_id}"
 
-  def new_request_topic(), do: "new_api_request"
+  def new_request_topic, do: "new_api_request"
 
   @impl true
   def init(state) do

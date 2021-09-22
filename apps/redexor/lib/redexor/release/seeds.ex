@@ -1,14 +1,16 @@
 defmodule Redexor.Release.Seeds do
+  @moduledoc false
+
   import Ecto.Query
   alias Redexor.Admins
   alias Redexor.Admins.Admin
   alias Redexor.Repo
 
-  def run() do
+  def run do
     create_admin()
   end
 
-  defp create_admin() do
+  defp create_admin do
     unless Repo.exists?(from(a in Admin)) do
       {:ok, admin} =
         Admins.register_admin(%{

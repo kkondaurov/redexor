@@ -19,7 +19,7 @@ defmodule Redexor.Application do
     Supervisor.start_link(children, strategy: :one_for_one, name: Redexor.Supervisor)
   end
 
-  def request_logger_config() do
+  def request_logger_config do
     if Application.get_env(:redexor, :disable_request_logger) do
       []
     else

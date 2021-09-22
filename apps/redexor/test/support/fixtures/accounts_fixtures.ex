@@ -4,6 +4,10 @@ defmodule Redexor.Support.AccountsFixtures do
   entities via the `Redexor.Accounts` context.
   """
 
+  alias Redexor.Accounts
+  alias Redexor.Accounts.User
+  alias Redexor.Repo
+
   def unique_user_email, do: "user#{System.unique_integer()}@example.com"
   def valid_user_password, do: "hello world!"
 
@@ -18,22 +22,22 @@ defmodule Redexor.Support.AccountsFixtures do
     {:ok, user} =
       attrs
       |> valid_user_attributes()
-      |> Redexor.Accounts.register_user()
+      |> Accounts.register_user()
 
     user
   end
 
   def confirmed_user_fixture(attrs \\ %{}) do
     user_fixture(attrs)
-    |> Redexor.Accounts.User.confirm_changeset()
-    |> Redexor.Repo.update!()
+    |> User.confirm_changeset()
+    |> Repo.update!()
   end
 
   def confirmed_user_by_email(email) do
     email
-    |> Redexor.Accounts.get_user_by_email()
-    |> Redexor.Accounts.User.confirm_changeset()
-    |> Redexor.Repo.update!()
+    |> Accounts.get_user_by_email()
+    |> User.confirm_changeset()
+    |> Repo.update!()
   end
 
   def extract_user_token(fun) do

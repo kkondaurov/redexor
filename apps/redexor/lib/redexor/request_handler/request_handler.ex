@@ -5,9 +5,9 @@ defmodule Redexor.RequestHandler do
 
   require Logger
 
-  alias Redexor.RequestHandler.ApiResponse
   alias Redexor.RdxRoutes
   alias Redexor.RdxRoutes.RdxRoute
+  alias Redexor.RequestHandler.ApiResponse
 
   @spec handle(String.t(), String.t(), String.t(), map(), map()) :: ApiResponse.t()
   def handle(server_id, method, path, query_params, body_params) do

@@ -4,11 +4,9 @@ defmodule Redexor.RequestHandlerTest do
   alias Redexor.RdxRoutes
   alias Redexor.RequestHandler
   alias Redexor.RequestHandler.ApiResponse
-  alias Redexor.Servers
-  alias Redexor.Support.AccountsFixtures
-  alias Redexor.Support.RdxRoutesFixtures
-  alias Redexor.Support.ServersFixtures
   alias Redexor.ResponseTemplates
+  alias Redexor.Servers
+  alias Redexor.Support.{AccountsFixtures, RdxRoutesFixtures, ServersFixtures}
 
   require Logger
 

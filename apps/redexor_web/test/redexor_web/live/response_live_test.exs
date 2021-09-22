@@ -2,9 +2,7 @@ defmodule RedexorWeb.ResponseLiveTest do
   use RedexorWeb.ConnCase
 
   import Phoenix.LiveViewTest
-  alias Redexor.Support.RdxRoutesFixtures
-  alias Redexor.Support.AccountsFixtures
-  alias Redexor.Support.ServersFixtures
+  alias Redexor.Support.{AccountsFixtures, RdxRoutesFixtures, ServersFixtures}
   alias RedexorWeb.UserAuth
 
   @create_attrs %{

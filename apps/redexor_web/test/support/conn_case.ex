@@ -16,6 +16,8 @@ defmodule RedexorWeb.ConnCase do
   """
 
   use ExUnit.CaseTemplate
+  alias Redexor.Accounts
+  alias Redexor.Support.AccountsFixtures
 
   using do
     quote do
@@ -50,7 +52,7 @@ defmodule RedexorWeb.ConnCase do
   test context.
   """
   def register_and_log_in_user(%{conn: conn}) do
-    user = Redexor.Support.AccountsFixtures.user_fixture()
+    user = AccountsFixtures.user_fixture()
     %{conn: log_in_user(conn, user), user: user}
   end
 
@@ -60,7 +62,7 @@ defmodule RedexorWeb.ConnCase do
   It returns an updated `conn`.
   """
   def log_in_user(conn, user) do
-    token = Redexor.Accounts.generate_user_session_token(user)
+    token = Accounts.generate_user_session_token(user)
 
     conn
     |> Phoenix.ConnTest.init_test_session(%{})

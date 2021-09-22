@@ -1,4 +1,11 @@
 defmodule Redexor.Release do
+  @moduledoc """
+    Release tasks. Example:
+    ```
+    _build/prod/rel/redexor/bin/redexor eval "Redexor.Release.seed"
+    ```
+  """
+
   @app :redexor
 
   def migrate do
@@ -14,7 +21,7 @@ defmodule Redexor.Release do
     {:ok, _, _} = Ecto.Migrator.with_repo(repo, &Ecto.Migrator.run(&1, :down, to: version))
   end
 
-  def seed() do
+  def seed do
     migrate()
     Redexor.Release.Seeds.run()
   end

@@ -24,7 +24,7 @@ defmodule RedexorWeb.LiveHelpers do
     live_component(RedexorWeb.ModalComponent, modal_opts)
   end
 
-  def api_host(), do: Application.get_env(:rdx_route_api, RdxRouteApi.Endpoint)[:url][:host]
+  def api_host, do: Application.get_env(:rdx_route_api, RdxRouteApi.Endpoint)[:url][:host]
 
   def format_response_body(%ResponseTemplate{} = response_template),
     do: ResponseTemplate.to_html(response_template)

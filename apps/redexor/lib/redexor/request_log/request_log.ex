@@ -2,10 +2,10 @@ defmodule Redexor.RequestLog do
   @moduledoc false
 
   import Ecto.Query
-  alias Redexor.RequestHandler.ApiResponse
   alias Redexor.RdxRoutes.RdxRoute
-  alias Redexor.RequestLog.RequestLogEntry
   alias Redexor.Repo
+  alias Redexor.RequestHandler.ApiResponse
+  alias Redexor.RequestLog.RequestLogEntry
 
   @default_per_page 50
 
