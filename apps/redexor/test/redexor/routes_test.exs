@@ -11,7 +11,7 @@ defmodule Redexor.RdxRoutesTest do
     {:ok, user: user, server: server}
   end
 
-  describe "rdx_routes" do
+  describe "RdxRoutes" do
     alias Redexor.RdxRoutes.RdxRoute
 
     import Redexor.Support.RdxRoutesFixtures

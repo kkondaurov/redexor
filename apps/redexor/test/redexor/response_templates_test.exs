@@ -1,4 +1,4 @@
-defmodule Redexor.ResponsesTest do
+defmodule Redexor.ResponseTemplatesTest do
   use Redexor.DataCase
 
   alias Redexor.ResponseTemplates
@@ -14,7 +14,7 @@ defmodule Redexor.ResponsesTest do
     {:ok, user: user, server: server, rdx_route: rdx_route}
   end
 
-  describe "rdx_routes" do
+  describe "ResponseTemplates" do
 
     test "given a route without response_templates, a created response_template is listed for the route", %{user: user, rdx_route: rdx_route} do
       {:ok, response_template} = ResponseTemplates.create_response(user, rdx_route, %{
