@@ -30,25 +30,22 @@ defmodule Redexor.ResponseTemplates.ResponseTemplate do
   @doc false
   def changeset(response_template, attrs) do
     response_template
-    |> cast(attrs, [:title, :type, :code, :rdx_route_id, :selected, :latency])
+    |> cast(attrs, [:title, :type, :code, :rdx_route_id, :selected, :latency, :text_body])
+    |> cast_json_body(attrs)
     |> validate_required([:title, :type, :code, :selected])
     |> validate_inclusion(:type, @implemented_types)
     |> validate_inclusion(:code, @allowed_codes)
     |> validate_inclusion(:latency, @allowed_latencies)
-    |> validate_body(attrs)
+    |> validate_required_body()
   end
 
-  defp validate_body(changeset, attrs) do
+  defp validate_required_body(changeset) do
     case get_field(changeset, :type) do
       "TEXT" ->
-        changeset
-        |> cast(attrs, [:text_body])
-        |> validate_required(:text_body)
+        validate_required(changeset, :text_body)
 
       "JSON" ->
-        changeset
-        |> cast_json_body(attrs)
-        |> validate_required(:json_body)
+        validate_required(changeset, :json_body)
 
       _ -> changeset
     end
@@ -58,7 +55,9 @@ defmodule Redexor.ResponseTemplates.ResponseTemplate do
   defp cast_json_body(changeset, %{json_body: json_body}), do: do_cast_json_body(changeset, json_body)
   defp cast_json_body(changeset, _), do: changeset
 
-  defp do_cast_json_body(changeset, json_body) do
+  defp do_cast_json_body(changeset, ""), do: cast(changeset, %{json_body: %{}}, [:json_body])
+  defp do_cast_json_body(changeset, nil), do: cast(changeset, %{json_body: %{}}, [:json_body])
+  defp do_cast_json_body(changeset, json_body) when is_binary(json_body) do
     case Jason.decode(json_body) do
       {:ok, map} ->
         cast(changeset, %{json_body: map}, [:json_body])
@@ -69,6 +68,7 @@ defmodule Redexor.ResponseTemplates.ResponseTemplate do
         |> add_error(:json_body, "has invalid format")
     end
   end
+  defp do_cast_json_body(changeset, _), do: add_error(changeset, :json_body, "has invalid format")
 
   def allowed_codes, do: @allowed_codes
   def implemented_types, do: @implemented_types
