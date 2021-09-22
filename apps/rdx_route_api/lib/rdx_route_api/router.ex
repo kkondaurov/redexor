@@ -8,5 +8,4 @@ defmodule RdxRouteApi.Router do
   scope "/", RdxRouteApi do
     forward "/", Plugs.DynamicRouter
   end
-
 end

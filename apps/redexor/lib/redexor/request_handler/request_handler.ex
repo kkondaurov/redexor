@@ -52,11 +52,16 @@ defmodule Redexor.RequestHandler do
   end
 
   defp broadcast(rdx_route, response_template, query_params, body_params) do
-    Phoenix.PubSub.broadcast!(Redexor.PubSub, Redexor.RequestLogger.new_request_topic(), {:new_request, %{
-      rdx_route: rdx_route,
-      response_template: response_template,
-      query_params: query_params,
-      body_params: body_params
-    }})
+    Phoenix.PubSub.broadcast!(
+      Redexor.PubSub,
+      Redexor.RequestLogger.new_request_topic(),
+      {:new_request,
+       %{
+         rdx_route: rdx_route,
+         response_template: response_template,
+         query_params: query_params,
+         body_params: body_params
+       }}
+    )
   end
 end

@@ -109,6 +109,6 @@ defmodule Redexor.RdxRoutes do
 
   @spec preload_selected_response(RdxRoute.t()) :: RdxRoute.t()
   def preload_selected_response(rdx_route) do
-    Repo.preload(rdx_route, [response_template: from(r in ResponseTemplate, where: r.selected)])
+    Repo.preload(rdx_route, response_template: from(r in ResponseTemplate, where: r.selected))
   end
 end

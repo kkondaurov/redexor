@@ -37,7 +37,11 @@ defmodule RedexorWeb.ResponseLive.FormComponent do
   defp save_response(socket, :edit_response, response_params) do
     user = socket.assigns[:user]
 
-    case ResponseTemplates.update_response(user, socket.assigns.response_template, response_params) do
+    case ResponseTemplates.update_response(
+           user,
+           socket.assigns.response_template,
+           response_params
+         ) do
       {:ok, _response} ->
         {:noreply,
          socket

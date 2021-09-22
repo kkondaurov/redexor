@@ -11,6 +11,7 @@ if config_env() == :prod do
       environment variable DATABASE_URL is missing.
       For example: ecto://USER:PASS@HOST/DATABASE
       """
+
   config :redexor, Redexor.Repo,
     # ssl: true,
     url: database_url,

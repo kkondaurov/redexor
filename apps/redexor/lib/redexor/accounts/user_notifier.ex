@@ -19,7 +19,13 @@ defmodule Redexor.Accounts.UserNotifier do
     Logger.info(%{message: "Dispatching email", recipient: recipient, subject: subject})
 
     with {:ok, metadata} <- Mailer.deliver(email) do
-      Logger.info(%{message: "Dispatched email", recipient: recipient, subject: subject, mailer_metadata: metadata})
+      Logger.info(%{
+        message: "Dispatched email",
+        recipient: recipient,
+        subject: subject,
+        mailer_metadata: metadata
+      })
+
       {:ok, email}
     end
   end

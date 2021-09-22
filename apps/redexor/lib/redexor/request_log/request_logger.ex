@@ -35,7 +35,8 @@ defmodule Redexor.RequestLogger do
       body_params: body_params
     } = payload
 
-    %RequestLogEntry{} = entry = RequestLog.log!(rdx_route, response_template, query_params, body_params)
+    %RequestLogEntry{} =
+      entry = RequestLog.log!(rdx_route, response_template, query_params, body_params)
 
     topic = logged_request_topic(rdx_route.id)
     Logger.info(message: "Logged request", entry: entry)

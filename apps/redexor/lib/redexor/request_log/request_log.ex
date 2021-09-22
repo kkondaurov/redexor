@@ -17,7 +17,7 @@ defmodule Redexor.RequestLog do
       latency: api_response.latency,
       response_body: build_response_body(api_response.payload),
       query_params: URI.encode_query(query_params),
-      body_params: Jason.encode!(body_params, pretty: true),
+      body_params: Jason.encode!(body_params, pretty: true)
     }
 
     %RequestLogEntry{}
@@ -35,5 +35,4 @@ defmodule Redexor.RequestLog do
     |> limit(^per_page)
     |> Repo.all()
   end
-
 end

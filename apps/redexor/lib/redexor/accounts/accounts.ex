@@ -228,6 +228,7 @@ defmodule Redexor.Accounts do
   """
   def get_user_by_session_token(token) do
     {:ok, query} = UserToken.verify_session_token_query(token)
+
     query
     |> where([_, u], not u.blocked)
     |> Repo.one()
@@ -359,11 +360,12 @@ defmodule Redexor.Accounts do
     # TODO index?
     |> order_by([u, _s, _r], desc: u.inserted_at)
     |> group_by([u, _s, _r], u.id)
-    |> select([u, s, r, e], %{u |
-      server_count: count(s.id, :distinct),
-      route_count: count(r.id, :distinct),
-      # TODO index?
-      last_request_at: max(e.inserted_at)
+    |> select([u, s, r, e], %{
+      u
+      | server_count: count(s.id, :distinct),
+        route_count: count(r.id, :distinct),
+        # TODO index?
+        last_request_at: max(e.inserted_at)
     })
     |> Repo.all()
   end
@@ -378,11 +380,11 @@ defmodule Redexor.Accounts do
   end
 
   defp maybe_delete_token(%User{blocked: false} = user), do: user
+
   defp maybe_delete_token(%User{id: user_id, blocked: true} = user) do
     from(ut in UserToken, where: ut.user_id == ^user_id and ut.context == "session")
     |> Repo.delete_all()
 
     user
   end
-
 end

@@ -26,10 +26,14 @@ defmodule RedexorWeb.LiveHelpers do
 
   def api_host(), do: Application.get_env(:rdx_route_api, RdxRouteApi.Endpoint)[:url][:host]
 
-  def format_response_body(%ResponseTemplate{} = response_template), do: ResponseTemplate.to_html(response_template)
+  def format_response_body(%ResponseTemplate{} = response_template),
+    do: ResponseTemplate.to_html(response_template)
 
-  def mark_rdx_route_response(%ResponseTemplate{id: response_id}, response_id), do: "default-response_template"
+  def mark_rdx_route_response(%ResponseTemplate{id: response_id}, response_id),
+    do: "default-response_template"
+
   def mark_rdx_route_response(_, _), do: ""
 
-  def format_datetime(utc_datetime, opts), do: RedexorWeb.LayoutView.format_datetime(utc_datetime, opts)
+  def format_datetime(utc_datetime, opts),
+    do: RedexorWeb.LayoutView.format_datetime(utc_datetime, opts)
 end

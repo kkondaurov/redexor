@@ -1,5 +1,4 @@
 defmodule Redexor.Release.Seeds do
-
   import Ecto.Query
   alias Redexor.Admins
   alias Redexor.Admins.Admin
@@ -10,9 +9,9 @@ defmodule Redexor.Release.Seeds do
   end
 
   defp create_admin() do
-    unless Repo.exists?(from a in Admin) do
-      {:ok, admin} = Admins.register_admin(
-        %{
+    unless Repo.exists?(from(a in Admin)) do
+      {:ok, admin} =
+        Admins.register_admin(%{
           email: "changeme@example.com",
           password: "changemeasap",
           superadmin: true,
@@ -27,5 +26,4 @@ defmodule Redexor.Release.Seeds do
       |> Repo.update!()
     end
   end
-
 end

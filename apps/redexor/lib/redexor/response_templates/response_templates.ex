@@ -34,7 +34,6 @@ defmodule Redexor.ResponseTemplates do
 
   defp scope(queryable, %Admin{}), do: queryable
 
-
   @spec create_response(User.t(), RdxRoute.t(), map()) ::
           {:ok, ResponseTemplate.t()} | {:error, Ecto.Changeset.t()} | {:error, :unauthorized}
   def create_response(%User{id: user_id}, %RdxRoute{user_id: user_id} = rdx_route, attrs) do
@@ -75,18 +74,30 @@ defmodule Redexor.ResponseTemplates do
   end
 
   @spec set_selected(User.t(), ResponseTemplate.t()) ::
-    {:ok, ResponseTemplate.t()} | {:error, Ecto.Changeset.t()} | {:error, :unauthorized}
-  def set_selected(%User{} = user, %ResponseTemplate{rdx_route_id: rdx_route_id, id: response_id} = response_template) do
+          {:ok, ResponseTemplate.t()} | {:error, Ecto.Changeset.t()} | {:error, :unauthorized}
+  def set_selected(
+        %User{} = user,
+        %ResponseTemplate{rdx_route_id: rdx_route_id, id: response_id} = response_template
+      ) do
     if authorized?(user, response_template) do
       Ecto.Multi.new()
-      |> Ecto.Multi.update_all(:reset_selected, from(r in ResponseTemplate, where: r.rdx_route_id == ^rdx_route_id and r.id != ^response_id), set: [selected: false])
+      |> Ecto.Multi.update_all(
+        :reset_selected,
+        from(r in ResponseTemplate,
+          where: r.rdx_route_id == ^rdx_route_id and r.id != ^response_id
+        ),
+        set: [selected: false]
+      )
       |> Ecto.Multi.update(:set_selected, fn _ ->
         Ecto.Changeset.change(response_template, %{selected: true})
       end)
       |> Repo.transaction()
       |> case do
-        {:ok, %{set_selected: %ResponseTemplate{} = response_template}} -> {:ok, response_template}
-        otherwise -> otherwise
+        {:ok, %{set_selected: %ResponseTemplate{} = response_template}} ->
+          {:ok, response_template}
+
+        otherwise ->
+          otherwise
       end
     else
       {:error, :unauthorized}
@@ -95,8 +106,9 @@ defmodule Redexor.ResponseTemplates do
 
   defp authorized?(%User{id: user_id}, %ResponseTemplate{} = response_template) do
     %ResponseTemplate{
-     rdx_route: %RdxRoute{user_id: rdx_route_user_id}
+      rdx_route: %RdxRoute{user_id: rdx_route_user_id}
     } = Repo.preload(response_template, [:rdx_route])
+
     user_id == rdx_route_user_id
   end
 
@@ -106,5 +118,4 @@ defmodule Redexor.ResponseTemplates do
   def change_response(%ResponseTemplate{} = response_template, attrs \\ %{}) do
     ResponseTemplate.changeset(response_template, attrs)
   end
-
 end

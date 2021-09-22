@@ -11,7 +11,7 @@ defmodule Redexor.RequestHandler.ApiResponse do
           code: 200 | 400..429 | 431 | 451 | 500..511,
           payload: map() | binary(),
           headers: Keyword.t(),
-          latency: non_neg_integer(),
+          latency: non_neg_integer()
         }
 
   def build(nil), do: %__MODULE__{code: 200, payload: %{}}

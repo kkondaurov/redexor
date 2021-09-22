@@ -86,7 +86,14 @@ defmodule RedexorWeb.RdxRouteLive.Show do
     case ResponseTemplates.get_response(user, id) do
       %ResponseTemplate{} = response_template ->
         {:ok, _response} = ResponseTemplates.delete_response(user, response_template)
-        socket = assign(socket, :response_templates, ResponseTemplates.list_responses(user, response_template.rdx_route_id))
+
+        socket =
+          assign(
+            socket,
+            :response_templates,
+            ResponseTemplates.list_responses(user, response_template.rdx_route_id)
+          )
+
         {:noreply, socket}
 
       nil ->
@@ -102,10 +109,15 @@ defmodule RedexorWeb.RdxRouteLive.Show do
     case ResponseTemplates.get_response(user, id) do
       %ResponseTemplate{} = response_template ->
         {:ok, _response} = ResponseTemplates.set_selected(user, response_template)
+
         socket =
           socket
-          |> assign(:response_templates, ResponseTemplates.list_responses(user, response_template.rdx_route_id))
+          |> assign(
+            :response_templates,
+            ResponseTemplates.list_responses(user, response_template.rdx_route_id)
+          )
           |> assign(:rdx_route, RdxRoutes.get_rdx_route(user, rdx_route.id))
+
         {:noreply, socket}
 
       nil ->
@@ -117,5 +129,4 @@ defmodule RedexorWeb.RdxRouteLive.Show do
   defp page_title(:show, %RdxRoute{title: title}), do: "#{title} - Routes - redexor"
   defp page_title(:new_response, _), do: "New Response Template"
   defp page_title(:edit_response, _), do: "Edit Response Template"
-
 end

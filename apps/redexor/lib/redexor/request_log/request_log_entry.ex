@@ -19,7 +19,15 @@ defmodule Redexor.RequestLog.RequestLogEntry do
 
   def changeset(entry, attrs) do
     entry
-    |> cast(attrs, [:rdx_route_id, :response_code, :latency, :inserted_at, :response_body, :query_params, :body_params])
+    |> cast(attrs, [
+      :rdx_route_id,
+      :response_code,
+      :latency,
+      :inserted_at,
+      :response_body,
+      :query_params,
+      :body_params
+    ])
     |> validate_required([:rdx_route_id, :response_code, :latency])
   end
 end

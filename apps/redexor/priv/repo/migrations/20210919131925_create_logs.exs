@@ -23,11 +23,13 @@ defmodule Redexor.Repo.Migrations.CreateLogs do
   end
 
   defp create_monthly_partitions(_table, _start_date, 0), do: :ok
+
   defp create_monthly_partitions(table, start_date, months) do
     start_date = Date.beginning_of_month(start_date)
     end_date = Date.end_of_month(start_date)
 
     month = String.pad_leading("#{start_date.month}", 2, "0")
+
     execute """
     CREATE TABLE #{table}_p#{start_date.year}_#{month}
     PARTITION OF #{table} FOR VALUES

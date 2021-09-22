@@ -21,7 +21,6 @@ defmodule RdxRouteApi.DynamicRouterTest do
   end
 
   describe "/" do
-
     test "GET / for existing path of existing server", %{server: server, rdx_route: rdx_route} do
       conn = build_conn_to_server(:get, server.id)
       resp = get(conn, "#{rdx_route.path}")

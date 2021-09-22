@@ -12,6 +12,7 @@ defmodule RedexorWeb.RdxRouteLive.Log do
   def mount(_params, %{"user_token" => user_token} = _session, socket) do
     %User{} = user = Redexor.Accounts.get_user_by_session_token(user_token)
     send(self(), :after_join)
+
     socket =
       socket
       |> assign(:user, user)
@@ -56,8 +57,7 @@ defmodule RedexorWeb.RdxRouteLive.Log do
     {:noreply, socket}
   end
 
-  def handle_info({:logged_request, entry}, %{assigns: %{entries: entries} } = socket) do
+  def handle_info({:logged_request, entry}, %{assigns: %{entries: entries}} = socket) do
     {:noreply, assign(socket, entries: [entry | entries])}
   end
-
 end

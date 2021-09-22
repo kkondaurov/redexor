@@ -37,7 +37,8 @@ defmodule Redexor.RdxRoutesTest do
     } do
       valid_attrs = %{enabled: true, method: "GET", path: "/some path", title: "some title"}
 
-      assert {:ok, %RdxRoute{} = rdx_route} = RdxRoutes.create_rdx_route(user, server, valid_attrs)
+      assert {:ok, %RdxRoute{} = rdx_route} =
+               RdxRoutes.create_rdx_route(user, server, valid_attrs)
 
       assert rdx_route.enabled == true
       assert rdx_route.method == "GET"
@@ -49,7 +50,8 @@ defmodule Redexor.RdxRoutesTest do
       user: user,
       server: server
     } do
-      assert {:error, %Ecto.Changeset{}} = RdxRoutes.create_rdx_route(user, server, @invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} =
+               RdxRoutes.create_rdx_route(user, server, @invalid_attrs)
     end
 
     test "update_rdx_route/2 with valid data updates the rdx_route", %{
@@ -65,7 +67,8 @@ defmodule Redexor.RdxRoutesTest do
         title: "some updated title"
       }
 
-      assert {:ok, %RdxRoute{} = rdx_route} = RdxRoutes.update_rdx_route(user, rdx_route, update_attrs)
+      assert {:ok, %RdxRoute{} = rdx_route} =
+               RdxRoutes.update_rdx_route(user, rdx_route, update_attrs)
 
       assert rdx_route.enabled == false
       assert rdx_route.method == "POST"
@@ -85,15 +88,16 @@ defmodule Redexor.RdxRoutesTest do
         title: title
       } = rdx_route = rdx_route_fixture(user, server)
 
-      assert {:error, %Ecto.Changeset{}} = RdxRoutes.update_rdx_route(user, rdx_route, @invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} =
+               RdxRoutes.update_rdx_route(user, rdx_route, @invalid_attrs)
 
       assert %RdxRoute{
-        id: ^rdx_route_id,
-        enabled: ^enabled,
-        method: ^method,
-        path: ^path,
-        title: ^title
-      } = RdxRoutes.get_rdx_route(user, rdx_route_id)
+               id: ^rdx_route_id,
+               enabled: ^enabled,
+               method: ^method,
+               path: ^path,
+               title: ^title
+             } = RdxRoutes.get_rdx_route(user, rdx_route_id)
     end
 
     test "update_rdx_route/2 adds a leading slash", %{

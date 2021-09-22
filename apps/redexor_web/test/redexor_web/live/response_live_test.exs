@@ -41,22 +41,27 @@ defmodule RedexorWeb.ResponseLiveTest do
   describe "RdxRouteShow" do
     setup [:create_rdx_route]
 
-    test "given a route without response_templates, a created response_template is listed for the route", %{
-      conn: conn,
-      user: user,
-      server: server,
-      rdx_route: rdx_route
-    } do
+    test "given a route without response_templates, a created response_template is listed for the route",
+         %{
+           conn: conn,
+           user: user,
+           server: server,
+           rdx_route: rdx_route
+         } do
       conn = authenticate_user(conn, user)
 
-      {:ok, show_live, html} = live(conn, Routes.rdx_route_show_path(conn, :show, server, rdx_route))
+      {:ok, show_live, html} =
+        live(conn, Routes.rdx_route_show_path(conn, :show, server, rdx_route))
 
       assert html =~ rdx_route.title
 
       assert show_live |> element("a", "Create") |> render_click() =~
                "New Response Template"
 
-      assert_patch(show_live, Routes.rdx_route_show_path(conn, :new_response, server.id, rdx_route.id))
+      assert_patch(
+        show_live,
+        Routes.rdx_route_show_path(conn, :new_response, server.id, rdx_route.id)
+      )
 
       assert show_live
              |> form("#response_template-form", response_template: @invalid_attrs)
@@ -80,11 +85,16 @@ defmodule RedexorWeb.ResponseLiveTest do
     } do
       conn = authenticate_user(conn, user)
 
-      {:ok, show_live, _html} = live(conn, Routes.rdx_route_show_path(conn, :show, server, rdx_route))
+      {:ok, show_live, _html} =
+        live(conn, Routes.rdx_route_show_path(conn, :show, server, rdx_route))
 
       # Create first response_template
       assert show_live |> element("a", "Create") |> render_click() =~ "New Response Template"
-      assert_patch(show_live, Routes.rdx_route_show_path(conn, :new_response, server.id, rdx_route.id))
+
+      assert_patch(
+        show_live,
+        Routes.rdx_route_show_path(conn, :new_response, server.id, rdx_route.id)
+      )
 
       {:ok, show_live, html} =
         show_live
@@ -97,7 +107,9 @@ defmodule RedexorWeb.ResponseLiveTest do
 
       # Select the created response_template
       assert show_live |> element("a.select-response_template") |> render_click()
-      assert show_live |> element("#response_template tr", @create_attrs.title) |> render() =~ "default-response_template"
+
+      assert show_live |> element("#response_template tr", @create_attrs.title) |> render() =~
+               "default-response_template"
     end
   end
 end

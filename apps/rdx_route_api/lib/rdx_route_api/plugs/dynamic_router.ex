@@ -34,7 +34,14 @@ defmodule RdxRouteApi.Plugs.DynamicRouter do
     } = RequestHandler.handle(server_id, method, path, conn.query_params, conn.body_params)
 
     if latency > 0 do
-      Logger.info(message: "Emulating response_template latency", method: method, server_id: server_id, path: path, latency: latency)
+      Logger.info(
+        message: "Emulating response_template latency",
+        method: method,
+        server_id: server_id,
+        path: path,
+        latency: latency
+      )
+
       Process.sleep(latency)
     end
 
@@ -45,6 +52,7 @@ defmodule RdxRouteApi.Plugs.DynamicRouter do
 
   def call(%Plug.Conn{} = conn, _default) do
     Logger.warn(%{conn: conn})
+
     conn
     |> send_resp(400, "Bad request")
     |> halt()

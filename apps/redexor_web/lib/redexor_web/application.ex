@@ -10,8 +10,8 @@ defmodule RedexorWeb.Application do
       # Start the Telemetry supervisor
       RedexorWeb.Telemetry,
       # Start the Endpoint (http/https)
-      RedexorWeb.Endpoint,
-      #{Phoenix.PubSub, name: Redexor.PubSub}
+      RedexorWeb.Endpoint
+      # {Phoenix.PubSub, name: Redexor.PubSub}
       # Start a worker by calling: RedexorWeb.Worker.start_link(arg)
       # {RedexorWeb.Worker, arg}
     ]

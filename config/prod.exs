@@ -14,8 +14,7 @@ config :redexor_web, RedexorWeb.Endpoint,
   http: [port: 4000],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
-config :rdx_route_api, RdxRouteApi.Endpoint,
-  url: [host: "api.redexor.com", port: 80]
+config :rdx_route_api, RdxRouteApi.Endpoint, url: [host: "api.redexor.com", port: 80]
 
 config :phoenix, :serve_endpoints, true
 

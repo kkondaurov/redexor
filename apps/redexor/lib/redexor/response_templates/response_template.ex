@@ -47,16 +47,22 @@ defmodule Redexor.ResponseTemplates.ResponseTemplate do
       "JSON" ->
         validate_required(changeset, :json_body)
 
-      _ -> changeset
+      _ ->
+        changeset
     end
   end
 
-  defp cast_json_body(changeset, %{"json_body" => json_body}), do: do_cast_json_body(changeset, json_body)
-  defp cast_json_body(changeset, %{json_body: json_body}), do: do_cast_json_body(changeset, json_body)
+  defp cast_json_body(changeset, %{"json_body" => json_body}),
+    do: do_cast_json_body(changeset, json_body)
+
+  defp cast_json_body(changeset, %{json_body: json_body}),
+    do: do_cast_json_body(changeset, json_body)
+
   defp cast_json_body(changeset, _), do: changeset
 
   defp do_cast_json_body(changeset, ""), do: cast(changeset, %{json_body: %{}}, [:json_body])
   defp do_cast_json_body(changeset, nil), do: cast(changeset, %{json_body: %{}}, [:json_body])
+
   defp do_cast_json_body(changeset, json_body) when is_binary(json_body) do
     case Jason.decode(json_body) do
       {:ok, map} ->
@@ -68,6 +74,7 @@ defmodule Redexor.ResponseTemplates.ResponseTemplate do
         |> add_error(:json_body, "has invalid format")
     end
   end
+
   defp do_cast_json_body(changeset, _), do: add_error(changeset, :json_body, "has invalid format")
 
   def allowed_codes, do: @allowed_codes
@@ -79,5 +86,4 @@ defmodule Redexor.ResponseTemplates.ResponseTemplate do
   def to_html(%__MODULE__{type: "JSON", json_body: json_map}) do
     Jason.encode!(json_map, pretty: true)
   end
-
 end
