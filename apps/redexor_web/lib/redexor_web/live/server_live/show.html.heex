@@ -11,7 +11,7 @@
         <i class="fas fa-toggle-off"></i>
       </span>
     <% end %>
-  <% end %>  
+  <% end %>
   <%= @server.title %>
 </h1>
 
@@ -78,14 +78,20 @@
           <small class="has-text-grey">
             https://<%= @server.id %>.<%= api_host() %><%= rdx_route.path %>
           </small>
-        </td>        
-        <td style="width:270px;">
+        </td>
+        <td style="width:360px;">
+          <%= live_patch to: Routes.rdx_route_log_path(@socket, :index, @server.id, rdx_route), class: "button is-small is-default has-icons-left" do %>
+            <span class="icon is-small">
+              <i class="fas fa-clipboard-list"></i>
+            </span>
+            <span>View Log</span>
+          <% end %>
           <%= live_patch to: Routes.rdx_route_show_path(@socket, :show, @server.id, rdx_route), class: "button is-small is-info has-icons-left" do %>
             <span class="icon is-small">
               <i class="fas fa-reply"></i>
             </span>
             <span>Responses</span>
-          <% end %>   
+          <% end %>
           <%= live_patch to: Routes.server_show_path(@socket, :edit_route, @server.id, rdx_route), class: "button is-small is-warning has-icons-left" do %>
             <span class="icon is-small">
               <i class="fas fa-edit"></i>
@@ -95,7 +101,7 @@
           <%= link to: "#", phx_click: "delete_route", phx_value_id: rdx_route.id, data: [confirm: "Are you sure?"], class: "button is-small is-danger has-icons-left" do %>
             <span class="icon is-small">
               <i class="fas fa-trash"></i>
-            </span> 
+            </span>
             <span>Delete</span>
           <% end %>
         </td>
