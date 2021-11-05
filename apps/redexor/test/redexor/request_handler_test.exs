@@ -68,7 +68,7 @@ defmodule Redexor.RequestHandlerTest do
                RequestHandler.handle(server.id, rdx_route.method, rdx_route.path, %{}, %{})
     end
 
-    test "handle/4 returns error givem enabled server, but method and path of a disabled rdx_route",
+    test "handle/4 returns error given an enabled server, but method and path of a disabled rdx_route",
          %{user: user, server: server, rdx_route: rdx_route} do
       {:ok, rdx_route} = RdxRoutes.update_rdx_route(user, rdx_route, %{enabled: false})
 
@@ -76,14 +76,14 @@ defmodule Redexor.RequestHandlerTest do
                RequestHandler.handle(server.id, rdx_route.method, rdx_route.path, %{}, %{})
     end
 
-    test "handle/4 returns error given enabled server, but non-existent path and method", %{
+    test "handle/4 returns error given an enabled server, but non-existent path and method", %{
       server: server
     } do
       assert %ApiResponse{code: 404} =
                RequestHandler.handle(server.id, "GET", "/whatever", %{}, %{})
     end
 
-    test "handle/4 returns error given disabled server, and existing method and path", %{
+    test "handle/4 returns error given a disabled server and existing method and path", %{
       user: user,
       server: server,
       rdx_route: rdx_route
@@ -94,7 +94,7 @@ defmodule Redexor.RequestHandlerTest do
                RequestHandler.handle(server.id, rdx_route.method, rdx_route.path, %{}, %{})
     end
 
-    test "handle/4 returns error given non-existent server", %{rdx_route: rdx_route} do
+    test "handle/4 returns error given a non-existent server", %{rdx_route: rdx_route} do
       fake_server_id = Ecto.UUID.autogenerate()
 
       assert %ApiResponse{code: 404} =
