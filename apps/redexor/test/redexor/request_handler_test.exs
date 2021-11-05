@@ -100,5 +100,14 @@ defmodule Redexor.RequestHandlerTest do
       assert %ApiResponse{code: 404} =
                RequestHandler.handle(fake_server_id, rdx_route.method, rdx_route.path, %{}, %{})
     end
+
+    test "handle/4 returns error given blocked users's server and route",
+         %{server: server, rdx_route: rdx_route, user: user} do
+      Redexor.Accounts.toggle_blocked!(user)
+
+      assert %ApiResponse{code: 404} =
+               RequestHandler.handle(server.id, rdx_route.method, rdx_route.path, %{}, %{})
+    end
   end
+
 end
