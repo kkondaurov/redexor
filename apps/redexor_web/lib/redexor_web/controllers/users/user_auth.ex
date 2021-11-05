@@ -3,10 +3,12 @@ defmodule RedexorWeb.UserAuth do
     Provides user authentication and session management.
   """
 
+  require Logger
   import Plug.Conn
   import Phoenix.Controller
 
   alias Redexor.Accounts
+  alias Redexor.Accounts.User
   alias RedexorWeb.Router.Helpers, as: Routes
 
   # Make the remember me cookie valid for 60 days.
@@ -28,7 +30,14 @@ defmodule RedexorWeb.UserAuth do
   disconnected on log out. The line can be safely removed
   if you are not using LiveView.
   """
-  def log_in_user(conn, user, params \\ %{}) do
+  def log_in_user(conn, user, params \\ {})
+
+  def log_in_user(conn, %User{blocked: true}, _params) do
+    conn
+    |> redirect(to: Routes.page_path(conn, :index))
+  end
+
+  def log_in_user(conn, user, params) do
     token = Accounts.generate_user_session_token(user)
     user_return_to = get_session(conn, :user_return_to)
 

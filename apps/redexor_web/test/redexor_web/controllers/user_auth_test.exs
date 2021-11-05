@@ -44,6 +44,15 @@ defmodule RedexorWeb.UserAuthTest do
       assert signed_token != get_session(conn, :user_token)
       assert max_age == 5_184_000
     end
+
+    test "given a blocked user, redirects to home page instead of starting a new session", %{conn: conn, user: user} do
+      user = Redexor.Accounts.toggle_blocked!(user)
+
+      conn = UserAuth.log_in_user(conn, user)
+      token = get_session(conn, :user_token)
+      assert is_nil(token)
+      assert redirected_to(conn) == Routes.page_path(conn, :index)
+    end
   end
 
   describe "logout_user/1" do
