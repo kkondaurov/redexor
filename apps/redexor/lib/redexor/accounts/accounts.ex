@@ -376,7 +376,7 @@ defmodule Redexor.Accounts do
     |> User.blocked_changeset()
     |> Repo.update!()
     |> maybe_delete_token()
-    |> Redexor.Servers.disable_servers_of_blocked_user()
+    |> tap(&Redexor.Servers.disable_servers_of_blocked_user/1)
   end
 
   defp maybe_delete_token(%User{blocked: false} = user), do: user

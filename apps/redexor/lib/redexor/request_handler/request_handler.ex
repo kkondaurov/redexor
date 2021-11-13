@@ -9,6 +9,8 @@ defmodule Redexor.RequestHandler do
   alias Redexor.RdxRoutes.RdxRoute
   alias Redexor.RequestHandler.ApiResponse
 
+  @new_request_topic "new_api_request"
+
   @spec handle(String.t(), String.t(), String.t(), map(), map()) :: ApiResponse.t()
   def handle(server_id, method, path, query_params, body_params) do
     with {:server_id_valid, {:ok, server_uuid}} <- {:server_id_valid, Ecto.UUID.cast(server_id)},
@@ -54,7 +56,7 @@ defmodule Redexor.RequestHandler do
   defp broadcast(rdx_route, response_template, query_params, body_params) do
     Phoenix.PubSub.broadcast!(
       Redexor.PubSub,
-      Redexor.RequestLogger.new_request_topic(),
+      @new_request_topic,
       {:new_request,
        %{
          rdx_route: rdx_route,

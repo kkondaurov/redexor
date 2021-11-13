@@ -52,7 +52,7 @@ defmodule RedexorWeb.RdxRouteLive.Log do
 
   @impl true
   def handle_info(:after_join, socket) do
-    topic = Redexor.RequestLogger.logged_request_topic(socket.assigns.rdx_route.id)
+    topic = logged_request_topic(socket.assigns.rdx_route.id)
     Phoenix.PubSub.subscribe(Redexor.PubSub, topic)
     {:noreply, socket}
   end
@@ -60,4 +60,6 @@ defmodule RedexorWeb.RdxRouteLive.Log do
   def handle_info({:logged_request, entry}, %{assigns: %{entries: entries}} = socket) do
     {:noreply, assign(socket, entries: [entry | entries])}
   end
+
+  defp logged_request_topic(rdx_route_id), do: "logged_api_request:#{rdx_route_id}"
 end
