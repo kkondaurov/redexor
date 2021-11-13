@@ -11,17 +11,15 @@ defmodule Redexor.RequestLogger do
 
   @name :api_request_logger
 
+  @new_request_topic "new_api_request"
+
   def start_link(_opts) do
     GenServer.start_link(__MODULE__, nil, name: @name)
   end
 
-  def logged_request_topic(rdx_route_id), do: "logged_api_request:#{rdx_route_id}"
-
-  def new_request_topic, do: "new_api_request"
-
   @impl true
   def init(state) do
-    Phoenix.PubSub.subscribe(Redexor.PubSub, new_request_topic())
+    Phoenix.PubSub.subscribe(Redexor.PubSub, @new_request_topic)
     {:ok, state}
   end
 
@@ -47,4 +45,6 @@ defmodule Redexor.RequestLogger do
 
     Phoenix.PubSub.broadcast!(Redexor.PubSub, topic, {:logged_request, entry})
   end
+
+  defp logged_request_topic(rdx_route_id), do: "logged_api_request:#{rdx_route_id}"
 end

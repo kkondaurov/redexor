@@ -108,6 +108,20 @@ defmodule Redexor.RequestHandlerTest do
       assert %ApiResponse{code: 404} =
                RequestHandler.handle(server.id, rdx_route.method, rdx_route.path, %{}, %{})
     end
+
+    @new_request_topic "new_api_request"
+
+    test "handle/4 broadcasts an event about a successful request", %{
+      server: server,
+      rdx_route: rdx_route
+    } do
+      Phoenix.PubSub.subscribe(Redexor.PubSub, @new_request_topic)
+      RequestHandler.handle(server.id, rdx_route.method, rdx_route.path, %{}, %{})
+
+      assert_receive {:new_request, request_data}
+      assert %{rdx_route: %{id: received_route_id}} = request_data
+      assert received_route_id == rdx_route.id
+    end
   end
 
 end
