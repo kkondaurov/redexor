@@ -9,19 +9,12 @@
 # move said applications out of the umbrella.
 use Mix.Config
 
-config :rdx_route_api,
-  generators: [context_app: false]
-
 # Configure Mix tasks and generators
 config :redexor,
   ecto_repos: [Redexor.Repo]
 
-config :redexor_web,
-  ecto_repos: [Redexor.Repo],
-  generators: [context_app: :redexor]
-
 # Configures the endpoint
-config :redexor_web, RedexorWeb.Endpoint,
+config :redexor, RedexorWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "FcLC40aHlktfR8s7rP5066avsylnjWjTpNVmKn3Jn/zIq49XNG0k/UuOLLOY0LgM",
   render_errors: [view: RedexorWeb.ErrorView, accepts: ~w(html json), layout: false],
@@ -29,7 +22,7 @@ config :redexor_web, RedexorWeb.Endpoint,
   live_view: [signing_salt: "r3cnCcPZ"]
 
 # Configures the endpoint
-config :rdx_route_api, RdxRouteApi.Endpoint,
+config :redexor, RdxRouteApi.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "cYsLmRjGM1s7hIMYFLna+udEAlDrQmApQNi5R7XeFGttqxtDCL1ARcpRC6P4VFzV",
   render_errors: [view: RdxRouteApi.ErrorView, accepts: ~w(html json), layout: false],
@@ -47,7 +40,7 @@ config :esbuild,
   version: "0.12.18",
   default: [
     args: ~w(js/app.js --bundle --target=es2016 --outdir=../priv/static/assets),
-    cd: Path.expand("../apps/redexor_web/assets", __DIR__),
+    cd: Path.expand("../assets", __DIR__),
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
   ]
 

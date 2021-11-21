@@ -1,3 +1,0 @@
-# Redexor
-
-**TODO: Add description**
