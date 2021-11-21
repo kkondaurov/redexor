@@ -12,9 +12,9 @@ defmodule Redexor.Umbrella.MixProject do
       aliases: aliases(),
       deps: deps(),
       releases: [
-        stamper: [
+        redexor: [
           version: "0.1.0",
-          applications: [stamper: :permanent]
+          applications: [redexor: :permanent]
         ]
       ]
     ]
