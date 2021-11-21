@@ -2,7 +2,7 @@ use Mix.Config
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
-config :rdx_route_api, RdxRouteApi.Endpoint,
+config :redexor, RdxRouteApi.Endpoint,
   http: [port: 4002],
   server: false
 
@@ -23,7 +23,7 @@ config :redexor, Redexor.Repo,
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
-config :redexor_web, RedexorWeb.Endpoint,
+config :redexor, RedexorWeb.Endpoint,
   http: [port: 4002],
   server: false
 

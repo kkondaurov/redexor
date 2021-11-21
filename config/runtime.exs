@@ -24,14 +24,14 @@ if config_env() == :prod do
       You can generate one by calling: mix phx.gen.secret
       """
 
-  config :redexor_web, RedexorWeb.Endpoint,
+  config :redexor, RedexorWeb.Endpoint,
     http: [
       port: String.to_integer(System.get_env("PORT") || "4000"),
       transport_options: [socket_opts: [:inet6]]
     ],
     secret_key_base: secret_key_base
 
-  config :rdx_route_api, RdxRouteApi.Endpoint,
+  config :redexor, RdxRouteApi.Endpoint,
     http: [
       port: String.to_integer(System.get_env("API_PORT") || "4001"),
       transport_options: [socket_opts: [:inet6]]
@@ -43,8 +43,8 @@ if config_env() == :prod do
   # If you are doing OTP releases, you need to instruct Phoenix
   # to start each relevant endpoint:
 
-  config :redexor_web, RedexorWeb.Endpoint, server: true
-  config :rdx_route_api, RdxRouteApi.Endpoint, server: true
+  config :redexor, RedexorWeb.Endpoint, server: true
+  config :redexor, RdxRouteApi.Endpoint, server: true
 
   mailjet_api_key =
     System.get_env("MAILJET_API_KEY") ||

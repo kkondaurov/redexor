@@ -15,7 +15,7 @@ config :redexor, Redexor.Repo,
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with webpack to recompile .js and .css sources.
-config :redexor_web, RedexorWeb.Endpoint,
+config :redexor, RedexorWeb.Endpoint,
   http: [port: 4000],
   debug_errors: true,
   code_reloader: true,
@@ -24,7 +24,7 @@ config :redexor_web, RedexorWeb.Endpoint,
     esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
   ]
 
-config :rdx_route_api, RdxRouteApi.Endpoint,
+config :redexor, RdxRouteApi.Endpoint,
   http: [port: 4001],
   debug_errors: true,
   code_reloader: true,
@@ -55,7 +55,7 @@ config :rdx_route_api, RdxRouteApi.Endpoint,
 # different ports.
 
 # Watch static and templates for browser reloading.
-config :redexor_web, RedexorWeb.Endpoint,
+config :redexor, RedexorWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
