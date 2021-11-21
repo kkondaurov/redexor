@@ -58,11 +58,35 @@ jobs:
             && source ~/.asdf/asdf.sh \
             && bash scripts/release.sh
 
-      - name: Restart app service
+      - name: Stop app service
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.PROD_HOST_IP }}
           username: ${{ secrets.PROD_HOST_USER }}
           key: ${{ secrets.PROD_SSH_KEY }}
           script: |
-            sudo service redexor restart
+            sudo service redexor stop
+
+      - name: Migrate and seed
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.PROD_HOST_IP }}
+          username: ${{ secrets.PROD_APP_USER }}
+          key: ${{ secrets.PROD_APP_USER_KEY }}
+          script: |
+            /bin/bash
+            export DATABASE_URL=${{ secrets.DATABASE_URL }}
+            export SECRET_KEY_BASE=${{ secrets.SECRET_KEY_BASE }}
+            export MAILJET_API_KEY=${{ secrets.MAILJET_API_KEY }}
+            export MAILJET_API_SECRET=${{ secrets.MAILJET_API_SECRET }}
+            cd ~/src \
+            && _build/prod/rel/redexor/bin/redexor eval "Redexor.Release.seed"
+
+      - name: Start app service
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.PROD_HOST_IP }}
+          username: ${{ secrets.PROD_HOST_USER }}
+          key: ${{ secrets.PROD_SSH_KEY }}
+          script: |
+            sudo service redexor start
