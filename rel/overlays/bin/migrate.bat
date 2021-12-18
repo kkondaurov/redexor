@@ -1,0 +1,1 @@
+call "%~dp0\redexor" eval Redexor.Release.migrate
