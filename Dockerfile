@@ -88,7 +88,6 @@ RUN mkdir -p /etc/nginx
 COPY deploy/config/nginx.conf /etc/nginx/nginx.conf
 
 RUN mkdir -p /var/log/supervisor
-
 COPY deploy/config/supervisord.conf /etc/supervisord.conf
 COPY deploy/entrypoint.sh /usr/local/bin/
 

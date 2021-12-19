@@ -12,7 +12,7 @@ processes = []
 [env]
   PHX_HOST = "redexor.com"
   PORT = "4000"
-  API_PORT = "4080"
+  API_PORT = "4040"
 
 [experimental]
   allowed_public_ports = []
