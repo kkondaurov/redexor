@@ -68,7 +68,7 @@ RUN mix release
 # the compiled release and other runtime necessities
 FROM ${RUNNER_IMAGE}
 
-RUN apt-get update -y && apt-get install -y libstdc++6 openssl libncurses5 locales \
+RUN apt-get update -y && apt-get install -y nginx supervisor libstdc++6 openssl libncurses5 locales \
   && apt-get clean && rm -f /var/lib/apt/lists/*_*
 
 # Set the locale
@@ -84,9 +84,15 @@ RUN chown nobody /app
 # Only copy the final release from the build stage
 COPY --from=builder --chown=nobody:root /app/_build/prod/rel/redexor ./
 
-USER nobody
+RUN mkdir -p /etc/nginx
+COPY deploy/config/nginx.conf /etc/nginx/nginx.conf
 
-CMD /app/bin/server
-# Appended by flyctl
+RUN mkdir -p /var/log/supervisor
+
+COPY deploy/config/supervisord.conf /etc/supervisord.conf
+COPY deploy/entrypoint.sh /usr/local/bin/
+
 ENV ECTO_IPV6 true
 ENV ERL_AFLAGS "-proto_dist inet6_tcp"
+
+CMD [ "sh", "/usr/local/bin/entrypoint.sh" ]

@@ -34,7 +34,7 @@ if config_env() == :prod do
 
   config :redexor, RdxRouteApi.Endpoint,
     http: [
-      port: String.to_integer(System.get_env("API_PORT") || "4001"),
+      port: String.to_integer(System.get_env("API_PORT") || "4080"),
       transport_options: [socket_opts: [:inet6]]
     ],
     secret_key_base: secret_key_base

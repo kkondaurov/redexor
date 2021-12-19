@@ -11,10 +11,10 @@ use Mix.Config
 # before starting your production server.
 config :redexor, RedexorWeb.Endpoint,
   url: [scheme: "https", host: "redexor.com", port: 443],
-  http: [port: 4000],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
-config :redexor, RdxRouteApi.Endpoint, url: [host: "api.redexor.com", port: 80]
+config :redexor, RdxRouteApi.Endpoint,
+  url: [scheme: "https", host: "api.redexor.com", port: 443]
 
 config :phoenix, :serve_endpoints, true
 
