@@ -60,7 +60,8 @@ defmodule Redexor.Umbrella.MixProject do
       {:telemetry_poller, "~> 0.5"},
       {:timex, "~> 3.7"},
       {:gettext, "~> 0.11"},
-      {:jason, "~> 1.0"}
+      {:jason, "~> 1.0"},
+      {:libcluster, "~> 3.3"}
     ]
   end
 

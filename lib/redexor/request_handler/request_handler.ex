@@ -54,7 +54,7 @@ defmodule Redexor.RequestHandler do
   end
 
   defp broadcast(rdx_route, response_template, query_params, body_params) do
-    Phoenix.PubSub.broadcast!(
+    Phoenix.PubSub.local_broadcast(
       Redexor.PubSub,
       @new_request_topic,
       {:new_request,

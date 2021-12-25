@@ -6,6 +6,8 @@ defmodule Redexor.Application do
   use Application
 
   def start(_type, _args) do
+    topologies = Application.get_env(:libcluster, :topologies) || []
+
     children =
       [
         # Start the Ecto repository
@@ -19,7 +21,8 @@ defmodule Redexor.Application do
         # Start the Telemetry supervisor
         RdxRouteApi.Telemetry,
         # Start the Endpoint (http/https)
-        RdxRouteApi.Endpoint
+        RdxRouteApi.Endpoint,
+        {Cluster.Supervisor, [topologies, [name: Redexor.ClusterSupervisor]]}
         # Start a worker by calling: Redexor.Worker.start_link(arg)
         # {Redexor.Worker, arg}
       ] ++ request_logger_config()
