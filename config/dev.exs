@@ -1,7 +1,7 @@
 use Mix.Config
 
 # Configure your database
-config :redexor, Redexor.Repo,
+config :redexor, Redexor.Repo.Local,
   username: "postgres",
   password: "postgres",
   database: "redexor_dev",

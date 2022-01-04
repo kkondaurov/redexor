@@ -1,2 +1,2 @@
 ExUnit.start()
-Ecto.Adapters.SQL.Sandbox.mode(Redexor.Repo, :manual)
+Ecto.Adapters.SQL.Sandbox.mode(Redexor.Repo.Local, :manual)

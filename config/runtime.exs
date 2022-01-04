@@ -12,7 +12,7 @@ if config_env() == :prod do
       For example: ecto://USER:PASS@HOST/DATABASE
       """
 
-  config :redexor, Redexor.Repo,
+  config :redexor, Redexor.Repo.Local,
     ssl: false,
     socket_options: [:inet6],
     url: database_url,

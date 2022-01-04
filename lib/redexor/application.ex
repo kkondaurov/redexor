@@ -10,8 +10,12 @@ defmodule Redexor.Application do
 
     children =
       [
+        # Start the RPC server
+        {Fly.RPC, []},
         # Start the Ecto repository
-        Redexor.Repo,
+        Redexor.Repo.Local,
+        # Start the tracker after your DB.
+        {Fly.Postgres.LSN.Tracker, []},
         # Start the PubSub system
         {Phoenix.PubSub, name: Redexor.PubSub},
         # Start the Telemetry supervisor

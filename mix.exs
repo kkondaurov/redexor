@@ -61,7 +61,8 @@ defmodule Redexor.Umbrella.MixProject do
       {:timex, "~> 3.7"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
-      {:libcluster, "~> 3.3"}
+      {:libcluster, "~> 3.3"},
+      {:fly_postgres, "~> 0.1.0"}
     ]
   end
 

@@ -28,10 +28,10 @@ defmodule Redexor.DataCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Redexor.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Redexor.Repo.Local)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Redexor.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Redexor.Repo.Local, {:shared, self()})
     end
 
     :ok

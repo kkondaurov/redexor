@@ -21,6 +21,7 @@ erl_crash.dump
 
 /config/local.exs
 .env
+.envrc
 
 # Ignore package tarball (built via "mix hex.build").
 redexor-*.tar

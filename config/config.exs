@@ -11,7 +11,12 @@ use Mix.Config
 
 # Configure Mix tasks and generators
 config :redexor,
-  ecto_repos: [Redexor.Repo]
+  ecto_repos: [Redexor.Repo.Local]
+
+config :fly_postgres, :local_repo, Redexor.Repo.Local
+
+config :redexor, Redexor.Repo.Local,
+  priv: "priv/repo"
 
 # Configures the endpoint
 config :redexor, RedexorWeb.Endpoint,

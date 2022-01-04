@@ -31,6 +31,7 @@ defmodule Redexor.Release do
   end
 
   defp load_app do
+    Application.load(:fly_postgres)
     Application.load(@app)
     Application.ensure_all_started(@app)
   end
