@@ -58,7 +58,10 @@ defmodule RedexorWeb.Router do
 
     live_dashboard "/live_dashboard",
       metrics: RedexorWeb.Telemetry,
-      ecto_repos: [Redexor.Repo]
+      ecto_repos: [Redexor.Repo],
+      additional_pages: [
+        fly: {FlyLiveDashboard.FlyPage, repo: Redexor.Repo.Local}
+      ]
   end
 
   scope "/", RedexorWeb do
