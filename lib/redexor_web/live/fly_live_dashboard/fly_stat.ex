@@ -1,14 +1,19 @@
 defmodule FlyLiveDashboard.FlyStat do
 
+  require Logger
+
+  @spec collect_node_info(atom(), module()) :: {map(), [map()]} | {:badrpc, term()}
   def collect_node_info(node, repo) do
     :rpc.call(node, __MODULE__, :collect_node_info_callback, [repo])
   end
 
+  @spec collect_node_info_callback(module()) :: {map(), [map()]}
   def collect_node_info_callback(repo) do
     remote_nodes =
       Node.list()
       |> Enum.map(&(Task.async(fn -> call_node_for_info(&1, repo) end)))
       |> Task.await_many()
+      |> Enum.reject(&(&1 == :badrpc))
 
     {node_info(repo), remote_nodes}
   end
@@ -17,7 +22,14 @@ defmodule FlyLiveDashboard.FlyStat do
     before_call = System.monotonic_time()
     data = :rpc.call(node, __MODULE__, :node_info, [repo])
     after_call = System.monotonic_time()
-    Map.put(data, :rpc_call_time, format_call_time(after_call, before_call))
+    case data do
+      {:badrpc, reason} ->
+        Logger.error("FlyStat RPC call to node #{inspect node} failed: #{inspect reason}")
+        :badrpc
+
+      data ->
+        Map.put(data, :rpc_call_time, format_call_time(after_call, before_call))
+    end
   end
 
   def node_info(repo) do

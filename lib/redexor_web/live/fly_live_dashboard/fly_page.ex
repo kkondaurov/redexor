@@ -2,6 +2,8 @@ defmodule FlyLiveDashboard.FlyPage do
   @moduledoc false
   use Phoenix.LiveDashboard.PageBuilder
 
+  require Logger
+
   @impl true
   def menu_link(_, _) do
     {:ok, "Fly"}
@@ -19,7 +21,25 @@ defmodule FlyLiveDashboard.FlyPage do
 
   @impl true
   def render_page(assigns) do
-    {current_node_info, connected_nodes} = FlyLiveDashboard.FlyStat.collect_node_info(assigns.page.node, assigns[:repo])
+    node = assigns.page.node
+    case FlyLiveDashboard.FlyStat.collect_node_info(node, assigns[:repo]) do
+      {:badrpc, reason} ->
+        Logger.error("FlyStat RPC call to node #{inspect node} failed: #{inspect reason}")
+        render_rpc_call_error(node)
+
+      {current_node_info, connected_nodes} ->
+        render_node_info_page(assigns, current_node_info, connected_nodes)
+    end
+  end
+
+  defp render_rpc_call_error(node) do
+    card(
+      value: "Failed to collect information from node #{node}. Retrying...",
+      class: ["to-title", "bg-danger", "text-white"]
+    )
+  end
+
+  defp render_node_info_page(assigns, current_node_info, connected_nodes) do
     columns(
       components: [
         [
