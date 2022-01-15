@@ -19,28 +19,78 @@ defmodule FlyLiveDashboard.FlyPage do
 
   @impl true
   def render_page(assigns) do
+    {current_node_info, connected_nodes} = FlyLiveDashboard.FlyStat.collect_node_info(assigns.page.node, assigns[:repo])
+    columns(
+      components: [
+        [
+          render_current_node(current_node_info),
+          render_connected_nodes(assigns.page, connected_nodes)
+        ],
+      ])
+  end
+
+  defp render_current_node(current_node_info) do
+    row(
+      components: [
+        columns(
+          components: [
+            card(
+              inner_title: "Node",
+              value: current_node_info[:name]
+            ),
+            card(
+              inner_title: "Fly Region",
+              value: current_node_info[:fly_region]
+            ),
+          ]
+        ),
+        columns(
+          components: [
+            card(
+              inner_title: "Fly Allocation ID",
+              value: current_node_info[:fly_alloc_id] || "Not deployed on fly.io"
+            ),
+            card(
+              inner_title: "DB Hostname",
+              value: current_node_info[:db_host]
+            ),
+          ]
+        )
+      ]
+    )
+  end
+
+  defp render_connected_nodes(page, connected_nodes) do
     table(
       columns: table_columns(),
       id: :nodes_table,
       row_attrs: &row_attrs/1,
-      row_fetcher: &(fetch_nodes(&1, &2, assigns[:repo])),
+      row_fetcher: &(fetch_nodes(&1, &2, connected_nodes)),
       rows_name: "nodes",
-      title: "Nodes",
+      title: "Connected nodes",
       default_sort_by: :rpc_call_time,
-      limit: false
+      limit: false,
+      search: false,
+      page: page
     )
+
   end
 
-  defp fetch_nodes(params, node, repo) do
-    nodes = :rpc.call(node, FlyLiveDashboard.FlyStat, :collect_node_info, [repo, params])
-    {nodes, length(nodes)}
+  defp fetch_nodes(params, _node, connected_nodes) do
+    %{search: _search, sort_by: sort_by, sort_dir: sort_dir} = params
+
+    connected_nodes =
+      connected_nodes
+      |> Enum.sort_by(&(&1[sort_by]), sort_dir)
+
+    {connected_nodes, length(connected_nodes)}
   end
 
   defp table_columns() do
     [
       %{
         field: :name,
-        header: "Node Name"
+        header: "Node"
       },
       %{
         field: :fly_region,

@@ -1,23 +1,20 @@
 defmodule FlyLiveDashboard.FlyStat do
 
-  def collect_node_info(repo, params) do
-    %{search: _search, sort_by: sort_by, sort_dir: sort_dir} = params
+  def collect_node_info(node, repo) do
+    :rpc.call(node, __MODULE__, :collect_node_info_callback, [repo])
+  end
+
+  def collect_node_info_callback(repo) do
     remote_nodes =
       Node.list()
       |> Enum.map(fn node ->
         before_call = System.monotonic_time()
-        data = :rpc.call(node, FlyLiveDashboard.FlyStat, :node_info, [repo])
+        data = :rpc.call(node, __MODULE__, :node_info, [repo])
         after_call = System.monotonic_time()
         Map.put(data, :rpc_call_time, format_call_time(after_call, before_call))
       end)
 
-    [ current_node_info(repo) | remote_nodes ]
-    |> Enum.sort_by(&(&1[sort_by]), sort_dir)
-  end
-
-  defp current_node_info(repo) do
-    info = node_info(repo)
-    Map.put(info, :name, "#{info[:name]} •")
+    {node_info(repo), remote_nodes}
   end
 
   def node_info(repo) do
