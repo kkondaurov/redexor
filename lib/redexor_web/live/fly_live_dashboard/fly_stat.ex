@@ -7,14 +7,17 @@ defmodule FlyLiveDashboard.FlyStat do
   def collect_node_info_callback(repo) do
     remote_nodes =
       Node.list()
-      |> Enum.map(fn node ->
-        before_call = System.monotonic_time()
-        data = :rpc.call(node, __MODULE__, :node_info, [repo])
-        after_call = System.monotonic_time()
-        Map.put(data, :rpc_call_time, format_call_time(after_call, before_call))
-      end)
+      |> Enum.map(&(Task.async(fn -> call_node_for_info(&1, repo) end)))
+      |> Task.await_many()
 
     {node_info(repo), remote_nodes}
+  end
+
+  defp call_node_for_info(node, repo) do
+    before_call = System.monotonic_time()
+    data = :rpc.call(node, __MODULE__, :node_info, [repo])
+    after_call = System.monotonic_time()
+    Map.put(data, :rpc_call_time, format_call_time(after_call, before_call))
   end
 
   def node_info(repo) do

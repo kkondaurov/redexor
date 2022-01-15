@@ -48,7 +48,7 @@ defmodule FlyLiveDashboard.FlyPage do
           components: [
             card(
               inner_title: "Fly Allocation ID",
-              value: current_node_info[:fly_alloc_id] || "Not deployed on fly.io"
+              value: current_node_info[:fly_alloc_id] || "Not running on fly.io"
             ),
             card(
               inner_title: "DB Hostname",
