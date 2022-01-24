@@ -1,7 +1,7 @@
 defmodule FlyLiveDashboard.FlyPage do
   @moduledoc false
   use Phoenix.LiveDashboard.PageBuilder
-
+  import Phoenix.LiveDashboard.Helpers
   require Logger
 
   @impl true
@@ -10,19 +10,9 @@ defmodule FlyLiveDashboard.FlyPage do
   end
 
   @impl true
-  def init(opts) do
-    {:ok, opts, []}
-  end
-
-  @impl true
-  def mount(_params, session, socket) do
-    {:ok, assign(socket, :repo, session[:repo])}
-  end
-
-  @impl true
   def render_page(assigns) do
     node = assigns.page.node
-    case FlyLiveDashboard.FlyStat.collect_node_info(node, assigns[:repo]) do
+    case FlyLiveDashboard.FlyStat.collect_node_info(node) do
       {:badrpc, reason} ->
         Logger.error("FlyStat RPC call to node #{inspect node} failed: #{inspect reason}")
         render_rpc_call_error(node)
@@ -70,10 +60,6 @@ defmodule FlyLiveDashboard.FlyPage do
               inner_title: "Fly Allocation ID",
               value: current_node_info[:fly_alloc_id] || "Not running on fly.io"
             ),
-            card(
-              inner_title: "DB Hostname",
-              value: current_node_info[:db_host]
-            ),
           ]
         )
       ]
@@ -102,6 +88,7 @@ defmodule FlyLiveDashboard.FlyPage do
     connected_nodes =
       connected_nodes
       |> Enum.sort_by(&(&1[sort_by]), sort_dir)
+      |> Enum.map(fn %{uptime: uptime} = node -> %{node | uptime: format_uptime(uptime) } end)
 
     {connected_nodes, length(connected_nodes)}
   end
@@ -122,8 +109,8 @@ defmodule FlyLiveDashboard.FlyPage do
         header: "Fly Allocation ID"
       },
       %{
-        field: :db_host,
-        header: "DB Host",
+        field: :uptime,
+        header: "Uptime",
       },
       %{
         field: :rpc_call_time,

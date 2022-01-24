@@ -60,7 +60,7 @@ defmodule RedexorWeb.Router do
       metrics: RedexorWeb.Telemetry,
       ecto_repos: [Redexor.Repo],
       additional_pages: [
-        fly: {FlyLiveDashboard.FlyPage, repo: Redexor.Repo.Local}
+        fly: FlyLiveDashboard.FlyPage
       ]
   end
 

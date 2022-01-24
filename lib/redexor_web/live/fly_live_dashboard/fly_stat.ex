@@ -2,25 +2,29 @@ defmodule FlyLiveDashboard.FlyStat do
 
   require Logger
 
-  @spec collect_node_info(atom(), module()) :: {map(), [map()]} | {:badrpc, term()}
-  def collect_node_info(node, repo) do
-    :rpc.call(node, __MODULE__, :collect_node_info_callback, [repo])
+  @spec collect_node_info(atom()) :: {map(), [map()]} | {:badrpc, term()}
+  def collect_node_info(node) do
+    if node == Node.self() do
+      collect_node_info_callback()
+    else
+      :rpc.call(node, __MODULE__, :collect_node_info_callback, [])
+    end
   end
 
-  @spec collect_node_info_callback(module()) :: {map(), [map()]}
-  def collect_node_info_callback(repo) do
+  @spec collect_node_info_callback() :: {map(), [map()]}
+  def collect_node_info_callback() do
     remote_nodes =
       Node.list()
-      |> Enum.map(&(Task.async(fn -> call_node_for_info(&1, repo) end)))
+      |> Enum.map(&(Task.async(fn -> call_node_for_info(&1) end)))
       |> Task.await_many()
       |> Enum.reject(&(&1 == :badrpc))
 
-    {node_info(repo), remote_nodes}
+    {node_info(), remote_nodes}
   end
 
-  defp call_node_for_info(node, repo) do
+  defp call_node_for_info(node) do
     before_call = System.monotonic_time()
-    data = :rpc.call(node, __MODULE__, :node_info, [repo])
+    data = :rpc.call(node, __MODULE__, :node_info, [])
     after_call = System.monotonic_time()
     case data do
       {:badrpc, reason} ->
@@ -32,15 +36,12 @@ defmodule FlyLiveDashboard.FlyStat do
     end
   end
 
-  def node_info(repo) do
-    {:ok, hostname} = :inet.gethostname()
-
+  def node_info() do
     %{
       name: Node.self(),
       fly_region: System.get_env("FLY_REGION"),
       fly_alloc_id: System.get_env("FLY_ALLOC_ID"),
-      hostname: hostname,
-      db_host: db_host(repo),
+      uptime: :erlang.statistics(:wall_clock) |> elem(0),
       rpc_call_time: 0,
     }
   end
@@ -48,8 +49,5 @@ defmodule FlyLiveDashboard.FlyStat do
   defp format_call_time(after_call, before_call) do
     System.convert_time_unit(after_call - before_call, :native, :millisecond)
   end
-
-  defp db_host(nil), do: nil
-  defp db_host(repo), do: repo.config[:hostname]
 
 end
