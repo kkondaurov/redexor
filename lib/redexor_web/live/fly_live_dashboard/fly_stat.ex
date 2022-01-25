@@ -13,7 +13,7 @@ defmodule FlyLiveDashboard.FlyStat do
   @spec collect_node_info_callback() :: {map(), [map()]}
   def collect_node_info_callback() do
     remote_nodes =
-      Node.list()
+      Node.list(:connected)
       |> Enum.map(&Task.async(fn -> call_node_for_info(&1) end))
       |> Task.await_many()
       |> Enum.reject(&(&1 == :badrpc))

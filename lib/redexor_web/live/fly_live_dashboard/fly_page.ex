@@ -33,7 +33,7 @@ defmodule FlyLiveDashboard.FlyPage do
   defp render_no_fly_stat_error(node) do
     card(
       value:
-        "Cannot retrieve information for node #{node} because is does not have FlyLiveDashboard.FlyStat module. Please select a different node.",
+        "Cannot retrieve information for node #{node} because it does not have FlyLiveDashboard.FlyStat module. Please select a different node.",
       class: ["to-title", "bg-light"]
     )
   end
