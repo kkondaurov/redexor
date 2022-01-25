@@ -12,14 +12,30 @@ defmodule FlyLiveDashboard.FlyPage do
   @impl true
   def render_page(assigns) do
     node = assigns.page.node
+
     case FlyLiveDashboard.FlyStat.collect_node_info(node) do
+      {:badrpc, {:EXIT, {:undef, _}}} ->
+        Logger.error(
+          "FlyStat RPC call failed because module does not exist on node #{inspect(node)}"
+        )
+
+        render_no_fly_stat_error(node)
+
       {:badrpc, reason} ->
-        Logger.error("FlyStat RPC call to node #{inspect node} failed: #{inspect reason}")
+        Logger.error("FlyStat RPC call to node #{inspect(node)} failed: #{inspect(reason)}")
         render_rpc_call_error(node)
 
       {current_node_info, connected_nodes} ->
         render_node_info_page(assigns, current_node_info, connected_nodes)
     end
+  end
+
+  defp render_no_fly_stat_error(node) do
+    card(
+      value:
+        "Cannot retrieve information for node #{node} because is does not have FlyLiveDashboard.FlyStat module. Please select a different node.",
+      class: ["to-title", "bg-light"]
+    )
   end
 
   defp render_rpc_call_error(node) do
@@ -35,8 +51,9 @@ defmodule FlyLiveDashboard.FlyPage do
         [
           render_current_node(current_node_info),
           render_connected_nodes(assigns.page, connected_nodes)
-        ],
-      ])
+        ]
+      ]
+    )
   end
 
   defp render_current_node(current_node_info) do
@@ -51,7 +68,7 @@ defmodule FlyLiveDashboard.FlyPage do
             card(
               inner_title: "Fly Region",
               value: current_node_info[:fly_region]
-            ),
+            )
           ]
         ),
         columns(
@@ -59,7 +76,7 @@ defmodule FlyLiveDashboard.FlyPage do
             card(
               inner_title: "Fly Allocation ID",
               value: current_node_info[:fly_alloc_id] || "Not running on fly.io"
-            ),
+            )
           ]
         )
       ]
@@ -71,7 +88,7 @@ defmodule FlyLiveDashboard.FlyPage do
       columns: table_columns(),
       id: :nodes_table,
       row_attrs: &row_attrs/1,
-      row_fetcher: &(fetch_nodes(&1, &2, connected_nodes)),
+      row_fetcher: &fetch_nodes(&1, &2, connected_nodes),
       rows_name: "nodes",
       title: "Connected nodes",
       default_sort_by: :rpc_call_time,
@@ -79,7 +96,6 @@ defmodule FlyLiveDashboard.FlyPage do
       search: false,
       page: page
     )
-
   end
 
   defp fetch_nodes(params, _node, connected_nodes) do
@@ -87,8 +103,10 @@ defmodule FlyLiveDashboard.FlyPage do
 
     connected_nodes =
       connected_nodes
-      |> Enum.sort_by(&(&1[sort_by]), sort_dir)
-      |> Enum.map(fn %{uptime: uptime} = node -> %{node | uptime: format_uptime(uptime) } end)
+      |> Enum.sort_by(& &1[sort_by], sort_dir)
+      |> Enum.map(fn %{uptime: uptime} = node ->
+        %{node | uptime: (uptime && format_uptime(uptime)) || nil}
+      end)
 
     {connected_nodes, length(connected_nodes)}
   end
@@ -110,13 +128,13 @@ defmodule FlyLiveDashboard.FlyPage do
       },
       %{
         field: :uptime,
-        header: "Uptime",
+        header: "Uptime"
       },
       %{
         field: :rpc_call_time,
         header: "Time of RPC call for node info, ms",
         sortable: :asc
-      },
+      }
     ]
   end
 
@@ -126,5 +144,4 @@ defmodule FlyLiveDashboard.FlyPage do
       {"phx-page-loading", true}
     ]
   end
-
 end
