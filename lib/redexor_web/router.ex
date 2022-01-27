@@ -60,7 +60,7 @@ defmodule RedexorWeb.Router do
       metrics: RedexorWeb.Telemetry,
       ecto_repos: [Redexor.Repo],
       additional_pages: [
-        fly: FlyLiveDashboard.FlyPage
+        connected_nodes: {Phoenix.LiveDashboard.ConnectedNodes, env_vars: [:FLY_REGION, :FLY_ALLOC_ID]}
       ]
   end
 
